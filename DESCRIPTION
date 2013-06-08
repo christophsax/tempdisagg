@@ -1,0 +1,20 @@
+Package: tempdisagg
+Version: 0.21
+Date: 2013-01-31
+Title: Methods for Temporal Disaggregation and Interpolation of Time
+        Series
+Author: Christoph Sax, Peter Steiner
+Maintainer: Christoph Sax <christoph.sax@gmail.com>
+Description: Temporal disaggregation methods are used to disaggregate
+        and interpolate a low frequency time series to a higher
+        frequency series. This can be done without additional
+        information or by exploiting the information contained in one
+        or more indicators. All disaggregation methods ensure that
+        either the sum, the average, the first or the last value of the
+        resulting high frequency series is consistent with the low
+        frequency series.
+License: GPL-3
+LazyLoad: yes
+Packaged: 2013-02-12 14:38:10 UTC; christoph
+Repository: CRAN
+Date/Publication: 2013-02-12 21:12:11

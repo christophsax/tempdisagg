@@ -1,0 +1,28 @@
+Changes for R-package tempdisagg
+
+Version 0.21 (Jan 21th, 2013)
+  Changes visible to the user:
+  - new methods available: "chow-lin-fixed" and "litterman-fixed". 
+    Using the "fixed.rho" argument, an autoregressive parameter may be specified
+    by the user.
+  - interface changes: "chow-lin-maxlog-ecotrim" and "chow-lin-maxlog-quilis"
+    are defined as new methods. No need for the old 'vcov' argument anymore.
+  - new defaults: method = "chow-lin-maxlog", neg.rho = FALSE
+    with positive values for rho only, the chow-lin-maxlog method generally 
+    outperforms the other methods.
+  - all relevant arguments are directly entered to td()
+  - summary output: If neg.rho = FALSE and a negative rho is truncated to 0, and 
+    indicator is shown in the summary output.
+  - non time-series mode: optionally, standard vectors can be used instead of time 
+    series. In this case, the frequency of low frequency variable is 1, while
+    the fraction of the high frequency variable is specified by the 'to'
+    argument
+  - updated help files
+
+  Invisible changes:
+  - td() is rewritten and has a clear structure now.
+  - GLS Regressions are performed by the new CalcGLS() function, which uses 
+    QR-decomposition instead of matrix-inversion. This is faster and 
+    numerically stable. It resolves an issue wher large (or small) numbers have
+    led to a 'system is computationally singular' error.
+
