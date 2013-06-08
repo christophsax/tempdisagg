@@ -2,3 +2,4 @@
 .Rproj.user
 tempdisagg.Rproj
 .Rbuildignore
+.DS_Store
