@@ -1,3 +1,5 @@
+#' @import stats
+#' @method print td
 print.td <- function(x, ...){
   # calls print.lm
   #
@@ -18,7 +20,7 @@ print.td <- function(x, ...){
 
 #' Summary of a Temporal Disaggregation
 #' 
-#' summary method for class "td".
+#' \code{summary} method for class "td".
 #' 
 #' @param object      an object of class \code{"td"}, usually, a result of a 
 #'                    call to \code{\link{td}}.
@@ -53,6 +55,7 @@ print.td <- function(x, ...){
 #' summary(mod2)
 #'   
 #' @keywords ts, models
+#' @method summary td
 #' @export
 #' 
 summary.td <- function(object, ...){
@@ -140,7 +143,7 @@ print.summary.td <- function (x, digits = max(3, getOption("digits") - 3),
 
 #' Residual Plot for Temporal Disaggregation
 #' 
-#' Plot method for class \code{"td"}. Plot the predicted and actual low 
+#' \code{plot} method for class \code{"td"}. Plot the predicted and actual low 
 #' frequency series, and residuals.
 #' 
 #' @param x           an object of class \code{"td"}, usually, a result of a 
@@ -176,9 +179,9 @@ plot.td <- function(x, ...){
 }
 
 
-#' Predict method for Temporal Disaggregation
+#' Predict Method for Temporal Disaggregation
 #' 
-#' computes the disaggregated or interpolated (and extrapolated) high frequency
+#' Compute the disaggregated or interpolated (and extrapolated) high frequency
 #' series of a temporal disaggregation.
 #' 
 #' @param object      an object of class \code{"td"}, usually, a result of a 

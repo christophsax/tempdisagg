@@ -10,7 +10,7 @@
 #' @name tempdisagg-package
 #' @aliases tempdisagg
 #' @docType package
-#' @author Christoph Saxli \email{christoph.sax@@gmail.com},
+#' @author Christoph Sax \email{christoph.sax@@gmail.com},
 #'         Peter Steiner
 #' @keywords package
 #' @seealso \code{\link{td}} for more information on usage.

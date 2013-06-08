@@ -1,6 +1,6 @@
 \name{predict.td}
 \alias{predict.td}
-\title{Predict method for Temporal Disaggregation}
+\title{Predict Method for Temporal Disaggregation}
 \usage{
   \method{predict}{td} (object, ...)
 }
@@ -17,7 +17,7 @@
   frequency series of a temporal disaggregation.
 }
 \description{
-  computes the disaggregated or interpolated (and
+  Compute the disaggregated or interpolated (and
   extrapolated) high frequency series of a temporal
   disaggregation.
 }

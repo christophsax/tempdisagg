@@ -3,7 +3,7 @@
 \alias{summary.td}
 \title{Summary of a Temporal Disaggregation}
 \usage{
-  summary.td(object, ...)
+  \method{summary}{td} (object, ...)
 
   \method{print}{summary.td} (x,
     digits = max(3, getOption("digits") - 3),
@@ -42,7 +42,7 @@
   similar way as the method for \code{"lm"}.
 }
 \description{
-  summary method for class "td".
+  \code{summary} method for class "td".
 }
 \examples{
 data(swisspharma)

@@ -103,10 +103,10 @@
   methods}
 }
 \description{
-  Performs temporal disaggregation or interpolation of low
-  frequency to high frequency time series. It can be used
-  with objects of class \code{"\link{ts}"} as well as with
-  basic vectors.
+  Perform temporal disaggregation or interpolation of low
+  frequency to high frequency time series. \code{td} can be
+  used with objects of class \code{"\link{ts}"} as well as
+  with basic vectors.
 }
 \details{
   \code{td} is used to disaggregate or interpolate a low

@@ -14,7 +14,7 @@
   consistent with the low frequency series.
 }
 \author{
-  Christoph Saxli \email{christoph.sax@gmail.com}, Peter
+  Christoph Sax \email{christoph.sax@gmail.com}, Peter
   Steiner
 }
 \seealso{

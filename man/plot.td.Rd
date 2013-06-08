@@ -17,8 +17,8 @@
   series, and the residuals.
 }
 \description{
-  Plot method for class \code{"td"}. Plot the predicted and
-  actual low frequency series, and residuals.
+  \code{plot} method for class \code{"td"}. Plot the
+  predicted and actual low frequency series, and residuals.
 }
 \examples{
 data(swisspharma)

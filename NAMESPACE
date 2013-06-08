@@ -1,5 +1,6 @@
-export(summary.td)
 export(ta)
 export(td)
+import(stats)
 S3method(plot,td)
 S3method(predict,td)
+S3method(summary,td)
