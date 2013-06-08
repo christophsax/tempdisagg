@@ -14,15 +14,48 @@ print.td <- function(x, ...){
       \nUse ?td to see the help file.\n")
 }
 
-summary.td <- function(object, ...){
-  # prepares a summary for an object of class "td"
-  #
-  # Args:
-  #   object:      an object of class "td"
-  #
-  # Returns: 
-  #   an object of class "summary.td"
 
+
+#' Summary of a Temporal Disaggregation
+#' 
+#' summary method for class "td".
+#' 
+#' @param object      an object of class \code{"td"}, usually, a result of a 
+#'                    call to \code{\link{td}}.
+#' @param x           an object of class \code{"summary.td"}, usually, a result 
+#'                    of a call to \code{summary.td}.
+#' @param digits      the number of significant digits to use when printing.
+#' @param signif.stars logical. If \code{TRUE}, 'significance stars' are printed 
+#'                    for each coefficient.
+#' @param \dots       further arguments passed to or from other methods.
+
+#' @return \code{summary.td} returns a list containing the summary statistics 
+#'   included in \code{object}, and computes the following additional
+#'   statistics:
+#'   
+#'   \item{n_l}{number of low frequency observations}
+#'   \item{n}{number of high frequency observations}
+#'   \item{sigma}{standard deviation of the regression}
+#'   \item{ar_l}{empirical auto-correlation of the low frequency series}
+#'   \item{coefficients}{a named matrix containing coefficients, standard
+#'   deviations, t-values and p-values}
+#'   
+#'   The \code{print} method prints the summary output in a similar way as the method for \code{"lm"}.
+#'   
+#' @seealso \code{\link{td}} for the main function for temporal disaggregation.
+#' @examples
+#' data(swisspharma)
+#'   
+#' mod1 <- td(sales.a ~ imports.q + exports.q)
+#' summary(mod1)  
+#'   
+#' mod2 <- td(sales.a ~ 0, to = "quarterly", method = "uniform")
+#' summary(mod2)
+#'   
+#' @keywords ts, models
+#' @export
+#' 
+summary.td <- function(object, ...){
   # build output on top of the input
   z <- object
 
@@ -54,18 +87,11 @@ summary.td <- function(object, ...){
   z
 }
 
+#' @method print summary.td
+#' @rdname summary.td
 print.summary.td <- function (x, digits = max(3, getOption("digits") - 3), 
     signif.stars = getOption("show.signif.stars"), ...) {
-  # prints a summary for an object of class "td"
-  #
-  # Args:
-  #   x:           an object of class "summary.td"
-  #   digits:      the number of significant digits to use when printing.
-  #   signif.stars whether to show significance stars in output
-  #
-  # Returns: 
-  #   prints the summary as its side effect
-
+  
   cat("\nCall:\n", paste(deparse(x$call), sep = "\n", collapse = "\n"), "\n\n",
       sep = "")
   resid <- x$residuals
@@ -111,16 +137,32 @@ print.summary.td <- function (x, digits = max(3, getOption("digits") - 3),
   invisible(x)
 }
 
-plot.td <- function(x, ...){
-  # plot the predicted and acutal low frequency series, and residuals
-  #
-  # Args:
-  #   object:      an object of class "td"
-  #   ...:         further arguments, not used
-  #
-  # Returns: 
-  #   a two panel plot as its side effect
 
+#' Residual Plot for Temporal Disaggregation
+#' 
+#' Plot method for class \code{"td"}. Plot the predicted and actual low 
+#' frequency series, and residuals.
+#' 
+#' @param x           an object of class \code{"td"}, usually, a result of a 
+#'                    call to \code{\link{td}}.
+#' @param \dots       further arguments passed to or from other methods.
+#' 
+#' @return \code{plot.td} returns a a two panel plot as its side effect, showing
+#'   the predicted and actual low frequency series, and the residuals.
+#'   
+#' @seealso \code{\link{td}} for the main function for temporal disaggregation.
+#' 
+#' @examples
+#' data(swisspharma)
+#' 
+#' mod2 <- td(sales.a ~ imports.q + exports.q)
+#' plot(mod2)  
+#' 
+#' @akeyword ts, models
+#' @method plot td
+#' @export
+#' 
+plot.td <- function(x, ...){
   old.par <- par(no.readonly=TRUE)  # backup par settings 
   if(!is.null(x$vcov)) {ext <- paste("(", x$vcov, ")", sep="")} else {ext <- NULL}
   par(mfrow=c(2,1))                    
@@ -133,14 +175,31 @@ plot.td <- function(x, ...){
   on.exit(par(old.par))  # restore par settings
 }
 
+
+#' Predict method for Temporal Disaggregation
+#' 
+#' computes the disaggregated or interpolated (and extrapolated) high frequency
+#' series of a temporal disaggregation.
+#' 
+#' @param object      an object of class \code{"td"}, usually, a result of a 
+#'                    call to \code{\link{td}}.
+#' @param \dots       further arguments passed to or from other methods.
+#' 
+#' @return \code{summary.td} returns a vector or a \code{"ts"} object, 
+#'   containing the disaggregated or interpolated high frequency series of a
+#'   temporal disaggregation.
+#' 
+#' @seealso \code{\link{td}} for the main function for temporal disaggregation.
+#' @examples
+#' data(swisspharma)
+#' 
+#' mod1 <- td(sales.a ~ imports.q + exports.q)
+#' predict(mod1)
+#' 
+#' @keywords ts, models
+#' @method predict td
+#' @export
+#' 
 predict.td <- function(object, ...) {
-  # computes the disaggregated or interpolated high frequency series
-  #
-  # Args:
-  #   object:      an object of class "td"
-  #   ...:         further arguments, not used
-  #
-  # Returns: 
-  #   an object of class "ts", containing the final series
   object$fitted.values
 }

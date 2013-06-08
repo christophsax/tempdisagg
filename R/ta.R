@@ -1,17 +1,37 @@
+#' Temporal Aggregation of Time Series
+#' 
+#' Performs temporal aggregation of high to low frequency time series. 
+#' Currently, \code{ta} only works with \code{ts} or \code{mts} time series 
+#' objects.
+#' 
+#' \code{ta} is used to aggregate a high frequency time series into a low
+#' frequency series, while the latter is either the sum, the average, the first
+#' or the last value of the high-frequency series. \code{ta} is the inverse
+#' function of \code{\link{td}}. If applied to an output series of \code{td},
+#' \code{ta} yields the original series.
+#' 
+#' @param x           a time series object of class \code{"ts"} or \code{"mts"}.
+#' @param conversion  type of conversion: \code{"sum"}, \code{"average"}, 
+#'                    \code{"first"} or \code{"last"}.
+#' @param to          (low-frequency) destination frequency as a character 
+#'                    string (\code{"annual"} or \code{"quarterly"}) or as a 
+#'                    scalar (e.g. \code{1}, \code{2}, \code{4}).
+#'                    
+#' @return \code{ta} returns an object of class \code{"ts"} or \code{"mts"}, depending on the class of the input series.
+#' 
+#' @seealso \code{\link{td}} for the main function for temporal disaggregation.
+#' 
+#' @examples
+#' data(swisspharma)
+#'   
+#' sales.q.a <- ta(sales.q, conversion = "sum", to = "annual")
+#' all.equal(sales.a, sales.q.a)
+#' 
+#' @keywords ts, models
+#' @export
+#' 
 ta <- function(x, conversion = "sum", to = "annual"){
-  # performs a temporal agregation of one or several time series (main function)
-  #
-  # Args:
-  #   x:            a time series object of class "ts" or "mts"
-  #   conversion:   type of conversion ("sum", "average", "first", "last")
-  #   to:           destination frequency ("quarterly" or "monthly"), only for
-  #                 Denton without indicators
-  #
-  # Returns:
-  #   An object of class "ts" or "mts", depending on the class of the input series.
-  #
-  # Remarks:
-  #   Calls SubAggregation for computation
+  # Calls SubAggregation for computation
 
   if (is.numeric(to)){  # frequency specified by a number
     f_l <- to

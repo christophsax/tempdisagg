@@ -1,3 +1,5 @@
-# Export all names
-exportPattern(".")
-
+export(summary.td)
+export(ta)
+export(td)
+S3method(plot,td)
+S3method(predict,td)
