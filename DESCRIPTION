@@ -1,6 +1,6 @@
 Package: tempdisagg
-Version: 0.21
-Date: 2013-01-31
+Version: 0.22
+Date: 2013-06-08
 Title: Methods for Temporal Disaggregation and Interpolation of Time
         Series
 Author: Christoph Sax, Peter Steiner
