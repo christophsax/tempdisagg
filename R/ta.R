@@ -52,7 +52,8 @@ ta <- function(x, conversion = "sum", to = "annual"){
     ncol  <- dim(x)[2]
     first  <- SubAggregation(x[,1], conversion = conversion, f_l = f_l)
     mat <- matrix(NA, nrow = length(first), ncol = ncol)
-    for (i in 1:ncol) {
+    mat[,1] <- first     # first column
+    for (i in 2:ncol) {  # remaining columns
       mat[,i] <- SubAggregation(x[,i], conversion = conversion, f_l = f_l)
     }
     z <- ts(mat, start=start(first), frequency = f_l)
