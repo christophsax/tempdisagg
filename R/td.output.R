@@ -91,6 +91,7 @@ summary.td <- function(object, ...){
 }
 
 #' @method print summary.td
+#' @export
 #' @rdname summary.td
 print.summary.td <- function (x, digits = max(3, getOption("digits") - 3), 
     signif.stars = getOption("show.signif.stars"), ...) {
