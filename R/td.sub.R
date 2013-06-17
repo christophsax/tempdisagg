@@ -168,16 +168,14 @@ SubDenton <- function(y_l, X, conversion, method, fr,
   # conversion matrix expanded with zeros
   C <- CalcC(n_l, conversion, fr, n)
   
-  D <- diag(n)
+  D <- D_0 <- diag(n)
   diag(D[2:n, 1:(n-1)]) <- -1
-  D_0 <- diag(n)
   X_inv <- diag(1 / (as.numeric(X)/mean(X)))
   
   if (h == 0) {
     if(criterion == "proportional") {
       D_0 <- D_0 %*% X_inv
     }
-    D_1 <- D_0
   } else if (h>0) {
     for (i in 1:h) {
       D_0 <- D%*%D_0
@@ -191,8 +189,9 @@ SubDenton <- function(y_l, X, conversion, method, fr,
   u_l <- as.numeric(y_l - C %*% X)
   
   if (method == "denton-cholette"){
-    
-    D_1 <- D_0[-(1:h),]
+    if (h == 0) {
+      D_1 <- D_0
+    } else {D_1 <- D_0[-(1:h),]}
     A <- t(D_1)%*% D_1
     
     # Eq. (2.2) from Denton (1971); Eq (6.8) from Cholette and Dagum (2006)
@@ -207,7 +206,6 @@ SubDenton <- function(y_l, X, conversion, method, fr,
     y <- y[1:n]
     
   } else if (method == "denton"){
-    
     D_1 <- D_0
     
     # Denton (1971), in the text below Eq. (2.2)
