@@ -37,7 +37,6 @@ print.td <- function(x, ...){
 #'   
 #'   \item{n_l}{number of low frequency observations}
 #'   \item{n}{number of high frequency observations}
-#'   \item{sigma}{standard deviation of the regression}
 #'   \item{ar_l}{empirical auto-correlation of the low frequency series}
 #'   \item{coefficients}{a named matrix containing coefficients, standard
 #'   deviations, t-values and p-values}

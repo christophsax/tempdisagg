@@ -63,14 +63,14 @@ CalcR <- function(rho, pm){
 
 
 CalcQ <- function(rho, pm){
-  # calculates the sigma-factored-out vcov matrix Q
+  # calculates the s_2-factored-out vcov matrix Q
   #
   # Args:
   #   rho:        autoregressive parameter
   #   pm:         power matrix, as calculated by CalcPowerMatrix()
   #
   # Returns: 
-  #   sigma-factored-out vcov matrix Q
+  #   s_2-factored-out vcov matrix Q
   (1/(1-rho^2)) * CalcR(rho, pm)
 }
 
