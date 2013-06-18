@@ -1,7 +1,10 @@
-\name{td}
+\name{print.td}
+\alias{print.td}
 \alias{td}
 \title{Temporal Disaggregation of Time Series}
 \usage{
+  \method{print}{td} (x, ...)
+
   td(formula, conversion = "sum", to = "quarterly",
     method = "chow-lin-maxlog", neg.rho = FALSE,
     fixed.rho = 0.5, criterion = "proportional", h = 1,

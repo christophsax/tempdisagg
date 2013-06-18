@@ -1,5 +1,7 @@
 #' @import stats
 #' @method print td
+#' @export
+#' @rdname td
 print.td <- function(x, ...){
   # calls print.lm
   #

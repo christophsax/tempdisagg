@@ -105,7 +105,10 @@ SubRegressionBased <- function(y_l, X, conversion = "sum",
   
   # final GLS estimation (aggregated)
   z <- CalcGLS(y = y_l, X = X_l, vcov = Q_l)
-  
+
+  # Check if X is singular
+  if(qr(X)$rank < min(dim(X))) {warning("\nX is singular!\n")}
+
   # preliminary series
   p   <- as.numeric(X %*% z$coefficients)
   
