@@ -92,8 +92,12 @@ SubAggregation <- function(x, conversion = "sum", f_l = 1){
   lf.end <- SubConvertEnd(hf.end = hf.end, f = f, f_l = f_l)
   lf.end.na <- SubConvertEnd(hf.end = hf.end.na, f = f, f_l = f_l)
 
-  # if series contains only NAs, return NAs
+  # if all observations are NAs, return NAs
   if (all(is.na(x))){
+    z <- window(ts(NA, start = lf.start.na, frequency=f_l), 
+                end = lf.end.na, extend=TRUE)
+  # if series contains insufficient numbers of observations, return NAs
+  } else if (lf.start > lf.end){
     z <- window(ts(NA, start = lf.start.na, frequency=f_l), 
                 end = lf.end.na, extend=TRUE)
   } else {
