@@ -107,8 +107,9 @@
 #'   
 #'   An object of class \code{"td"} is a list containing the following 
 #'   components: 
-#'   \item{fitted.values}{disaggregated or interpolated (and extrapolated) high
+#'   \item{values}{disaggregated or interpolated (and extrapolated) high
 #'   frequency series} 
+#'   \item{fitted.values}{low frequency residuals of the regression} 
 #'   \item{p}{preliminary high frequency series} 
 #'   \item{residuals}{low-frequency residuals} 
 #'   \item{rho}{autoregressive parameter, \eqn{\rho}} 

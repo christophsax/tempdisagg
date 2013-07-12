@@ -18,8 +18,10 @@ SubRegressionBased <- function(y_l, X, conversion = "sum",
   #
   # Returns:
   #   A list, containing the output of CalcGLS() and the following elements:
-  #     fitted.values   vector, interpolated (and extrapolated) high frequency 
+  #     values          vector, interpolated (and extrapolated) high frequency 
   #                     series
+  #     fitted.values   vector, low-frequency residuals fitted values of the
+  #                     regression
   #     p               vector, preliminary high frequency series
   #     residuals       vector, low-frequency residuals
   #     rho             scalar, autoregressive parameter
@@ -122,8 +124,9 @@ SubRegressionBased <- function(y_l, X, conversion = "sum",
   y <- as.numeric(p + D %*% u_l)
   
   # output
-  z$vcov_inv         <- NULL  # not need to keep
-  z$fitted.values    <- y
+  z$vcov_inv         <- NULL  # no need to keep
+  z$values           <- y
+  z$fitted.values    <- C %*% p
   z$p                <- p
   z$residuals        <- u_l
   z$rho              <- rho
