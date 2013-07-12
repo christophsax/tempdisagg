@@ -1,6 +1,6 @@
 SubRegressionBased <- function(y_l, X, conversion = "sum", 
                                method = "chow-lin-maxlog", fr = 4, 
-                               neg.rho = FALSE, 
+                               truncated.rho = 0, 
                                fixed.rho = 0.5, tol = 1e-16, 
                                lower = -0.999, upper = 0.999){
   # performs temporal disaggregation for regression based methods
@@ -10,7 +10,7 @@ SubRegressionBased <- function(y_l, X, conversion = "sum",
   #   X:            matrix of high-frequency indicators
   #   conversion:   type of conversion ("sum", "average", "first", "last")
   #   method:       method
-  #   neg.rho:      should a negative rho (AR1-parameter) be allowed 
+  #   truncated.rho:lower bound for rho (AR1-parameter)
   #   fixed.rho:    set a predefined rho
   #   fr:           ratio of high-frequency units per low-frequency unit
   #   tol:          desired accuracy, passed on to optim()
@@ -79,9 +79,10 @@ SubRegressionBased <- function(y_l, X, conversion = "sum",
                                  maximum = FALSE)
     rho <- optimize.results$minimum
     
-    # set negative rho to 0 if specified (faster than 'lower' = 0)
-    if ((!neg.rho) & (rho < 0)){
-      rho <- 0
+    # set negative rho to truncated.rho if specified 
+    # (faster than 'lower' = truncated.rho)
+    if (rho < truncated.rho){
+      rho <- truncated.rho
       truncated <- TRUE
     } 
     

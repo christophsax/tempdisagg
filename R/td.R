@@ -78,11 +78,10 @@
 #'                    necessary if no indicator is given. If the input series 
 #'                    are vectors, \code{to} must be a scalar indicating the
 #'                    frequency ratio.
-#'                    
-#'                    
-#' @param neg.rho     should a negative autoregressive parameter \eqn{\rho} be 
-#'                    allowed. If not, negative \eqn{\rho} values will be
-#'                    truncated to 0.
+#' @param truncated.rho  lower bound for the autoregressive parameter 
+#'                    \eqn{\rho}. If set to \code{0} (default), no negative
+#'                    values are allowed. If set to \code{-1}, truncation is
+#'                    disabled.
 #' @param fixed.rho   set a predefined autoregressive parameter \eqn{\rho}. Only
 #'                    works with the methods \code{"chow-lin-fixed"} and 
 #'                    \code{"litterman-fixed"}.
@@ -114,7 +113,7 @@
 #'   \item{p}{preliminary high frequency series} 
 #'   \item{residuals}{low-frequency residuals} 
 #'   \item{rho}{autoregressive parameter, \eqn{\rho}} 
-#'   \item{truncated}{logical, whether \eqn{\rho} has been truncated to 0}
+#'   \item{truncated}{logical, whether \eqn{\rho} has been truncated}
 #'   \item{coefficients}{a named vector of coefficients} 
 #'   \item{se}{standard errors of the coefficients} 
 #'   \item{s_2}{ML-estimator of the variance of the high-frequency residuals} 
@@ -218,7 +217,7 @@
 #' @export
 #' 
 td <- function(formula, conversion = "sum", to = "quarterly", 
-               method = "chow-lin-maxlog", neg.rho = FALSE, fixed.rho = 0.5, 
+               method = "chow-lin-maxlog", truncated.rho = 0, fixed.rho = 0.5, 
                criterion = "proportional", h = 1,
                start = NULL, end = NULL, ...) {
   
@@ -361,7 +360,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
                     "litterman-maxlog", "litterman-minrss", "litterman-fixed", 
                     "fernandez", "ols")){
     z <- SubRegressionBased(y_l = y_l, X = X, conversion = conversion, 
-                            method = method, neg.rho = neg.rho, 
+                            method = method, truncated.rho = truncated.rho, 
                             fixed.rho = fixed.rho, fr = fr, ...)
   } else if (method %in% c("denton-cholette", "denton", "uniform")){
     z <- SubDenton(y_l = y_l, X = X, conversion = conversion, method = method, 
