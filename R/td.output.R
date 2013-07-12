@@ -169,12 +169,21 @@ print.summary.td <- function (x, digits = max(3, getOption("digits") - 3),
 #' 
 plot.td <- function(x, ...){
   old.par <- par(no.readonly=TRUE)  # backup par settings 
-  if(!is.null(x$vcov)) {ext <- paste("(", x$vcov, ")", sep="")} else {ext <- NULL}
-  par(mfrow=c(2,1))                    
+
+  if (x$method %in% c("denton", "denton-cholette")){
+    ext <- "('fitted.values': low-frequency indicator)"
+  } else {
+    ext <- "('fitted.values': low-frequency fitted values of the regression)"
+  }
+  
+  subtitle <- paste("method:", x$method, ext)
+  
+  par(mfrow=c(2,1), mar = c(1.5, 4, 4, 2) + 0.1)                    
   ts.plot(ts.intersect(x$actual, x$actual - x$residuals),
           main=x$name, lty=c("solid", "dashed"), col=c("black", "red"), 
-          ylab="actual vs. predicted (red)", ...); grid();
-  mtext(paste("estimation method:", x$method, ext), 3, line=.4, cex=.9)
+          ylab="actual and fitted.values (red)", ...); grid();
+  mtext(subtitle, 3, line=.4, cex=.9)
+  par(mar = c(4, 4, 1.5, 2) + 0.1) 
   ts.plot(ts.intersect(x$residuals, 0), lty=c("solid", "dashed"),
           col=c("black", "red"), ylab="residuals", ...); grid()
   on.exit(par(old.par))  # restore par settings
