@@ -12,6 +12,10 @@
   that either the sum, the average, the first or the last
   value of the resulting high frequency series is
   consistent with the low frequency series.
+
+  The best way to start is to run the interactive demo:
+
+  \code{demo(tempdisagg)}
 }
 \author{
   Christoph Sax \email{christoph.sax@gmail.com}, Peter
