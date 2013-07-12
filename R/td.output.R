@@ -206,5 +206,5 @@ plot.td <- function(x, ...){
 #' @export
 #' 
 predict.td <- function(object, ...) {
-  object$fitted.values
+  object$values
 }

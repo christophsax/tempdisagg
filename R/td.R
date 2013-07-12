@@ -388,7 +388,8 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   if (ts.mode) {
     z$model            <- ts(z$model, start = start, frequency = f)
     z$p                <- ts(z$p, start = start, frequency = f)
-    z$fitted.values    <- ts(z$fitted.values, start = start, frequency = f)
+    z$values           <- ts(z$values, start = start, frequency = f)
+    z$fitted.values    <- ts(z$fitted.values, start = start, frequency = f_l)
     z$residuals        <- ts(z$residuals, start = start, frequency = f_l)
     z$actual           <- ts(z$actual, start = start, frequency = f_l)
   }
