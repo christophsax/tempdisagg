@@ -6,7 +6,7 @@
   \method{print}{td} (x, ...)
 
   td(formula, conversion = "sum", to = "quarterly",
-    method = "chow-lin-maxlog", neg.rho = FALSE,
+    method = "chow-lin-maxlog", truncated.rho = 0,
     fixed.rho = 0.5, criterion = "proportional", h = 1,
     start = NULL, end = NULL, ...)
 }
@@ -36,9 +36,10 @@
   the input series are vectors, \code{to} must be a scalar
   indicating the frequency ratio.}
 
-  \item{neg.rho}{should a negative autoregressive parameter
-  \eqn{\rho} be allowed. If not, negative \eqn{\rho} values
-  will be truncated to 0.}
+  \item{truncated.rho}{lower bound for the autoregressive
+  parameter \eqn{\rho}. If set to \code{0} (default), no
+  negative values are allowed. If set to \code{-1},
+  truncation is disabled.}
 
   \item{fixed.rho}{set a predefined autoregressive
   parameter \eqn{\rho}. Only works with the methods
@@ -83,7 +84,7 @@
   \item{residuals}{low-frequency residuals}
   \item{rho}{autoregressive parameter, \eqn{\rho}}
   \item{truncated}{logical, whether \eqn{\rho} has been
-  truncated to 0} \item{coefficients}{a named vector of
+  truncated} \item{coefficients}{a named vector of
   coefficients} \item{se}{standard errors of the
   coefficients} \item{s_2}{ML-estimator of the variance of
   the high-frequency residuals}
