@@ -226,7 +226,8 @@ SubDenton <- function(y_l, X, conversion, method, fr,
   
   # output
   z <- list()
-  z$fitted.values <- y
+  z$values        <- y
+  z$fitted.values <- C %*% X
   z$p             <- X
   z$residuals     <- u_l
   z$criterion     <- criterion

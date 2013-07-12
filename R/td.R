@@ -109,7 +109,8 @@
 #'   components: 
 #'   \item{values}{disaggregated or interpolated (and extrapolated) high
 #'   frequency series} 
-#'   \item{fitted.values}{low frequency residuals of the regression} 
+#'   \item{fitted.values}{low frequency fitted values of the regression; low
+#'  frequency indicator for the Denton methods.} 
 #'   \item{p}{preliminary high frequency series} 
 #'   \item{residuals}{low-frequency residuals} 
 #'   \item{rho}{autoregressive parameter, \eqn{\rho}} 

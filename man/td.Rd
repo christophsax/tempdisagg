@@ -75,9 +75,11 @@
   the estimation.
 
   An object of class \code{"td"} is a list containing the
-  following components: \item{fitted.values}{disaggregated
-  or interpolated (and extrapolated) high frequency series}
-  \item{p}{preliminary high frequency series}
+  following components: \item{values}{disaggregated or
+  interpolated (and extrapolated) high frequency series}
+  \item{fitted.values}{low frequency fitted values of the
+  regression; low frequency indicator for the Denton
+  methods.} \item{p}{preliminary high frequency series}
   \item{residuals}{low-frequency residuals}
   \item{rho}{autoregressive parameter, \eqn{\rho}}
   \item{truncated}{logical, whether \eqn{\rho} has been
