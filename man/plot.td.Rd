@@ -12,13 +12,13 @@
   methods.}
 }
 \value{
-  \code{plot.td} returns a a two panel plot as its side
-  effect, showing the predicted and actual low frequency
-  series, and the residuals.
+  returns a a two panel plot as its side effect, showing
+  the fitted and actual low frequency series, and the
+  residuals.
 }
 \description{
-  \code{plot} method for class \code{"td"}. Plot the
-  predicted and actual low frequency series, and residuals.
+  \code{plot} method for class \code{"td"}. Plot the fitted
+  and actual low frequency series, and residuals.
 }
 \examples{
 data(swisspharma)

@@ -144,15 +144,15 @@ print.summary.td <- function (x, digits = max(3, getOption("digits") - 3),
 
 #' Residual Plot for Temporal Disaggregation
 #' 
-#' \code{plot} method for class \code{"td"}. Plot the predicted and actual low 
+#' \code{plot} method for class \code{"td"}. Plot the fitted and actual low 
 #' frequency series, and residuals.
 #' 
 #' @param x           an object of class \code{"td"}, usually, a result of a 
 #'                    call to \code{\link{td}}.
 #' @param \dots       further arguments passed to or from other methods.
 #' 
-#' @return \code{plot.td} returns a a two panel plot as its side effect, showing
-#'   the predicted and actual low frequency series, and the residuals.
+#' @return returns a a two panel plot as its side effect, showing
+#'   the fitted and actual low frequency series, and the residuals.
 #'   
 #' @seealso \code{\link{td}} for the main function for temporal disaggregation.
 #' 

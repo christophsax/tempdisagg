@@ -144,13 +144,13 @@
   \code{"litterman-maxlog"} and \code{"litterman-minrss"},
   an autoregressive parameter \eqn{\rho} is estimated.
   Default (and recommended) method is
-  \code{chow-lin-maxlog}. With \code{neg.rho = FALSE}
+  \code{chow-lin-maxlog}. With \code{truncated.rho = 0}
   (default), it produces good results for a wide range of
   applications.
 
   There are two variants of the \code{chow-lin-minrss}
   approach that lead to different results: Ecotrim by
-  Barcellan (2002) uses a correlation matrix instead of the
+  Barcellan (2003) uses a correlation matrix instead of the
   variance covariance matrix (implemented in
   \code{"chow-lin-minrss-ecotrim"}), the Matlab library by
   Quilis (2009) multiplies the correlation matrix with
@@ -243,7 +243,7 @@ round(cbind(d.q, a1, a2, a3, a4, p1, p2, p3, p4))
   minimization. \emph{Journal of the American Statistical
   Association}, 66(333), 99-102.
 
-  Barcellan, R. (2002). ECOTRIM: a program for temporal
+  Barcellan, R. (2003). ECOTRIM: a program for temporal
   disaggregation of time series, Workshop on Quarterly
   National Accounts, Eurostat.
 
@@ -261,8 +261,8 @@ round(cbind(d.q, a1, a2, a3, a4, p1, p2, p3, p4))
   \code{\link[=predict.td]{predict}} is used to extract the
   disaggregated or interpolated high frequency series.
 
-  \code{\link[=plot.td]{plot}} is used to plot the
-  predicted and actual low frequency series, as well as the
+  \code{\link[=plot.td]{plot}} is used to plot the fitted
+  and actual low frequency series, as well as the
   residuals.
 }
 \keyword{models}
