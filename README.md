@@ -9,7 +9,7 @@ To install or update from from [CRAN][package], run:
 
 Our [article in the R-Journal][article] describes the package and the theory of temporal disaggregation.
 
-Please send bug reports to <christoph.sax@gmail.com>, thank you!
+Please file bug reports on github or send an email to <christoph.sax@gmail.com>, thank you!
 
 
 
