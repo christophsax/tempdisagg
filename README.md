@@ -1,4 +1,3 @@
-
 tempdisagg: Methods for Temporal Disaggregation and Interpolation of Time Series
 --------------------------------------------------------------------------------
 
@@ -6,11 +5,11 @@ Temporal disaggregation methods are used to disaggregate low frequency time seri
 
 To install or update from from [CRAN][package], run:
 
-`install.packages("tempdisagg")`
+    install.packages("tempdisagg")
 
-An overview of the theory of temporal disaggregation and a description of tempdisagg is given our [article in the R-Journal][article].
+Our [article in the R-Journal][article] describes the package and the theory of temporal disaggregation.
 
-Please send bug reports to <christoph.sax@gmail.com>. Thank you!
+Please send bug reports to <christoph.sax@gmail.com>, thank you!
 
 
 
