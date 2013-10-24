@@ -12,7 +12,6 @@ print.td <- function(x, ...){
   #   prints the object with print.lm as a side effect
   print.lm(x, ...)
 
-  # for the internal version only:
   cat("\nUse summary() for details. \nUse predict() to extract the final series.
       \nUse ?td to see the help file.\n")
 }
