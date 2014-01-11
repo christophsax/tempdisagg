@@ -2,7 +2,7 @@
 \alias{plot.td}
 \title{Residual Plot for Temporal Disaggregation}
 \usage{
-  \method{plot}{td} (x, ...)
+\method{plot}{td}(x, ...)
 }
 \arguments{
   \item{x}{an object of class \code{"td"}, usually, a
@@ -12,13 +12,12 @@
   methods.}
 }
 \value{
-  returns a a two panel plot as its side effect, showing
-  the fitted and actual low frequency series, and the
-  residuals.
+returns a a two panel plot as its side effect, showing the
+fitted and actual low frequency series, and the residuals.
 }
 \description{
-  \code{plot} method for class \code{"td"}. Plot the fitted
-  and actual low frequency series, and residuals.
+\code{plot} method for class \code{"td"}. Plot the fitted
+and actual low frequency series, and residuals.
 }
 \examples{
 data(swisspharma)
@@ -27,7 +26,7 @@ mod2 <- td(sales.a ~ imports.q + exports.q)
 plot(mod2)
 }
 \seealso{
-  \code{\link{td}} for the main function for temporal
-  disaggregation.
+\code{\link{td}} for the main function for temporal
+disaggregation.
 }
 
