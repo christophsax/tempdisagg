@@ -1,27 +1,17 @@
 Package: tempdisagg
-Version: 0.22
-Date: 2013-08-07
-Title: Methods for Temporal Disaggregation and Interpolation of Time
-    Series
+Version: 0.23
+Date: 2014-01-11
+Title: Methods for Temporal Disaggregation and Interpolation of TimeSeries
 Author: Christoph Sax, Peter Steiner
 Maintainer: Christoph Sax <christoph.sax@gmail.com>
-Description: Temporal disaggregation methods are used to disaggregate
-    and interpolate a low frequency time series to a higher
-    frequency series. This can be done without additional
-    information or by exploiting the information contained in one
-    or more indicators. All disaggregation methods ensure that
-    either the sum, the average, the first or the last value of the
-    resulting high frequency series is consistent with the low
-    frequency series.
+URL: http://journal.r-project.org/archive/2013-2/sax-steiner.pdf
+BugReports: https://github.com/christophsax/tempdisagg
+Description: Temporal disaggregation methods are used to disaggregate and
+    interpolate a low frequency time series to a higher frequency series, where
+    either the sum, the average, the first or the last value of the resulting
+    high frequency series is consistent with the low frequency series. Temporal
+    disaggregation can be performed with or without one or more high frequency
+    indicator series. The R package tempdisagg is a collection of several
+    methods for temporal disaggregation.
 License: GPL-3
 LazyLoad: yes
-Packaged: 2013-02-12 14:38:10 UTC; christoph
-Repository: CRAN
-Date/Publication: 2013-02-12 21:12:11
-Collate:
-    'ta.R'
-    'td.calc.R'
-    'td.output.R'
-    'td.R'
-    'td.sub.R'
-    'tempdisagg-package.R'

@@ -16,11 +16,13 @@
 #' @param to          (low-frequency) destination frequency as a character 
 #'                    string (\code{"annual"} or \code{"quarterly"}) or as a 
 #'                    scalar (e.g. \code{1}, \code{2}, \code{4}).
+#' @param ...         additional arguments, passed to the methods.
 #'                    
 #' @return \code{ta} returns an object of class \code{"ts"} or \code{"mts"}, 
 #'   depending on the class of the input series.
 #' 
 #' @seealso \code{\link{td}} for the main function for temporal disaggregation.
+#' @export
 #' 
 #' @examples
 #' data(swisspharma)
@@ -29,9 +31,13 @@
 #' all.equal(sales.a, sales.q.a)
 #' 
 #' @keywords ts, models
+ta <- function(x, ...) UseMethod("ta")
+
+
+#' @rdname ta
 #' @export
-#' 
-ta <- function(x, conversion = "sum", to = "annual"){
+#' @method ta ts
+ta.ts <- function(x, conversion = "sum", to = "annual", ...){
   # Calls SubAggregation for computation
 
   if (is.numeric(to)){  # frequency specified by a number
@@ -102,13 +108,15 @@ SubAggregation <- function(x, conversion = "sum", f_l = 1){
                 end = lf.end.na, extend=TRUE)
   } else {
     x.used <- window(x, start = lf.start, end = lf.end + 1 / f_l - 1/ f)
+    if (any(is.na(x.used))){
+      warning("time series contains internal NAs")
+    }
     agg <- as.numeric(CalcC(n_l = length(x.used)/fr, conversion = conversion, 
                             fr=fr
                             ) %*% x.used)
     agg.ts <- ts(agg, start=lf.start, frequency=f_l)
     z <- window(agg.ts, start=lf.start.na, end=lf.end.na, extend=TRUE)
   }
-
   z
 }
 

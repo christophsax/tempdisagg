@@ -147,11 +147,9 @@
 #'   totals: an approach based on quadratic minimization. \emph{Journal of the 
 #'   American Statistical Association}, 66(333), 99-102.
 #'   
-#'   Barcellan, R. (2003). ECOTRIM: a program for temporal disaggregation of
-#'   time series, Workshop on Quarterly National Accounts, Eurostat.
-#'   
-#'   Quilis, E. M. (2009). Matlab Temporal Disaggregation Library. URL: 
-#'   \url{http://www.mathworks.com/matlabcentral/fileexchange/24438-temporal-disaggregation-library}
+#'   Sax, C. und Steiner, P. (2013). Temporal Disaggregation of Time Series. 
+#'   \emph{The R Journal}, 5(2), 80-88.
+#'   \url{http://journal.r-project.org/archive/2013-2/sax-steiner.pdf}
 #'   
 #' @seealso \code{\link{ta}} for temporal aggregation, the inverse function of 
 #'   \code{td}.

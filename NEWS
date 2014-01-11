@@ -1,5 +1,16 @@
 Changes for R-package tempdisagg
 
+Version 0.23 (2014-01-11)
+  Changes visible to the user:
+  - Our R-Journal article on temporal disaggregation explains tempdisagg in more
+    detail. Links are included in the package description, the help files and 
+    the README file.
+  Minor changes:
+  - ta() is now a generic function with a method for time series. This allows 
+    to write additional methods for other classes.
+  - warning in ta() if a time series contains internal NAs.
+  - formating tweaks in the help files.
+
 Version 0.22 (2013-08-07)
   Changes visible to the user:
   - predict method for 'td' is now different from fitted: 
