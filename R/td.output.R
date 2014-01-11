@@ -10,9 +10,11 @@ print.td <- function(x, ...){
   #
   # Returns: 
   #   prints the object with print.lm as a side effect
-  print.lm(x, ...)
+  
+  class(x) <- "lm"
+  print(x, ...)
 
-  cat("\nUse summary() for details. \nUse predict() to extract the final series.
+  cat("Use summary() for details. \nUse predict() to extract the final series.
       \nUse ?td to see the help file.\n")
 }
 
