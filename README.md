@@ -20,4 +20,4 @@ Please report bugs on [Github][github] or send an [e-mail](mailto:christoph.sax@
 
 [package]: http://cran.r-project.org/web/packages/tempdisagg
 [article]: http://journal.r-project.org/archive/2013-2/sax-steiner.pdf
-[github]: https://github.com/christophsax/seasonal
+[github]: https://github.com/christophsax/tempdisagg
