@@ -262,29 +262,41 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     ts.mode <- FALSE
   }
   
-  
   # ---- set or modify time series attributes ('fr', 'start', 'end') ----------
-  
   if (ts.mode) {
     
     ### ts.mode: y_l.series
-    if (is.null(start)) {
-      start <- time(y_l.series)[!is.na(y_l.series)][1]
-    }
+    # shorten y_l.series if start or end are specified
+    y_l.series <- window(y_l.series, start = start, end = end)
     f_l <- frequency(y_l.series)
+    y_l.time <- time(y_l.series)[!is.na(y_l.series)]
+    start <- y_l.time[1]
+    end <- y_l.time[length(y_l.time)]
     
     ### ts.mode: X.series
     if (length(X.series.names) > 0){  # If X is pecified
-      # first series of X (to get 'start' and 'f')
-      X.series.first <- eval(X.formula[[2]], envir = environment(X.formula))
-      X.start <- time(X.series.first)[!is.na(X.series.first)][1]
-      f <- frequency(X.series.first)
+      # prototype series of X
+      X.series.proto <- eval(X.formula[[2]], envir = environment(X.formula))
+      X.start <- time(na.omit(X.series.proto))[1]
+      X.end <- time(na.omit(X.series.proto))[length(time(na.omit(X.series.proto)))]
+
+      f <- frequency(X.series.proto)
       fr <- f/f_l
-      if (X.start > start){
-        start <- floor(X.start) + 
-          (ceiling(((X.start - floor(X.start)) * f) / fr)) / f_l
+
+      if (X.start > start + 0.001){
+        start <- ceiling(X.start)
+        warning("High frequency series shorter than low frequency. Not all low frequency values are used.")
+        y_l.series <- window(y_l.series, start = start)
       }
-      
+      if (X.end < end - 0.001){
+        end <- floor(X.end)
+        warning("High frequency series shorter than low frequency. Not all low frequency values are used.")
+        y_l.series <- window(y_l.series, end = end)
+      }
+
+      n.bc <- (start - X.start) * fr
+      n.fc <- (X.end - (end + (f - 1) / f)) * fr
+
     } else {  # If no X is specified
       if (is.numeric(to)){  # frequency specified by a number
         f <- to
@@ -298,24 +310,24 @@ td <- function(formula, conversion = "sum", to = "quarterly",
         }
       } else stop ("'to' argument: wrong specification")
       fr <- f/f_l
-      X.start <- start
+      n.bc <- 0
+      n.fc <- 0
     }
-    
-    # define X.end, if 'end' is specified
-    if(!is.null(end)){
-      X.end <- floor(end) + (fr * ((end-floor(end)) * f_l + 1) - 1) / f
-    } else {
-      X.end <- NULL
-    }
+
   }  else {
     
     ### non ts.mode
-    if (!is.numeric(to)){stop("In non-ts mode, 'to' must be an integer number.")}
+    if (!is.numeric(to)){
+      stop("In non-ts mode, 'to' must be an integer number.")
+    }
     f_l <- 1
     f <- to
     fr <- f/f_l
+    n.bc <- 0
+    n.fc <- length(get(X.series.names[1], envir=environment(X.formula))) - 
+      fr * length(y_l.series)
   }
-  
+
   # --- raw X matrix ----------------------------------------------------------
   
   if (length(X.series.names) > 0){
@@ -329,19 +341,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
                denton-cholette or uniform are recommended.")
     }
     X.names <- "(Intercept)"
-    }
-  
-  if (ts.mode){
-    X <- ts(X, start = X.start, frequency = f)
   }
-  
-  # --- adjust length of y_l.series and X (only ts.mode) -----------------------
-  
-  if (ts.mode){
-    y_l.series <- window(y_l.series, start = start, end = end)
-    X <- window(X, start = start, end = X.end)
-  }
-  
   
   # --- final data matrices ---------------------------------------------------
   
@@ -357,11 +357,13 @@ td <- function(formula, conversion = "sum", to = "quarterly",
                     "chow-lin-minrss-quilis", "chow-lin-fixed",
                     "litterman-maxlog", "litterman-minrss", "litterman-fixed", 
                     "fernandez", "ols")){
-    z <- SubRegressionBased(y_l = y_l, X = X, conversion = conversion, 
+    z <- SubRegressionBased(y_l = y_l, X = X, n.bc = n.bc, n.fc = n.fc, 
+                            conversion = conversion, 
                             method = method, truncated.rho = truncated.rho, 
                             fixed.rho = fixed.rho, fr = fr, ...)
   } else if (method %in% c("denton-cholette", "denton", "uniform")){
-    z <- SubDenton(y_l = y_l, X = X, conversion = conversion, method = method, 
+    z <- SubDenton(y_l = y_l, X = X, n.bc = n.bc, n.fc = n.fc, 
+                   conversion = conversion, method = method, 
                    criterion = criterion, h = h, fr = fr, ...)
   } else {
     stop("method does not exist")
@@ -384,12 +386,12 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   z$actual             <- y_l.series
   z$model              <- X
   if (ts.mode) {
-    z$model            <- ts(z$model, start = start, frequency = f)
-    z$p                <- ts(z$p, start = start, frequency = f)
-    z$values           <- ts(z$values, start = start, frequency = f)
-    z$fitted.values    <- ts(z$fitted.values, start = start, frequency = f_l)
-    z$residuals        <- ts(z$residuals, start = start, frequency = f_l)
-    z$actual           <- ts(z$actual, start = start, frequency = f_l)
+    z$model            <- ts(z$model, start = X.start, frequency = f)
+    z$p                <- ts(z$p, start = X.start, frequency = f)
+    z$values           <- ts(z$values, start = X.start, frequency = f)
+    z$fitted.values    <- ts(z$fitted.values, start = X.start, frequency = f_l)
+    z$residuals        <- ts(z$residuals, start = X.start, frequency = f_l)
+    z$actual           <- ts(z$actual, start = X.start, frequency = f_l)
   }
   class(z) <- "td"
   z

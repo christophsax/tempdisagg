@@ -1,4 +1,4 @@
-SubRegressionBased <- function(y_l, X, conversion = "sum", 
+SubRegressionBased <- function(y_l, X, n.bc, n.fc, conversion = "sum", 
                                method = "chow-lin-maxlog", fr = 4, 
                                truncated.rho = 0, 
                                fixed.rho = 0.5, tol = 1e-16, 
@@ -33,10 +33,13 @@ SubRegressionBased <- function(y_l, X, conversion = "sum",
   m <- dim(X)[2]
   
   # conversion matrix expanded with zeros
-  C <- CalcC(n_l, conversion, fr, n)
+  C <- CalcC(n_l, conversion, fr, n.bc = n.bc, n.fc = n.fc)
   
   pm <- CalcPowerMatrix(n)
   
+  # sanity test
+  stopifnot(identical(dim(C)[2], dim(X)[1]))
+
   # aggregated values
   X_l <- C %*% X
   
@@ -102,7 +105,9 @@ SubRegressionBased <- function(y_l, X, conversion = "sum",
                            "chow-lin-minrss-quilis",  "chow-lin-fixed", "ols")){
     Q       <- CalcQ(rho = rho, pm = pm)
   }
-  
+
+
+
   # aggregating Q
   Q_l <- C %*% Q %*% t(C)
   
@@ -123,7 +128,7 @@ SubRegressionBased <- function(y_l, X, conversion = "sum",
   
   # final series
   y <- as.numeric(p + D %*% u_l)
-  
+
   # output
   z$vcov_inv         <- NULL  # no need to keep
   z$values           <- y
@@ -136,7 +141,7 @@ SubRegressionBased <- function(y_l, X, conversion = "sum",
 }
 
 
-SubDenton <- function(y_l, X, conversion, method, fr, 
+SubDenton <- function(y_l, X, n.bc, n.fc, conversion, method, fr, 
                       criterion = "proportional", h = 1) {
   # performs temporal disaggregation for denton methods
   #
@@ -173,7 +178,7 @@ SubDenton <- function(y_l, X, conversion, method, fr,
   n <- length(as.numeric(X))
   
   # conversion matrix expanded with zeros
-  C <- CalcC(n_l, conversion, fr, n)
+  C <- CalcC(n_l, conversion, fr, n.bc = n.bc, n.fc = n.fc)
   
   D <- D_0 <- diag(n)
   diag(D[2:n, 1:(n-1)]) <- -1

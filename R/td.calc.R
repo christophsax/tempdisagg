@@ -1,4 +1,4 @@
-CalcC <- function(n_l, conversion, fr, n=NULL){
+CalcC <- function(n_l, conversion, fr, n.bc = 0, n.fc = 0){
   # calculates the conversion matrix C, optionally expanded with zeros
   #
   # Args:
@@ -12,6 +12,10 @@ CalcC <- function(n_l, conversion, fr, n=NULL){
   # Returns: 
   #   conversion matrix
 
+  # sanity checks
+  stopifnot(n.bc >= 0)
+  stopifnot(n.fc >= 0)
+  
   # set conversion.weights according to type of conversion
   if (conversion=="sum") {
     conversion.weights <- rep(1, fr)
@@ -27,8 +31,11 @@ CalcC <- function(n_l, conversion, fr, n=NULL){
 
   # compute the conversion matrix
   C <- kronecker(diag(n_l), t(conversion.weights))
-  if(!is.null(n)){
-    C <- cbind(C, matrix(0, nrow=n_l, ncol=n - fr * n_l))
+  if (n.fc > 0){
+    C <- cbind(C, matrix(0, nrow=n_l, ncol = n.fc))
+  }
+  if (n.bc > 0){
+    C <- cbind(matrix(0, nrow=n_l, ncol = n.bc), C)
   }
   C
 }
