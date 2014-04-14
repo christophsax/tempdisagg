@@ -1,11 +1,8 @@
 \name{ta}
 \alias{ta}
-\alias{ta.ts}
 \title{Temporal Aggregation of Time Series}
 \usage{
 ta(x, ...)
-
-\method{ta}{ts}(x, conversion = "sum", to = "annual", ...)
 }
 \arguments{
   \item{x}{a time series object of class \code{"ts"} or

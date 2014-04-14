@@ -31,13 +31,11 @@
 #' all.equal(sales.a, sales.q.a)
 #' 
 #' @keywords ts, models
-ta <- function(x, ...) UseMethod("ta")
+ta <- function(x, ...) {fconvert(x, ...)}
 
 
-#' @rdname ta
-#' @export
-#' @method ta ts
-ta.ts <- function(x, conversion = "sum", to = "annual", ...){
+
+SubAggregation <- function(x, conversion = "sum", to = "annual", ...){
   # Calls SubAggregation for computation
 
   if (is.numeric(to)){  # frequency specified by a number
@@ -56,22 +54,22 @@ ta.ts <- function(x, conversion = "sum", to = "annual", ...){
 
   if (inherits(x, "mts")){
     ncol  <- dim(x)[2]
-    first  <- SubAggregation(x[,1], conversion = conversion, f_l = f_l)
+    first  <- SubAggregationTs(x[,1], conversion = conversion, f_l = f_l)
     mat <- matrix(NA, nrow = length(first), ncol = ncol)
     mat[,1] <- first     # first column
     for (i in 2:ncol) {  # remaining columns
-      mat[,i] <- SubAggregation(x[,i], conversion = conversion, f_l = f_l)
+      mat[,i] <- SubAggregationTs(x[,i], conversion = conversion, f_l = f_l)
     }
     z <- ts(mat, start=start(first), frequency = f_l)
     dimnames(z)[2] <- dimnames(x)[2]
   } else {
-    z <- SubAggregation(x, conversion = conversion, f_l = f_l)
+    z <- SubAggregationTs(x, conversion = conversion, f_l = f_l)
   }
   z
 }
 
 
-SubAggregation <- function(x, conversion = "sum", f_l = 1){
+SubAggregationTs <- function(x, conversion = "sum", f_l = 1){
   # performs a temporal agregation of a single time series
   #
   # Args:

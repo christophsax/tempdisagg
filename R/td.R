@@ -310,6 +310,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
         }
       } else stop ("'to' argument: wrong specification")
       fr <- f/f_l
+      X.start <- start
       n.bc <- 0
       n.fc <- 0
     }
