@@ -1,14 +1,6 @@
-#' Temporal Aggregation of Time Series
+#' Temporal Aggregation of Time Series (deprecated)
 #' 
-#' Performs temporal aggregation of high to low frequency time series. 
-#' Currently, \code{ta} only works with \code{ts} or \code{mts} time series 
-#' objects.
-#' 
-#' \code{ta} is used to aggregate a high frequency time series into a low
-#' frequency series, while the latter is either the sum, the average, the first
-#' or the last value of the high-frequency series. \code{ta} is the inverse
-#' function of \code{\link{td}}. If applied to an output series of \code{td},
-#' \code{ta} yields the original series.
+#' Function is deprecated and will be defunct soon. Use the more general convert function instead. See examples in ?convert.
 #' 
 #' @param x           a time series object of class \code{"ts"} or \code{"mts"}.
 #' @param conversion  type of conversion: \code{"sum"}, \code{"average"}, 
@@ -31,7 +23,12 @@
 #' all.equal(sales.a, sales.q.a)
 #' 
 #' @keywords ts, models
-ta <- function(x, ...) {fconvert(x, ...)}
+ta <- function(x, ...) {
+  .Deprecated("ta", package=NULL, "Function is deprecated and will be defunct soon. Use the more general convert function instead. See examples in ?convert.",
+              old = as.character(sys.call(sys.parent()))[1L])
+  
+  convert(x, ...)
+}
 
 
 

@@ -1,6 +1,6 @@
 \name{ta}
 \alias{ta}
-\title{Temporal Aggregation of Time Series}
+\title{Temporal Aggregation of Time Series (deprecated)}
 \usage{
 ta(x, ...)
 }
@@ -22,17 +22,9 @@ ta(x, ...)
 \code{"mts"}, depending on the class of the input series.
 }
 \description{
-Performs temporal aggregation of high to low frequency time
-series. Currently, \code{ta} only works with \code{ts} or
-\code{mts} time series objects.
-}
-\details{
-\code{ta} is used to aggregate a high frequency time series
-into a low frequency series, while the latter is either the
-sum, the average, the first or the last value of the
-high-frequency series. \code{ta} is the inverse function of
-\code{\link{td}}. If applied to an output series of
-\code{td}, \code{ta} yields the original series.
+Function is deprecated and will be defunct soon. Use the
+more general convert function instead. See examples in
+?convert.
 }
 \examples{
 data(swisspharma)

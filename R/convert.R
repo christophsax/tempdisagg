@@ -21,21 +21,21 @@
 #'   returned.
 #' @export
 #' @examples
-#' fconvert(cbind(mdeaths, fdeaths), to = 1)  # handling "mts" objects
-#' fconvert(austres, to = 12)                 # disaggregation
-#' fconvert(austres, to = 1)                  # aggregation
+#' convert(cbind(mdeaths, fdeaths), to = 1)  # handling "mts" objects
+#' convert(austres, to = 12)                 # disaggregation
+#' convert(austres, to = 1)                  # aggregation
 #' 
 #' # NAs are perserved, incomplete periods are omitted
-#' fconvert(window(mdeaths, end = c(1982, 5), extend = TRUE), to = 1)
+#' convert(window(mdeaths, end = c(1982, 5), extend = TRUE), to = 1)
 #' 
-#' airmiles.q <- fconvert(airmiles, to = 4)
-#' all.equal(fconvert(airmiles.q, to = 1), airmiles)
+#' airmiles.q <- convert(airmiles, to = 4)
+#' all.equal(convert(airmiles.q, to = 1), airmiles)
 #' 
-fconvert <- function(x, to = "quarterly", conversion = "sum", method = "denton-cholette", ...) UseMethod("fconvert")
+convert <- function(x, to = "quarterly", conversion = "sum", method = "denton-cholette", ...) UseMethod("convert")
 
 #' @export
-#' @method fconvert ts
-fconvert.ts <- function(x, to = "quarterly", conversion = "sum", method = "denton-cholette", ...) {
+#' @method convert ts
+convert.ts <- function(x, to = "quarterly", conversion = "sum", method = "denton-cholette", ...) {
   stopifnot(inherits(x, "ts"))
   
   if (is.character(to)) {
