@@ -1,57 +1,69 @@
-Changes for R-package tempdisagg
+0.24  2014-??-??
 
-Version 0.23 (2014-01-11)
-  Changes visible to the user:
-  - Our R-Journal article on temporal disaggregation explains tempdisagg in more
-    detail. Links are included in the package description, the help files and 
-    the README file.
-  Minor changes:
-  - ta() is now a generic function with a method for time series. This allows 
-    to write additional methods for other classes.
-  - warning in ta() if a time series contains internal NAs.
-  - formating tweaks in the help files.
+changes visible to the user:
+- retropolation: rather than just performing extrapolation, 'td' will also 
+  retropolate a series if the indicator goes back to an earier date.
+- 'convert' function for bi-directional frequency conversion.
 
-Version 0.22 (2013-08-07)
-  Changes visible to the user:
-  - predict method for 'td' is now different from fitted: 
-    - $fitted.values of a 'td' object now containts the low-frequency fitted 
-      values of a  regression or the low-frequency indicator in case of the 
-      Denton methods. The values are be accessed by fitted().
-    - The final high frequency series is now stored in $values. As before, these 
-      values are accessed by predict().
-  - Package overview (?tempdisagg)
-  - Demo (demo(tempdisagg))
-  - argument 'truncated.rho = 0' instead of 'no.neg = TRUE'. This allows for
-    truncation values different from 0. Default behavior is the same as in 0.21.
+deptrecated:
+- functionality of 'ta' is now part of the new 'convert' function.
 
-  Bug fixes
-  - in 0.21, ta() produced an error if less than a low-frequency unit was 
-    covered by high frequency data. Now it produces series containing only NA.
-  - If a singular data matrix is entered, there is a new warning.
+0.23  2014-01-11
 
-Version 0.21 (2013-01-21)
-  Changes visible to the user:
-  - new methods available: "chow-lin-fixed" and "litterman-fixed". 
-    Using the "fixed.rho" argument, an autoregressive parameter may be specified
-    by the user.
-  - interface changes: "chow-lin-maxlog-ecotrim" and "chow-lin-maxlog-quilis"
-    are defined as new methods. No need for the old 'vcov' argument anymore.
-  - new defaults: method = "chow-lin-maxlog", neg.rho = FALSE
-    with positive values for rho only, the chow-lin-maxlog method generally 
-    outperforms the other methods.
-  - all relevant arguments are directly entered to td()
-  - summary output: If neg.rho = FALSE and a negative rho is truncated to 0, and 
-    indicator is shown in the summary output.
-  - non time-series mode: optionally, standard vectors can be used instead of
-    time series. In this case, the frequency of low frequency variable is 1,
-    while the fraction of the high frequency variable is specified by the 'to'
-    argument
-  - updated help files
+changes visible to the user:
+- Our R-Journal article on temporal disaggregation explains tempdisagg in more
+  detail. Links are included in the package description, the help files and 
+  the README file.
 
-  Invisible changes:
-  - td() is rewritten and has a clear structure now.
-  - GLS Regressions are performed by the new CalcGLS() function, which uses 
-    QR-decomposition instead of matrix-inversion. This is faster and 
-    numerically stable. It resolves an issue wher large (or small) numbers have
-    led to a 'system is computationally singular' error.
+minor changes:
+- warning in ta() if a time series contains internal NAs.
+- formating tweaks in the help files.
+
+
+0.22  2013-08-07
+
+changes visible to the user:
+- predict method for 'td' is now different from fitted: 
+  - $fitted.values of a 'td' object now containts the low-frequency fitted 
+    values of a  regression or the low-frequency indicator in case of the 
+    Denton methods. The values are be accessed by fitted().
+  - The final high frequency series is now stored in $values. As before, these 
+    values are accessed by predict().
+- Package overview (?tempdisagg)
+- Demo (demo(tempdisagg))
+- argument 'truncated.rho = 0' instead of 'no.neg = TRUE'. This allows for
+  truncation values different from 0. Default behavior is the same as in 0.21.
+
+bug fixes
+- in 0.21, ta() produced an error if less than a low-frequency unit was 
+  covered by high frequency data. Now it produces series containing only NA.
+- If a singular data matrix is entered, there is a new warning.
+
+
+0.21  2013-01-21
+
+changes visible to the user:
+- new methods available: "chow-lin-fixed" and "litterman-fixed". 
+  Using the "fixed.rho" argument, an autoregressive parameter may be specified
+  by the user.
+- interface changes: "chow-lin-maxlog-ecotrim" and "chow-lin-maxlog-quilis"
+  are defined as new methods. No need for the old 'vcov' argument anymore.
+- new defaults: method = "chow-lin-maxlog", neg.rho = FALSE
+  with positive values for rho only, the chow-lin-maxlog method generally 
+  outperforms the other methods.
+- all relevant arguments are directly entered to td()
+- summary output: If neg.rho = FALSE and a negative rho is truncated to 0, and 
+  indicator is shown in the summary output.
+- non time-series mode: optionally, standard vectors can be used instead of
+  time series. In this case, the frequency of low frequency variable is 1,
+  while the fraction of the high frequency variable is specified by the 'to'
+  argument
+- updated help files
+
+invisible changes:
+- td() is rewritten and has a clear structure now.
+- GLS Regressions are performed by the new CalcGLS() function, which uses 
+  QR-decomposition instead of matrix-inversion. This is faster and 
+  numerically stable. It resolves an issue wher large (or small) numbers have
+  led to a 'system is computationally singular' error.
 

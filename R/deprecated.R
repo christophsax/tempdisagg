@@ -1,95 +1,40 @@
-#' General Frequency Conversion
+#' Temporal Aggregation of Time Series (deprecated)
 #' 
-#' Converts the frequency of a time series object to any other frequency. 
-#' Performs temporal disaggregation if the target frequency is higher and
-#' temporal aggregation if the target frequency is lower.
+#' Function is deprecated and will be defunct soon. Use the more general convert function instead. See examples in ?convert.
 #' 
-#' Preserves NA values at the beginning and at the end. Internal NAs result in a series that only contains NAs (see examples).
+#' @param x           a time series object of class \code{"ts"} or \code{"mts"}.
+#' @param conversion  type of conversion: \code{"sum"}, \code{"average"}, 
+#'                    \code{"first"} or \code{"last"}.
+#' @param to          (low-frequency) destination frequency as a character 
+#'                    string (\code{"annual"} or \code{"quarterly"}) or as a 
+#'                    scalar (e.g. \code{1}, \code{2}, \code{4}).
+#' @param ...         additional arguments, passed to the methods.
+#'                    
+#' @return \code{ta} returns an object of class \code{"ts"} or \code{"mts"}, 
+#'   depending on the class of the input series.
 #' 
-#' @param x  an object to temporally convert, usually an object of class 
-#'   \code{"ts"} or \code{"mts"}.
-#' @param to  destination frequency as a character string ("annual", "quarterly"
-#'   or "monthly") or as a scalar (e.g. 2, 4, 7, 12).
-#' @param conversion  type of temporal conversion: \code{"sum"}, 
-#'   \code{"average"}, \code{"first"} or \code{"last"}.
-#' @param method      method of temporal disaggregation without an indicator: 
-#'   \code{"denton-cholette"}, \code{"denton"}, \code{"uniform"} or 
-#'   \code{"ols"}. Only has an effect if destination frequency is higher. See 
-#'   \code{\link{td}} for details.
-#' @return an object of the same class as \code{x}, with frequency converted. If
-#'   the destination frequency is equal to the orginal frequency, the input is
-#'   returned.
+#' @seealso \code{\link{td}} for the main function for temporal disaggregation.
 #' @export
+#' 
 #' @examples
-#' convert(cbind(mdeaths, fdeaths), to = 1)  # handling "mts" objects
-#' convert(austres, to = 12)                 # disaggregation
-#' convert(austres, to = 1)                  # aggregation
+#' data(swisspharma)
+#'   
+#' sales.q.a <- ta(sales.q, conversion = "sum", to = "annual")
+#' all.equal(sales.a, sales.q.a)
 #' 
-#' # NAs are perserved, incomplete periods are omitted
-#' convert(window(mdeaths, end = c(1982, 5), extend = TRUE), to = 1)
-#' 
-#' airmiles.q <- convert(airmiles, to = 4)
-#' all.equal(convert(airmiles.q, to = 1), airmiles)
-#' 
-convert <- function(x, to = "quarterly", conversion = "sum", method = "denton-cholette", ...) UseMethod("convert")
-
-#' @export
-#' @method convert ts
-convert.ts <- function(x, to = "quarterly", conversion = "sum", method = "denton-cholette", ...) {
-  stopifnot(inherits(x, "ts"))
+#' @keywords ts, models
+ta <- function(x, ...) {
+  .Deprecated("ta", package=NULL, "Function is deprecated and will be defunct soon. Use the more general convert function instead. See examples in ?convert.",
+              old = as.character(sys.call(sys.parent()))[1L])
   
-  if (is.character(to)) {
-    if (to == "annual") {
-      to <- 1
-    } else if (to == "quarterly") {
-      to <- 4
-    } else if (to == "monthly") {
-      to <- 12
-    } else {
-      stop("'to' argument: unknown character string")
-    }
-  }
-  
-  if (is.null(dim(x))){
-    n <- 1
-  } else {
-    n <- dim(x)[2]
-  }
-  
-  y <- list()
-  for (i in 1:n){
-    # distinguish single ts and mts
-    if (n == 1){
-      xi.na <- x
-    } else {
-      xi.na <- x[, i]
-    }
-    
-    if (frequency(x) < to){
-      # if NA handling in td would be proper, this would be unncessary
-      xi <- na.omit(xi.na)
-      dummy.ts <- predict(td(xi.na ~ 1, to = to, conversion = conversion, method = method, ...))
-      
-      yi <- predict(td(xi ~ 1, to = to, method = method, ...))
-      y[[i]] <- window(yi, start = start(dummy.ts), end = end(dummy.ts), extend=TRUE)
-    } else if (frequency(x) > to){
-      y[[i]] <- SubAggregation(xi.na, to = to, conversion = conversion, ...)
-    } else {
-      y[[i]] <- xi.na
-    }
-  }
-  z <- do.call(cbind, y)
-  dimnames(z)[2] <- dimnames(x)[2]
-  z
+  convert(x, ...)
 }
-
-
 
 
 
 SubAggregation <- function(x, conversion = "sum", to = "annual", ...){
   # Calls SubAggregation for computation
-  
+
   if (is.numeric(to)){  # frequency specified by a number
     f_l <- to
   } else if (is.character(to)){  # frequency specified by a char string
@@ -101,9 +46,9 @@ SubAggregation <- function(x, conversion = "sum", to = "annual", ...){
       stop("unknown character string as the 'to' argument")
     }
   } else stop ("wrong specification of the 'to' argument")
-  
+
   if (!inherits(x, "ts")) stop("not a time series object.")
-  
+
   if (inherits(x, "mts")){
     ncol  <- dim(x)[2]
     first  <- SubAggregationTs(x[,1], conversion = conversion, f_l = f_l)
@@ -133,26 +78,26 @@ SubAggregationTs <- function(x, conversion = "sum", f_l = 1){
   #
   # Returns:
   #   A time series object of class "ts"
-  
+
   f <- frequency(x)
   fr <- f / f_l
-  
+
   hf.start <- time(x)[!is.na(x)][1]
   hf.start.na <- time(x)[1]
   hf.end <- tail(time(x)[!is.na(x)],1)
   hf.end.na <- tail(time(x),1)
-  
+
   lf.start <- SubConvertStart(hf.start = hf.start, f = f, f_l = f_l)
   lf.start.na <- SubConvertStart(hf.start = hf.start.na, f = f, f_l = f_l)
-  
+
   lf.end <- SubConvertEnd(hf.end = hf.end, f = f, f_l = f_l)
   lf.end.na <- SubConvertEnd(hf.end = hf.end.na, f = f, f_l = f_l)
-  
+
   # if all observations are NAs, return NAs
   if (all(is.na(x))){
     z <- window(ts(NA, start = lf.start.na, frequency=f_l), 
                 end = lf.end.na, extend=TRUE)
-    # if series contains insufficient numbers of observations, return NAs
+  # if series contains insufficient numbers of observations, return NAs
   } else if (lf.start > lf.end){
     z <- window(ts(NA, start = lf.start.na, frequency=f_l), 
                 end = lf.end.na, extend=TRUE)
@@ -163,7 +108,7 @@ SubAggregationTs <- function(x, conversion = "sum", f_l = 1){
     }
     agg <- as.numeric(CalcC(n_l = length(x.used)/fr, conversion = conversion, 
                             fr=fr
-    ) %*% x.used)
+                            ) %*% x.used)
     agg.ts <- ts(agg, start=lf.start, frequency=f_l)
     z <- window(agg.ts, start=lf.start.na, end=lf.end.na, extend=TRUE)
   }
@@ -186,11 +131,11 @@ SubConvertEnd <- function(hf.end, f, f_l){
   # Remarks:
   #   Identical to SubConvertStart() except that ceiling() is exchanged by
   #   floor()
-  
+
   fr <- f / f_l
   floor(hf.end) + (floor(
     ((hf.end - floor(hf.end)) * f + 1 + 1e-8) / fr
-  ) - 1) / f_l
+    ) - 1) / f_l
   # +1e-8 avoids rounding problems
 }
 
@@ -209,8 +154,9 @@ SubConvertStart <- function(hf.start, f, f_l){
   #
   # Remarks:
   #   Identical to SubConvertEnd() except that floor() is exchanged by ceiling().
-  
+
   fr <- f / f_l
   floor(hf.start) + ceiling(((hf.start - floor(hf.start)) * f) /fr - 1e-8) / f_l
   # -1e-8 avoids rounding problems
 }
+
