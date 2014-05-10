@@ -242,7 +242,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   
   # extract y_l (left hand side, low frequency) formula, values and names
   y_l.formula <- formula[[2]]
-  y_l.series <- eval(y_l.formula, envir=environment(formula))
+  y_l.series <- na.omit(eval(y_l.formula, envir=environment(formula)))
   y_l.name <- deparse(y_l.formula)
   
   
