@@ -12,6 +12,6 @@ Description: Temporal disaggregation methods are used to disaggregate and
     high frequency series is consistent with the low frequency series. Temporal
     disaggregation can be performed with or without one or more high frequency
     indicator series. The R package tempdisagg is a collection of several
-    methods for temporal disaggregation.
+    methods for temporal disaggregation. 
 License: GPL-3
 LazyLoad: yes
