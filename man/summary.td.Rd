@@ -3,10 +3,11 @@
 \alias{summary.td}
 \title{Summary of a Temporal Disaggregation}
 \usage{
-\method{summary}{td}(object, ...)
+  \method{summary}{td} (object, ...)
 
-\method{print}{summary.td}(x, digits = max(3, getOption("digits") - 3),
-  signif.stars = getOption("show.signif.stars"), ...)
+  \method{print}{summary.td} (x,
+    digits = max(3, getOption("digits") - 3),
+    signif.stars = getOption("show.signif.stars"), ...)
 }
 \arguments{
   \item{object}{an object of class \code{"td"}, usually, a
@@ -25,21 +26,22 @@
   methods.}
 }
 \value{
-\code{summary.td} returns a list containing the summary
-statistics included in \code{object}, and computes the
-following additional statistics:
+  \code{summary.td} returns a list containing the summary
+  statistics included in \code{object}, and computes the
+  following additional statistics:
 
-\item{n_l}{number of low frequency observations}
-\item{n}{number of high frequency observations}
-\item{ar_l}{empirical auto-correlation of the low frequency
-series} \item{coefficients}{a named matrix containing
-coefficients, standard deviations, t-values and p-values}
+  \item{n_l}{number of low frequency observations}
+  \item{n}{number of high frequency observations}
+  \item{ar_l}{empirical auto-correlation of the low
+  frequency series} \item{coefficients}{a named matrix
+  containing coefficients, standard deviations, t-values
+  and p-values}
 
-The \code{print} method prints the summary output in a
-similar way as the method for \code{"lm"}.
+  The \code{print} method prints the summary output in a
+  similar way as the method for \code{"lm"}.
 }
 \description{
-\code{summary} method for class "td".
+  \code{summary} method for class "td".
 }
 \examples{
 data(swisspharma)
@@ -51,8 +53,8 @@ mod2 <- td(sales.a ~ 0, to = "quarterly", method = "uniform")
 summary(mod2)
 }
 \seealso{
-\code{\link{td}} for the main function for temporal
-disaggregation.
+  \code{\link{td}} for the main function for temporal
+  disaggregation.
 }
 \keyword{models}
 \keyword{ts,}

@@ -3,9 +3,10 @@
 \alias{ta.ts}
 \title{Temporal Aggregation of Time Series}
 \usage{
-ta(x, ...)
+  ta(x, ...)
 
-\method{ta}{ts}(x, conversion = "sum", to = "annual", ...)
+  \method{ta}{ts} (x, conversion = "sum", to = "annual",
+    ...)
 }
 \arguments{
   \item{x}{a time series object of class \code{"ts"} or
@@ -21,21 +22,22 @@ ta(x, ...)
   \item{...}{additional arguments, passed to the methods.}
 }
 \value{
-\code{ta} returns an object of class \code{"ts"} or
-\code{"mts"}, depending on the class of the input series.
+  \code{ta} returns an object of class \code{"ts"} or
+  \code{"mts"}, depending on the class of the input series.
 }
 \description{
-Performs temporal aggregation of high to low frequency time
-series. Currently, \code{ta} only works with \code{ts} or
-\code{mts} time series objects.
+  Performs temporal aggregation of high to low frequency
+  time series. Currently, \code{ta} only works with
+  \code{ts} or \code{mts} time series objects.
 }
 \details{
-\code{ta} is used to aggregate a high frequency time series
-into a low frequency series, while the latter is either the
-sum, the average, the first or the last value of the
-high-frequency series. \code{ta} is the inverse function of
-\code{\link{td}}. If applied to an output series of
-\code{td}, \code{ta} yields the original series.
+  \code{ta} is used to aggregate a high frequency time
+  series into a low frequency series, while the latter is
+  either the sum, the average, the first or the last value
+  of the high-frequency series. \code{ta} is the inverse
+  function of \code{\link{td}}. If applied to an output
+  series of \code{td}, \code{ta} yields the original
+  series.
 }
 \examples{
 data(swisspharma)
@@ -44,8 +46,8 @@ sales.q.a <- ta(sales.q, conversion = "sum", to = "annual")
 all.equal(sales.a, sales.q.a)
 }
 \seealso{
-\code{\link{td}} for the main function for temporal
-disaggregation.
+  \code{\link{td}} for the main function for temporal
+  disaggregation.
 }
 \keyword{models}
 \keyword{ts,}
