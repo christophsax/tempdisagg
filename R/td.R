@@ -294,8 +294,10 @@ td <- function(formula, conversion = "sum", to = "quarterly",
         y_l.series <- window(y_l.series, end = end)
       }
 
-      n.bc <- (start - X.start) * fr
-      n.fc <- (X.end - (end + (f - 1) / f)) * fr
+#       n.bc <- (start - X.start) * fr
+#       n.fc <- (X.end - (end + (f - 1) / f)) * fr
+      n.bc <- (start - X.start) * f  # pst: man will ja wissen, wieviele HF-Perioden zurueckgerechnet werden sollen
+      n.fc <- (X.end - end) * f - fr + 1     # pst: man will ja wissen, wieviele HF-Perioden prognostiziert werden sollen
 
     } else {  # If no X is specified
       if (is.numeric(to)){  # frequency specified by a number
