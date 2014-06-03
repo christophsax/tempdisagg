@@ -30,7 +30,7 @@ NULL
 #' chemical and pharmaceutical industry in Switzerland (in Mio. Swiss Francs) as
 #' well as their quarterly and annual sales (Index).
 #' 
-#' @docype data
+#' @docType data
 #' 
 #' @format Each time series is an object of class \code{"ts"}. The number of
 #' observations depends on the frequency.

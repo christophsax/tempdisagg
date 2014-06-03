@@ -32,7 +32,6 @@ print.td <- function(x, ...){
 #' @param signif.stars logical. If \code{TRUE}, 'significance stars' are printed 
 #'                    for each coefficient.
 #' @param \dots       further arguments passed to or from other methods.
-
 #' @return \code{summary.td} returns a list containing the summary statistics 
 #'   included in \code{object}, and computes the following additional
 #'   statistics:
@@ -163,7 +162,7 @@ print.summary.td <- function (x, digits = max(3, getOption("digits") - 3),
 #' mod2 <- td(sales.a ~ imports.q + exports.q)
 #' plot(mod2)  
 #' 
-#' @akeyword ts, models
+#' @keywords ts, models
 #' @method plot td
 #' @export
 #' 
