@@ -391,9 +391,9 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     z$model            <- ts(z$model, start = X.start, frequency = f)
     z$p                <- ts(z$p, start = X.start, frequency = f)
     z$values           <- ts(z$values, start = X.start, frequency = f)
-    z$fitted.values    <- ts(z$fitted.values, start = X.start, frequency = f_l)
-    z$residuals        <- ts(z$residuals, start = X.start, frequency = f_l)
-    z$actual           <- ts(z$actual, start = X.start, frequency = f_l)
+    z$fitted.values    <- ts(z$fitted.values, start = start, frequency = f_l)
+    z$residuals        <- ts(z$residuals, start = start, frequency = f_l)
+    z$actual           <- ts(z$actual, start = start, frequency = f_l)
   }
   class(z) <- "td"
   z
