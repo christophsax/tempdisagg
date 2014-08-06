@@ -274,14 +274,18 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       f <- frequency(X.series.proto)
       fr <- f/f_l
 
-      if (X.start > start + 0.001){
-        start <- ceiling(X.start)
-        warning("High frequency series shorter than low frequency. Not all low frequency values are used.")
+      
+      # determine first and last fully available lf time stamps
+      X.start_l <- SubConvertStart(hf.start = X.start, f = f, f_l = f_l)
+      X.end_l <- SubConvertEnd(hf.end = X.end, f = f, f_l = f_l)
+      if (X.start_l > start + 0.001){
+        start <- X.start_l
+        warning("High frequency series shorter than low frequency. Low frequency values from ", start, " are used.")
         y_l.series <- window(y_l.series, start = start)
       }
-      if (X.end < end - 0.001){
-        end <- floor(X.end)
-        warning("High frequency series shorter than low frequency. Not all low frequency values are used.")
+      if (X.end_l < end - 0.001){
+        end <- X.end_l
+        warning("High frequency series shorter than low frequency. Low frequency values until ", end, " are used.")
         y_l.series <- window(y_l.series, end = end)
       }
 
