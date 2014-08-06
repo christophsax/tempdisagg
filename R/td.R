@@ -1,7 +1,7 @@
 #' Temporal Disaggregation of Time Series
 #' 
 #' Perform temporal disaggregation or interpolation of low frequency to high 
-#' frequency time series. \code{td} can be used with objects of class
+#' frequency time series. \code{td} can be used with objects of class 
 #' \code{"\link{ts}"} as well as with basic vectors.
 #' 
 #' \code{td} is used to disaggregate or interpolate a low frequency to a higher 
@@ -12,15 +12,19 @@
 #' frequency is an integer multiple of the low frequency (e.g. weeks to days), 
 #' but not with irregular frequencies (e.g. weeks to months).
 #' 
+#' If the high-frequency indicator(s) cover(s) a longer time span than the 
+#' low-frequency series, an extrapolation or retropolation (Wei, 1994, p. 138)
+#' is performed, using the same model as for interpolation.
+#' 
 #' The selection of a temporal disaggregation model is similar to the selection 
 #' of a linear regression model. Thus, \code{td} closely mirrors the working of 
-#' the \code{\link{lm}} function. The left hand side of the
-#' \code{\link{formula}} denotes the low-frequency series, the right hand side
+#' the \code{\link{lm}} function. The left hand side of the 
+#' \code{\link{formula}} denotes the low-frequency series, the right hand side 
 #' the indicators. If no indicator is specified, the right hand side must be set
-#' equal to \code{1} (see examples). Unlike \code{lm}, \code{td} handles
+#' equal to \code{1} (see examples). Unlike \code{lm}, \code{td} handles 
 #' \code{\link{ts}} and \code{mts} time-series objects, as a typical application
 #' involves the use of these objects. Alternatively, If used with basic vectors,
-#' the \code{to} argument specifies the ratio between the high and the low
+#' the \code{to} argument specifies the ratio between the high and the low 
 #' frequency series.
 #' 
 #' For the generalized least squares (GLS) methods \code{"chow-lin-maxlog"}, 
@@ -40,7 +44,7 @@
 #' The Denton methods \code{"denton"} and \code{"denton-cholette"} can be 
 #' specified with one or without an indicator. The parameter \code{h} can be set
 #' equal to \code{0}, \code{1}, or \code{2}. Depending on the value, the 
-#' \code{denton} procedure minimizes the sum of squares of the deviations
+#' \code{denton} procedure minimizes the sum of squares of the deviations 
 #' between the levels (\code{0}), the first differences (\code{1}) or the second
 #' differences (\code{2}) of the indicator and the resulting series. 
 #' Additionally, \code{criterion} can be set equal to \code{"proportional"} or 
@@ -51,50 +55,44 @@
 #' 
 #' \code{"uniform"} is a special case of the \code{"denton"} approach, with 
 #' \code{h} equals  \code{0} and \code{criterion} equals  \code{"proportional"}.
-#' It distributes the residuals uniformly. If no indicator is used, this leads
+#' It distributes the residuals uniformly. If no indicator is used, this leads 
 #' to a step-shaped series.
 #' 
 #' \code{"ols"} performs an ordinary least squares regression (OLS) and 
-#' distributes the residuals uniformly. It is especially useful for comparing
+#' distributes the residuals uniformly. It is especially useful for comparing 
 #' the estimators of GLS and OLS regressions.
 #' 
 #' @param formula     an object of class \code{"\link{formula}"}: a symbolic 
-#'                    description of the the temporal disaggregation model. The
-#'                    details of model specification are given under 'Details'.
+#'   description of the the temporal disaggregation model. The details of model 
+#'   specification are given under 'Details'.
 #' @param conversion  type of conversion: \code{"sum"}, \code{"average"}, 
-#'                    \code{"first"} or \code{"last"}.
+#'   \code{"first"} or \code{"last"}.
 #' @param method      method of temporal disaggregation: 
-#'                    \code{"chow-lin-maxlog"}, 
-#'                    \code{"chow-lin-minrss-ecotrim"}, 
-#'                    \code{"chow-lin-minrss-quilis"}, \code{"chow-lin-fixed"}, 
-#'                    \code{"fernandez"}, \code{"litterman-maxlog"}, 
-#'                    \code{"litterman-minrss"}, \code{"litterman-fixed"},
-#'                    \code{"denton-cholette"}, \code{"denton"}, 
-#'                    \code{"uniform"} or \code{"ols"}. See 'Details'.
+#'   \code{"chow-lin-maxlog"}, \code{"chow-lin-minrss-ecotrim"}, 
+#'   \code{"chow-lin-minrss-quilis"}, \code{"chow-lin-fixed"}, 
+#'   \code{"fernandez"}, \code{"litterman-maxlog"}, \code{"litterman-minrss"}, 
+#'   \code{"litterman-fixed"}, \code{"denton-cholette"}, \code{"denton"}, 
+#'   \code{"uniform"} or \code{"ols"}. See 'Details'.
 #' @param to          high-frequency destination frequency as a character string
-#'                    (\code{"quarterly"} or \code{"monthly"}) or as a scalar 
-#'                    (e.g. \code{2}, \code{4}, \code{7}, \code{12}). If the
-#'                    input series are \code{ts} objects, the argument is
-#'                    necessary if no indicator is given. If the input series 
-#'                    are vectors, \code{to} must be a scalar indicating the
-#'                    frequency ratio.
+#'   (\code{"quarterly"} or \code{"monthly"}) or as a scalar (e.g. \code{2}, 
+#'   \code{4}, \code{7}, \code{12}). If the input series are \code{ts} objects, 
+#'   the argument is necessary if no indicator is given. If the input series are
+#'   vectors, \code{to} must be a scalar indicating the frequency ratio.
 #' @param truncated.rho  lower bound for the autoregressive parameter 
-#'                    \eqn{\rho}. If set to \code{0} (default), no negative
-#'                    values are allowed. If set to \code{-1}, truncation is
-#'                    disabled.
+#'   \eqn{\rho}. If set to \code{0} (default), no negative values are allowed. 
+#'   If set to \code{-1}, truncation is disabled.
 #' @param fixed.rho   set a predefined autoregressive parameter \eqn{\rho}. Only
-#'                    works with the methods \code{"chow-lin-fixed"} and 
-#'                    \code{"litterman-fixed"}.
+#'   works with the methods \code{"chow-lin-fixed"} and 
+#'   \code{"litterman-fixed"}.
 #' @param criterion   minimzation criterion for Denton methods: 
-#'                    \code{"proportional"} or \code{"additive"}.  See 
-#'                    'Details'.
+#'   \code{"proportional"} or \code{"additive"}.  See 'Details'.
 #' @param h           degree of differencing for Denton methods. See 'Details'.
 #' @param start       (optional) start date. Similar to pre-processing the input
-#'                    series with \code{\link{window}}.
+#'   series with \code{\link{window}}.
 #' @param end         (optional) end date. Similar to pre-processing the input 
-#'                    series with \code{\link{window}}.
-#' @param ...         additional arguments to be passed to the low level
-#'                    subfunctions.
+#'   series with \code{\link{window}}.
+#' @param ...         additional arguments to be passed to the low level 
+#'   subfunctions.
 #' @return \code{td} returns an object of class \code{"td"}.
 #'   
 #'   The function \code{\link[=predict.td]{predict}} computes the interpolated 
@@ -105,39 +103,28 @@
 #'   \code{\link[=summary.td]{summary}} prints a summary of the estimation.
 #'   
 #'   An object of class \code{"td"} is a list containing the following 
-#'   components: 
-#'   \item{values}{disaggregated or interpolated (and extrapolated) high
-#'   frequency series} 
-#'   \item{fitted.values}{low frequency fitted values of the regression; low
-#'  frequency indicator for the Denton methods.} 
-#'   \item{p}{preliminary high frequency series} 
-#'   \item{residuals}{low-frequency residuals} 
-#'   \item{rho}{autoregressive parameter, \eqn{\rho}} 
-#'   \item{truncated}{logical, whether \eqn{\rho} has been truncated}
-#'   \item{coefficients}{a named vector of coefficients} 
-#'   \item{se}{standard errors of the coefficients} 
-#'   \item{s_2}{ML-estimator of the variance of the high-frequency residuals} 
-#'   \item{s_2_gls}{GLS-estimator of the variance of the high-frequency
-#'   residuals} 
-#'   \item{tss}{weighted (low frequency) total sum of squares}
-#'   \item{rss}{weighted (low frequency) residual sum of squares}
-#'   \item{r.squared}{R squared} 
-#'   \item{adj.r.squared}{adjusted R squared} 
-#'   \item{logl}{log-likelihood} 
-#'   \item{aic}{Akaike information criterion} 
-#'   \item{bic}{Schwarz information criterion} 
-#'   \item{rank}{number of right hand variables (including intercept)}
-#'   \item{df}{degrees of freedom} 
-#'   \item{method}{method of temporal disaggregation} 
-#'   \item{call}{function call} 
-#'   \item{name}{name of the low frequency variable} 
-#'   \item{fr}{the ratio of high to low-frequency series} 
-#'   \item{conversion}{type of temporal conversion} 
-#'   \item{actual}{actual values of the low frequeny series} 
-#'   \item{model}{a matrix containing the indicators (and a constant if
-#'   present)} 
-#'   \item{criterion}{minimization criterion in Denton methods} 
-#'   \item{h}{order of differencing in Denton methods}
+#'   components: \item{values}{disaggregated or interpolated (and extrapolated) 
+#'   high frequency series} \item{fitted.values}{low frequency fitted values of 
+#'   the regression; low frequency indicator for the Denton methods.} 
+#'   \item{p}{preliminary high frequency series} \item{residuals}{low-frequency 
+#'   residuals} \item{rho}{autoregressive parameter, \eqn{\rho}} 
+#'   \item{truncated}{logical, whether \eqn{\rho} has been truncated} 
+#'   \item{coefficients}{a named vector of coefficients} \item{se}{standard 
+#'   errors of the coefficients} \item{s_2}{ML-estimator of the variance of the 
+#'   high-frequency residuals} \item{s_2_gls}{GLS-estimator of the variance of 
+#'   the high-frequency residuals} \item{tss}{weighted (low frequency) total sum
+#'   of squares} \item{rss}{weighted (low frequency) residual sum of squares} 
+#'   \item{r.squared}{R squared} \item{adj.r.squared}{adjusted R squared} 
+#'   \item{logl}{log-likelihood} \item{aic}{Akaike information criterion} 
+#'   \item{bic}{Schwarz information criterion} \item{rank}{number of right hand 
+#'   variables (including intercept)} \item{df}{degrees of freedom} 
+#'   \item{method}{method of temporal disaggregation} \item{call}{function call}
+#'   \item{name}{name of the low frequency variable} \item{fr}{the ratio of high
+#'   to low-frequency series} \item{conversion}{type of temporal conversion} 
+#'   \item{actual}{actual values of the low frequeny series} \item{model}{a 
+#'   matrix containing the indicators (and a constant if present)} 
+#'   \item{criterion}{minimization criterion in Denton methods} \item{h}{order 
+#'   of differencing in Denton methods}
 #'   
 #' @references  Chow, G. C., & Lin, A. L. (1971). Best linear unbiased 
 #'   interpolation, distribution, and extrapolation of time series by related 
@@ -147,8 +134,10 @@
 #'   totals: an approach based on quadratic minimization. \emph{Journal of the 
 #'   American Statistical Association}, 66(333), 99-102.
 #'   
+#'   Wei, W. W. S. (1994). Time series analysis. Addison-Wesley publ.
+#'   
 #'   Sax, C. und Steiner, P. (2013). Temporal Disaggregation of Time Series. 
-#'   \emph{The R Journal}, 5(2), 80-88.
+#'   \emph{The R Journal}, 5(2), 80-88. 
 #'   \url{http://journal.r-project.org/archive/2013-2/sax-steiner.pdf}
 #'   
 #' @seealso \code{\link{ta}} for temporal aggregation, the inverse function of 
@@ -175,7 +164,9 @@
 #' # interpolated quarterly series
 #'  
 #' # temporally aggregated series is equal to the annual value 
-#' all.equal(ta(predict(mod1), conversion = "sum", to = "annual"), sales.a)
+#' all.equal(window(
+#'   ta(predict(mod1), conversion = "sum", to = "annual"),
+#'   start = 1975), sales.a)
 #'  
 #' # several indicators, including an intercept 
 #' mod2 <- td(sales.a ~ imports.q + exports.q)
