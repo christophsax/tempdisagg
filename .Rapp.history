@@ -1,0 +1,465 @@
+L
+Q
+S
+L
+hey()
+L
+hey()
+L
+options(project_path = "~/test")
+library(mytools)
+options(project_path = "~/seasonal")
+library(mytools)
+options(project_path = "~/Dropbox/mytools")#
+library(mytools)
+S
+B
+S
+D
+B
+S
+library(seasonal)
+vignette("seas")
+?seas
+library(seasonal)#
+#
+# use the data, it is ok.#
+data <- c(8.028624, 8.176464, 8.503701, 8.576743, 8.704183, 8.779788, 8.857495, 9.021022, 9.126490, 9.378984, 9.522646, 9.720994#
+          , 10.050249, 10.208915, 10.705672, 10.741118, 10.888931, 11.059832, 11.238138, 11.393312, 11.591813, 11.711493, 11.903107, 12.211723#
+          , 12.335319, 12.471022, 12.937318, 12.939712, 13.033334, 13.102080, 13.082807, 13.160400, 13.366419, 13.306933, 13.397472, 13.610470#
+          , 13.555135, 13.856174, 14.183570, 14.252347, 14.439868, 14.722011, 14.867067, 14.958194, 15.217876, 15.407219, 15.531902, 15.845040#
+          , 16.017223, 16.055477, 16.198136, 16.184700, 16.245751, 16.257022, 16.332302, 16.498810, 16.409810, 16.266387, 16.278113, 16.669818#
+          , 16.951346, 16.825991, 17.285708, 17.216371, 17.369325, 17.718926, 17.872699, 18.123034, 18.268131, 18.170938, 18.257417, 18.309824#
+          , 18.472058, 18.557529, 18.877904, 18.899445, 19.036891, 19.237642, 19.089698, 19.056783, 18.958007, 18.761583, 18.691539, 18.672762#
+          , 18.704791, 18.276566, 18.353663, 18.244636, 18.248355, 18.372468, 18.245543, 18.279441, 18.535533, 18.183595, 17.998087, 17.870246#
+          , 18.344739, 18.186504, 18.434497)
+tsdata <- ts(data, start = c(2006, 1), end = c(2014, 3), freq = 12)#
+#
+data(holiday)  # dates of Chinese New Year and Easter
+cny1 <- genhol(cny, start = -6, end = -1, frequency = 12, center = "calendar")#
+cny2 <- genhol(cny, start = 0, end = 6, frequency = 12, center = "calendar")#
+cny3 <- genhol(cny, start = 7, end = 13, frequency = 12, center = "calendar")#
+#
+m <- seas(tsdata, #
+          xreg = cbind(cny1, cny2, cny3),#
+          regression.usertype = c("holiday", "holiday2", "holiday3"), # final(m) will be different.          #
+          forecast.save = "forecasts", #
+          forecast.maxlead = 13,#
+          forecast.probability = 0.95,#
+          regression.aictest = c("td"),#
+)
+data <- c(8.699068, 8.783256, 8.904932, 8.995278, 9.258646, 9.298521, 9.380129, 9.462545, 9.625605#
+          , 9.796814, 9.854381, 9.881549, 9.858822, 9.833154, 10.276201, 10.431017, 10.105678, 10.160047#
+          , 10.224321, 10.304498, 10.444819, 10.559307, 10.587637, 10.559401, 10.515851, 10.719029, 11.069639#
+          , 11.116869, 11.188849, 11.207371, 11.245816, 11.327573, 11.529240, 11.604627, 11.604680, 11.513855#
+          , 11.316776, 11.801000, 12.083173, 12.151174, 12.200966, 12.245623, 12.272691, 12.330297, 12.449971#
+          , 12.641226, 12.701515, 12.450962, 12.773655, 12.648081, 13.155382, 13.272413, 13.329257, 13.323206#
+          , 13.348089, 13.374105, 13.424730, 13.499103, 13.561735, 13.492241, 13.245465, 13.233583, 13.606956#
+          , 13.632529, 13.617749, 13.603242, 13.682020, 13.646207, 13.649488, 13.614563, 13.572802, 13.566075#
+          , 13.253204, 13.368688, 13.497709, 13.514169, 13.509322, 13.546325, 13.516198, 13.506403, 13.521256#
+          , 13.454142, 13.460251, 13.407042, 13.211697, 13.102203, 13.511483, 13.493676, 13.461263, 13.444274#
+          , 13.401856, 13.447891, 13.534555, 13.441150, 13.261719, 13.104589, 13.190819, 13.125611, 13.340513)#
+#
+tsdata <- ts(data, start = c(2006, 1), end = c(2014, 3), freq = 12)
+plot(tsdata)
+m <- seas(tsdata, #
+          xreg = cbind(cny1, cny2, cny3),#
+          regression.usertype = c("holiday", "holiday2", "holiday3"), # final(m) will be different.          #
+          forecast.save = "forecasts", #
+          forecast.maxlead = 13,#
+          forecast.probability = 0.95,#
+          regression.aictest = c("td"),#
+)
+data <- c(8.699068, 8.783256, 8.904932, 8.995278, 9.258646, 9.298521, 9.380129, 9.462545, 9.625605#
+          , 9.796814, 9.854381, 9.881549, 9.858822, 9.833154, 10.276201, 10.431017, 10.105678, 10.160047#
+          , 10.224321, 10.304498, 10.444819, 10.559307, 10.587637, 10.559401, 10.515851, 10.719029, 11.069639#
+          , 11.116869, 11.188849, 11.207371, 11.245816, 11.327573, 11.529240, 11.604627, 11.604680, 11.513855#
+          , 11.316776, 11.801000, 12.083173, 12.151174, 12.200966, 12.245623, 12.272691, 12.330297, 12.449971#
+          , 12.641226, 12.701515, 12.450962, 12.773655, 12.648081, 13.155382, 13.272413, 13.329257, 13.323206#
+          , 13.348089, 13.374105, 13.424730, 13.499103, 13.561735, 13.492241, 13.245465, 13.233583, 13.606956#
+          , 13.632529, 13.617749, 13.603242, 13.682020, 13.646207, 13.649488, 13.614563, 13.572802, 13.566075#
+          , 13.253204, 13.368688, 13.497709, 13.514169, 13.509322, 13.546325, 13.516198, 13.506403, 13.521256#
+          , 13.454142, 13.460251, 13.407042, 13.211697, 13.102203, 13.511483, 13.493676, 13.461263, 13.444274#
+          , 13.401856, 13.447891, 13.534555, 13.441150, 13.261719, 13.104589, 13.190819, 13.125611, 13.340513)#
+#
+tsdata <- ts(data, start = c(2006, 1), end = c(2014, 3), freq = 12)
+m <- seas(tsdata, #
+          xreg = cbind(cny1, cny2, cny3),#
+          regression.usertype = c("holiday", "holiday2", "holiday3"), # final(m) will be different.          #
+          forecast.save = "forecasts", #
+          forecast.maxlead = 13,#
+          forecast.probability = 0.95,#
+          regression.aictest = c("td"),#
+)
+data(holiday)  # dates of Chinese New Year and Easter#
+cny1 <- genhol(cny, start = -6, end = -1, frequency = 12, center = "calendar")#
+cny2 <- genhol(cny, start = 0, end = 6, frequency = 12, center = "calendar")#
+cny3 <- genhol(cny, start = 7, end = 13, frequency = 12, center = "calendar")#
+#
+m <- seas(tsdata, #
+          xreg = cbind(cny1, cny2, cny3),#
+          regression.usertype = c("holiday", "holiday2", "holiday3"), # final(m) will be different.          #
+          forecast.save = "forecasts", #
+          forecast.maxlead = 13,#
+          forecast.probability = 0.95,#
+          regression.aictest = c("td"),#
+)
+# use the data, an error is diaplayed.#
+data <- c(8.699068, 8.783256, 8.904932, 8.995278, 9.258646, 9.298521, 9.380129, 9.462545, 9.625605#
+          , 9.796814, 9.854381, 9.881549, 9.858822, 9.833154, 10.276201, 10.431017, 10.105678, 10.160047#
+          , 10.224321, 10.304498, 10.444819, 10.559307, 10.587637, 10.559401, 10.515851, 10.719029, 11.069639#
+          , 11.116869, 11.188849, 11.207371, 11.245816, 11.327573, 11.529240, 11.604627, 11.604680, 11.513855#
+          , 11.316776, 11.801000, 12.083173, 12.151174, 12.200966, 12.245623, 12.272691, 12.330297, 12.449971#
+          , 12.641226, 12.701515, 12.450962, 12.773655, 12.648081, 13.155382, 13.272413, 13.329257, 13.323206#
+          , 13.348089, 13.374105, 13.424730, 13.499103, 13.561735, 13.492241, 13.245465, 13.233583, 13.606956#
+          , 13.632529, 13.617749, 13.603242, 13.682020, 13.646207, 13.649488, 13.614563, 13.572802, 13.566075#
+          , 13.253204, 13.368688, 13.497709, 13.514169, 13.509322, 13.546325, 13.516198, 13.506403, 13.521256#
+          , 13.454142, 13.460251, 13.407042, 13.211697, 13.102203, 13.511483, 13.493676, 13.461263, 13.444274#
+          , 13.401856, 13.447891, 13.534555, 13.441150, 13.261719, 13.104589, 13.190819, 13.125611, 13.340513)#
+#
+tsdata <- ts(data, start = c(2006, 1), end = c(2014, 3), freq = 12)#
+#
+data(holiday)  # dates of Chinese New Year and Easter#
+cny1 <- genhol(cny, start = -6, end = -1, frequency = 12, center = "calendar")#
+cny2 <- genhol(cny, start = 0, end = 6, frequency = 12, center = "calendar")#
+cny3 <- genhol(cny, start = 7, end = 13, frequency = 12, center = "calendar")#
+#
+m <- seas(tsdata, #
+          xreg = cbind(cny1, cny2, cny3),#
+          regression.usertype = c("holiday", "holiday2", "holiday3"), # final(m) will be different.          #
+          forecast.save = "forecasts", #
+          forecast.maxlead = 13,#
+          forecast.probability = 0.95,#
+          regression.aictest = c("td"),#
+)
+options(project_path = "~/Dropbox/rer/BSReversed")
+libaray(sublimestudio)
+library(sublimestudio)
+B
+L
+dataminer()
+?runApp
+dataminer(launch.browser = getOption("shiny.launch.browser", interactive()))
+L
+dataminer(launch.browser = getOption("shiny.launch.browser", interactive()))
+dta.m <- pdata.frame(na.omit(AddDOLS(subset(dta, year >= 1970 & year <= 1992 & iso %in% c("BEL", "DNK", "FIN", "FRA", "ITA", "JPN", "NOR", "SWE", "DEU"), select = c("iso", "year", "lrer", "ri", "nfa", "lTFP_T", "lTFP_NT")), var = c("ri", "nfa", "lTFP_T", "lTFP_NT"), l = c(-3, 3))), index = c("iso", "year"))#
+#
+m <- plm(lrer ~ ri + nfa + lTFP_T + lTFP_NT + DOLSm3ri + DOLSm3nfa + DOLSm3lTFP_T + DOLSm3lTFP_NT + DOLSm2ri + DOLSm2nfa + DOLSm2lTFP_T + DOLSm2lTFP_NT + DOLSm1ri + DOLSm1nfa + DOLSm1lTFP_T + DOLSm1lTFP_NT + DOLS0ri + DOLS0nfa + DOLS0lTFP_T + DOLS0lTFP_NT + DOLS1ri + DOLS1nfa + DOLS1lTFP_T + DOLS1lTFP_NT + DOLS2ri + DOLS2nfa + DOLS2lTFP_T + DOLS2lTFP_NT + DOLS3ri + DOLS3nfa + DOLS3lTFP_T + DOLS3lTFP_NT, data = dta.m, effect = c("twoways"), model = c("within"))
+m
+stopifnot(inherits(m, "plm"))
+u <- resid(m)
+vl <- split(u, attr(u, "index")$iso)
+yl <- split(attr(u, "index")$year, attr(u, "index")$iso)
+yl
+for (i in names(vl)){#
+    vl[[i]] <- ts(vl[[i]], start = as.numeric(as.character(yl[[i]][1])))#
+  }
+ds <- do.call(cbind, vl)
+ds
+LLC <- purtest(na.omit(ds), test = "levinlin", exo = "none", lags = "SIC", pmax = 3)
+?purtest
+class(u)
+LLC <- purtest(u, test = "levinlin", exo = "none", lags = "SIC", pmax = 3)
+?purtest
+?pCADFtest
+Choi <- pCADFtest(Y=u, type = "drift", max.lag.y = 5, criterion = "AIC")
+library(punitroot)
+library(punitroots)
+Choi <- pCADFtest(Y=u, type = "drift", max.lag.y = 5, criterion = "AIC")
+u <- resid(m)
+Choi <- pCADFtest(Y=u, type = "drift", max.lag.y = 5, criterion = "AIC")
+dta.m <- pdata.frame(na.omit(AddDOLS(subset(dta, year >= 1970 & year <= 1992 & iso %in% c("BEL", "DNK", "FIN", "FRA", "ITA", "JPN", "NOR", "SWE", "DEU"), select = c("iso", "year", "lrer", "ri", "nfa", "lTFP_T", "lTFP_NT")), var = c("ri", "nfa", "lTFP_T", "lTFP_NT"), l = c(-3, 3))), index = c("iso", "year"))#
+#
+m <- plm(lrer ~ ri + nfa + lTFP_T + lTFP_NT + DOLSm3ri + DOLSm3nfa + DOLSm3lTFP_T + DOLSm3lTFP_NT + DOLSm2ri + DOLSm2nfa + DOLSm2lTFP_T + DOLSm2lTFP_NT + DOLSm1ri + DOLSm1nfa + DOLSm1lTFP_T + DOLSm1lTFP_NT + DOLS0ri + DOLS0nfa + DOLS0lTFP_T + DOLS0lTFP_NT + DOLS1ri + DOLS1nfa + DOLS1lTFP_T + DOLS1lTFP_NT + DOLS2ri + DOLS2nfa + DOLS2lTFP_T + DOLS2lTFP_NT + DOLS3ri + DOLS3nfa + DOLS3lTFP_T + DOLS3lTFP_NT, data = dta.m, effect = c("twoways"), model = c("within"))#
+  u <- resid(m)
+L
+options(project_path = "~/Dropbox/rer/BSReversed")#
+library(sublimestudio)
+B
+library(punitroots)
+dta.m <- pdata.frame(na.omit(AddDOLS(subset(dta, year >= 1970 & year <= 1992 & iso %in% c("BEL", "DNK", "FIN", "FRA", "ITA", "JPN", "NOR", "SWE", "DEU"), select = c("iso", "year", "lrer", "ri", "nfa", "lTFP_T", "lTFP_NT")), var = c("ri", "nfa", "lTFP_T", "lTFP_NT"), l = c(-3, 3))), index = c("iso", "year"))#
+#
+m <- plm(lrer ~ ri + nfa + lTFP_T + lTFP_NT + DOLSm3ri + DOLSm3nfa + DOLSm3lTFP_T + DOLSm3lTFP_NT + DOLSm2ri + DOLSm2nfa + DOLSm2lTFP_T + DOLSm2lTFP_NT + DOLSm1ri + DOLSm1nfa + DOLSm1lTFP_T + DOLSm1lTFP_NT + DOLS0ri + DOLS0nfa + DOLS0lTFP_T + DOLS0lTFP_NT + DOLS1ri + DOLS1nfa + DOLS1lTFP_T + DOLS1lTFP_NT + DOLS2ri + DOLS2nfa + DOLS2lTFP_T + DOLS2lTFP_NT + DOLS3ri + DOLS3nfa + DOLS3lTFP_T + DOLS3lTFP_NT, data = dta.m, effect = c("twoways"), model = c("within"))#
+  u <- resid(m)
+dataminer()
+dataminer(launch.browser = getOption("shiny.launch.browser", interactive()))
+dta.m <- pdata.frame(na.omit(AddDOLS(subset(dta, year >= 1970 & year <= 1992 & iso %in% c("BEL", "DNK", "FIN", "FRA", "ITA", "JPN", "NOR", "SWE", "DEU"), select = c("iso", "year", "lrer", "ri", "nfa", "lTFP_T", "lTFP_NT")), var = c("ri", "nfa", "lTFP_T", "lTFP_NT"), l = c(-3, 3))), index = c("iso", "year"))
+m <- plm(lrer ~ ri + nfa + lTFP_T + lTFP_NT + DOLSm3ri + DOLSm3nfa + DOLSm3lTFP_T + DOLSm3lTFP_NT + DOLSm2ri + DOLSm2nfa + DOLSm2lTFP_T + DOLSm2lTFP_NT + DOLSm1ri + DOLSm1nfa + DOLSm1lTFP_T + DOLSm1lTFP_NT + DOLS0ri + DOLS0nfa + DOLS0lTFP_T + DOLS0lTFP_NT + DOLS1ri + DOLS1nfa + DOLS1lTFP_T + DOLS1lTFP_NT + DOLS2ri + DOLS2nfa + DOLS2lTFP_T + DOLS2lTFP_NT + DOLS3ri + DOLS3nfa + DOLS3lTFP_T + DOLS3lTFP_NT, data = dta.m, effect = c("twoways"), model = c("within"))
+u <- resid(m)
+Choi <- pCADFtest(Y=u, type = "drift", max.lag.y = 5, criterion = "AIC")
+vl <- split(u, attr(u, "index")$iso)#
+  yl <- split(attr(u, "index")$year, attr(u, "index")$iso)#
+  for (i in names(vl)){#
+    vl[[i]] <- ts(vl[[i]], start = as.numeric(as.character(yl[[i]][1])))#
+  }#
+  ds <- do.call(cbind, vl)
+Choi <- pCADFtest(Y=ds, type = "drift", max.lag.y = 5, criterion = "AIC")
+summary(Choi)
+?pCADFtest
+LLC <- purtest(ds, test = "levinlin", exo = "none", lags = "SIC", pmax = 3)
+Choi <- pCADFtest(Y=ds, type = "drift", max.lag.y = 5, criterion = "AIC")
+ds
+LLC <- purtest(as.matrix(ds), test = "levinlin", exo = "none", lags = "SIC", pmax = 3)
+summary(LLC)
+LLC <- purtest(u, test = "levinlin", exo = "none", lags = "SIC", pmax = 3)
+Choi <- pCADFtest(Y=ds, type = "drift", max.lag.y = 5, criterion = "AIC")
+R> summary(Choi)
+options(project_path = "~/Dropbox/rer/BSReversed")
+library(sublimestudio)
+B
+dataminer(launch.browser = getOption("shiny.launch.browser", interactive()))
+dta.m <- pdata.frame(na.omit(AddDOLS(subset(dta, year >= 1970 & year <= 1992 & iso %in% c("BEL", "DNK", "FIN", "FRA", "ITA", "JPN", "NOR", "SWE", "DEU"), select = c("iso", "year", "lrer", "ri", "nfa", "lTFP_T", "lTFP_NT")), var = c("ri", "nfa", "lTFP_T", "lTFP_NT"), l = c(-3, 3))), index = c("iso", "year"))
+m <- plm(lrer ~ ri + nfa + lTFP_T + lTFP_NT + DOLSm3ri + DOLSm3nfa + DOLSm3lTFP_T + DOLSm3lTFP_NT + DOLSm2ri + DOLSm2nfa + DOLSm2lTFP_T + DOLSm2lTFP_NT + DOLSm1ri + DOLSm1nfa + DOLSm1lTFP_T + DOLSm1lTFP_NT + DOLS0ri + DOLS0nfa + DOLS0lTFP_T + DOLS0lTFP_NT + DOLS1ri + DOLS1nfa + DOLS1lTFP_T + DOLS1lTFP_NT + DOLS2ri + DOLS2nfa + DOLS2lTFP_T + DOLS2lTFP_NT + DOLS3ri + DOLS3nfa + DOLS3lTFP_T + DOLS3lTFP_NT, data = dta.m, effect = c("twoways"), model = c("within"))
+u <- resid(m)
+u
+attr(u, "index")$iso
+as.character(attr(u, "index")$iso)
+as.character(attr(u, "year")$iso)
+as.character(attr(u, "index")$year)
+as.data.frame(u)
+cbind(iso = as.character(attr(u, "index")$iso),#
+  year = as.character(attr(u, "index")$year),#
+  resid = as.numeric(u))
+as.numeric(u)
+data.frame(iso = as.character(attr(u, "index")$iso),
+year = as.character(attr(u, "index")$year),
+resid = as.numeric(u))
+L
+dataminer(launch.browser = getOption("shiny.launch.browser", interactive()))
+B
+dataminer(launch.browser = getOption("shiny.launch.browser", interactive()))
+L
+dataminer(launch.browser = getOption("shiny.launch.browser", interactive()))
+L
+dataminer(launch.browser = getOption("shiny.launch.browser", interactive()))
+L
+B
+dataminer(launch.browser = getOption("shiny.launch.browser", interactive()))
+L
+dataminer(launch.browser = getOption("shiny.launch.browser", interactive()))
+L
+dataminer(launch.browser = getOption("shiny.launch.browser", interactive()))
+L
+dataminer(launch.browser = getOption("shiny.launch.browser", interactive()))
+L
+dataminer(launch.browser = getOption("shiny.launch.browser", interactive()))
+L
+dataminer(launch.browser = getOption("shiny.launch.browser", interactive()))
+L
+dataminer(launch.browser = getOption("shiny.launch.browser", interactive()))
+L
+dataminer(launch.browser = getOption("shiny.launch.browser", interactive()))
+B
+S
+getwd()
+options(project_path = "~/Dropbox/rer/BSReversed")
+library(sublimestudio)
+dataminer()
+Dataminer()
+L
+Dataminer()
+B
+dataminer()
+dataminer(launch.browser = getOption("shiny.launch.browser", interactive()))
+library(seasonal)
+m <- seas(AirPassengers)
+inspect(m)
+options(browser='chrome')
+library(seasonal)
+m <- seas(AirPassengers)
+inspect(m)
+options(browser='google-chrome')
+inspect(m)
+?Startup
+options(browser="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
+inspect(m)
+options(browser="/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome")
+inspect(m)
+q
+R.home
+R.home()
+as.vector(Sys.getenv("R_BROWSER")))
+asSys.getenv("R_BROWSER")
+Sys.getenv("R_BROWSER")
+?lm
+library(seasonal)
+seas(AirPassengers)
+m <- seas(AirPassengers)
+inspect(m)
+library(seasonal)
+m <- seas(AirPassengers)
+inspect(m)
+q
+getOption("browser")
+options(browser="Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome"
+)
+getOption("browser")
+L
+q
+getOption("browser")
+m <- seas(AirPassengers)
+library(seasonal)
+m <- seas(AirPassengers)
+inspect(m)
+L
+dta.m <- pdata.frame(na.omit(AddDOLS(subset(dta, year >= 1970 & year <= 1992 & iso %in% c("BEL", "DNK", "FIN", "FRA", "ITA", "JPN", "NOR", "SWE", "DEU"), select = c("iso", "year", "lrer", "ri", "nfa", "lTFP_T", "lTFP_NT")), var = c("ri", "nfa", "lTFP_T", "lTFP_NT"), l = c(-3, 3))), index = c("iso", "year"))
+L
+lm
+L.fun
+L.fun()
+libarary(devtools)
+library(devtools)
+L.fun
+devtools::load_all(".")
+require( seasonal )
+seas(AirPassengers)
+system.time(x_x13 <- seas(x, seats.save = "sfd", forecast.save = "fct"))
+system.time(series(x_x13, c("forecast.forecasts","sfd"), reeval = FALSE))
+x <- AirPassengers
+system.time(x_x13 <- seas(x, seats.save = "sfd", forecast.save = "fct"))
+system.time(series(x_x13, c("forecast.forecasts","sfd"), reeval = FALSE))
+x <- AirPassengers
+system.time(x_x13 <- seas(x, seats.save = "sfd", forecast.save = "fct"))
+system.time(series(x_x13, c("forecast.forecasts","sfd"), reeval = FALSE))
+AirPassengers
+plot(AirPassengers)
+library(R6)
+Person <- R6Class("Person",#
+  public = list(#
+    name = NA,#
+    hair = NA,#
+    initialize = function(name, hair) {#
+      if (!missing(name)) self$name <- name#
+      if (!missing(hair)) self$hair <- hair#
+      self$greet()#
+    },#
+    set_hair = function(val) {#
+      self$hair <- val#
+    },#
+    greet = function() {#
+      cat(paste0("Hello, my name is ", self$name, ".\n"))#
+    }#
+  )#
+)
+Person()
+Person$new("Ann", "black")
+a <- Person$new("Ann", "black")
+a
+class(a)
+print.default(a)
+print(a)
+a$hair
+ann$greet()
+a$greet()
+#' @export
+pth <- normalizePath('.'); pk <- basename(pth);system(paste('R CMD INSTALL', pth));if (pk %in% names(sessionInfo()$otherPkgs)){detach(name = paste0('package:', pk), unload = TRUE, character.only = TRUE)}; library(pk, character.only = TRUE)
+setwd('/Users/christophsax/tempdisagg')
+pth <- normalizePath('.'); pk <- basename(pth);system(paste('R CMD INSTALL', pth));if (pk %in% names(sessionInfo()$otherPkgs)){detach(name = paste0('package:', pk), unload = TRUE, character.only = TRUE)}; library(pk, character.only = TRUE)
+?td
+pth <- normalizePath('.'); pk <- basename(pth);system(paste('R CMD INSTALL', pth));if (pk %in% names(sessionInfo()$otherPkgs)){detach(name = paste0('package:', pk), unload = TRUE, character.only = TRUE)}; library(pk, character.only = TRUE)
+pth <- normalizePath('.'); pk <- basename(pth);system(paste('R CMD INSTALL', pth));if (pk %in% names(sessionInfo()$otherPkgs)){detach(name = paste0('package:', pk), unload = TRUE, character.only = TRUE)}; library(pk, character.only = TRUE)
+?td
+data(swisspharma)#
+#
+# one indicator, no intercept#
+mod1 <- td(sales.a ~ 0 + exports.q)#
+summary(mod1)  # summary statistics#
+plot(mod1)  # residual plot of regression#
+plot(predict(mod1))#
+#
+# interpolated quarterly series#
+#
+# temporally aggregated series is equal to the annual value#
+all.equal(window(#
+  ta(predict(mod1), conversion = "sum", to = "annual"),#
+  start = 1975), sales.a)#
+#
+# several indicators, including an intercept#
+mod2 <- td(sales.a ~ imports.q + exports.q)#
+#
+# no indicator (Denton-Cholette)#
+mod3 <- td(sales.a ~ 1, to = "quarterly", method = "denton-cholette")#
+#
+# no indicator (uniform)#
+mod4 <- td(sales.a ~ 1, to = "quarterly", method = "uniform")#
+#
+# Example from Denton (1971), see references.#
+d.q <- ts(rep(c(50, 100, 150, 100), 5), frequency = 4)#
+d.a <- ts(c(500, 400, 300, 400, 500))#
+#
+a1 <- predict(td(d.a ~ 0 + d.q, method = "denton",#
+                 criterion = "additive", h = 0))
+pth <- normalizePath('.'); pk <- basename(pth);system(paste('R CMD INSTALL', pth));if (pk %in% names(sessionInfo()$otherPkgs)){detach(name = paste0('package:', pk), unload = TRUE, character.only = TRUE)}; library(pk, character.only = TRUE)
+a1 <- predict(td(d.a ~ 0 + d.q, method = "denton",#
+                 criterion = "additive", h = 0))
+pth <- normalizePath('.'); pk <- basename(pth);system(paste('R CMD INSTALL', pth));if (pk %in% names(sessionInfo()$otherPkgs)){detach(name = paste0('package:', pk), unload = TRUE, character.only = TRUE)}; library(pk, character.only = TRUE)
+a1 <- predict(td(d.a ~ 0 + d.q, method = "denton",#
+                 criterion = "additive", h = 0))
+a1 <- predict(td(d.a ~ 0 + d.q, method = "denton",#
+                 criterion = "additive", h = 0))
+pth <- normalizePath('.'); pk <- basename(pth);system(paste('R CMD INSTALL', pth));if (pk %in% names(sessionInfo()$otherPkgs)){detach(name = paste0('package:', pk), unload = TRUE, character.only = TRUE)}; library(pk, character.only = TRUE)
+a1 <- predict(td(d.a ~ 0 + d.q, method = "denton",#
+                 criterion = "additive", h = 0))
+pth <- normalizePath('.'); pk <- basename(pth);system(paste('R CMD INSTALL', pth));if (pk %in% names(sessionInfo()$otherPkgs)){detach(name = paste0('package:', pk), unload = TRUE, character.only = TRUE)}; library(pk, character.only = TRUE)
+a1 <- predict(td(d.a ~ 0 + d.q, method = "denton",#
+                 criterion = "additive", h = 0))
+a1
+a1 <- predict(td(d.a ~ 0 + d.q, method = "uniform",#
+                 criterion = "additive", h = 0))
+a1
+a1 <- predict(td(d.a ~ 0 + d.q, method = "uniformr",#
+                 criterion = "additive", h = 0))
+a1 <- predict(td(d.a ~ 0 + d.q, method = "uniform",#
+                 criterion = "additivre", h = 0))
+a1 <- predict(td(d.a ~ 0 + d.q, method = "uniform",#
+                 criterion = "additivre", h = 0))
+?td
+data(swisspharma)#
+#
+# one indicator, no intercept#
+mod1 <- td(sales.a ~ 0 + exports.q)#
+summary(mod1)  # summary statistics#
+plot(mod1)  # residual plot of regression#
+plot(predict(mod1))#
+#
+# interpolated quarterly series#
+#
+# temporally aggregated series is equal to the annual value#
+all.equal(window(#
+  ta(predict(mod1), conversion = "sum", to = "annual"),#
+  start = 1975), sales.a)#
+#
+# several indicators, including an intercept#
+mod2 <- td(sales.a ~ imports.q + exports.q)
+mod2
+# no indicator (Denton-Cholette)#
+mod3 <- td(sales.a ~ 1, to = "quarterly", method = "denton-cholette")#
+#
+# no indicator (uniform)#
+mod4 <- td(sales.a ~ 1, to = "quarterly", method = "uniform")#
+#
+# Example from Denton (1971), see references.#
+d.q <- ts(rep(c(50, 100, 150, 100), 5), frequency = 4)#
+d.a <- ts(c(500, 400, 300, 400, 500))
+d.a
+a1 <- predict(td(d.a ~ 0 + d.q, method = "denton",#
+                 criterion = "additive", h = 0))#
+a2 <- predict(td(d.a ~ 0 + d.q, method = "denton",#
+                 criterion = "additive", h = 1))#
+a3 <- predict(td(d.a ~ 0 + d.q, method = "denton",#
+                 criterion = "additive", h = 2))#
+a4 <- predict(td(d.a ~ 0 + d.q, method = "denton",#
+                 criterion = "additive", h = 3))#
+#
+p1 <- predict(td(d.a ~ 0 + d.q, method = "denton",#
+                 criterion = "proportional", h = 0))#
+p2 <- predict(td(d.a ~ 0 + d.q, method = "denton",#
+                 criterion = "proportional", h = 1))#
+p3 <- predict(td(d.a ~ 0 + d.q, method = "denton",#
+                 criterion = "proportional", h = 2))#
+p4 <- predict(td(d.a ~ 0 + d.q, method = "denton",#
+                 criterion = "proportional", h = 3))
+# Table in Denton (1971), page 101:#
+round(cbind(d.q, a1, a2, a3, a4, p1, p2, p3, p4))
+mod2 <- td(sales.a ~ imports.q + exports.q)
+predict(mod2)

@@ -223,6 +223,10 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   if (any(c(length(start), length(end)) > 1)){
     stop("'start' or 'end' must be specified as a decimal fraction")
   }
+
+  if (method == "denton"){
+    message('"denton-cholette" removes the transient movement at the beginning of the series of the original "denton" method and is preferable in most cases.')
+  }
   
   
   # ---- prepare Formula, extract names and data ------------------------------
