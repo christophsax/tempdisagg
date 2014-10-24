@@ -87,6 +87,10 @@
 		"selected_items":
 		[
 			[
+				"sy r",
+				"Set Syntax: R"
+			],
+			[
 				"wr",
 				"Word Wrap: Toggle"
 			],
@@ -519,7 +523,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 565.0
+		"width": 467.0
 	},
 	"console":
 	{
@@ -540,10 +544,17 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/christophsax/tempdisagg"
+		"/Users/christophsax/tempdisagg",
+		"/Users/christophsax/tempdisagg/R"
 	],
 	"file_history":
 	[
+		"/Users/christophsax/tempdisagg/R/td.R",
+		"/Users/christophsax/tempdisagg/DESCRIPTION",
+		"/Users/christophsax/tempdisagg/tempdisagg_0.23.20.tar.gz",
+		"/Users/christophsax/tempdisagg/NEWS",
+		"/Users/christophsax/tempdisagg/.Rbuildignore",
+		"/Users/christophsax/tempdisagg/.gitignore",
 		"/Users/christophsax/tempdisagg/tempdisagg.Rproj",
 		"/Users/christophsax/projects/r/r6/firststeps.R",
 		"/Users/christophsax/Dropbox/rer/R/_files_for_paper/scattplots.R",
@@ -647,7 +658,6 @@
 		"/Users/christophsax/Downloads/Comparison of the results_gum_070514.txt",
 		"/Users/christophsax/business/admin/mwst/auskunft_telefon_steuerverwaltung.txt",
 		"/Users/christophsax/Downloads/tempdisagg-0.23/R/td.R",
-		"/Users/christophsax/tempdisagg/R/td.R",
 		"/Users/christophsax/business/admin/anfrage_mwst",
 		"/Users/christophsax/seasonal/NEWS",
 		"/Users/christophsax/seasonal/vignettes/seas.Rnw",
@@ -666,16 +676,11 @@
 		"/Users/christophsax/seasonal/demo/00Index",
 		"/Users/christophsax/sim/report/biblio.bib",
 		"/Users/christophsax/sim/report/document.tex",
-		"/Users/christophsax/Google Drive/_admin/pw/wlan_seco.txt",
-		"/Users/christophsax/Downloads/x12GUI/R/x12GUI.R",
-		"/Users/christophsax/x13assrc/makefile.gfortran",
-		"/Users/christophsax/seasonal.wiki/Examples-of-X-13ARIMA-SEATS-in-R.md",
-		"/Users/christophsax/userdir/iofile.log",
-		"/Users/christophsax/seasonal_misc/pandocify_vignette"
+		"/Users/christophsax/Google Drive/_admin/pw/wlan_seco.txt"
 	],
 	"find":
 	{
-		"height": 23.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
@@ -690,6 +695,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"error",
+			"errer",
+			"warnings",
 			"LFP",
 			"data.comb",
 			"data.c",
@@ -814,10 +822,7 @@
 			"DATA ana",
 			"box-shadow",
 			"shadow",
-			"glyphicon",
-			"14px",
-			".btn",
-			"55px"
+			"glyphicon"
 		],
 		"highlight": true,
 		"in_selection": false,

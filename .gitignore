@@ -3,3 +3,5 @@
 .Rbuildignore
 .DS_Store
 tempdisagg.sublime-project
+tempdisagg.sublime-workspace
+.Rapp.history
