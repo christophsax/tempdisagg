@@ -8,6 +8,7 @@ SubRegressionBased <- function(y_l, X, n.bc, n.fc, conversion = "sum",
   # Args:
   #   y_l:          vector of the low-frequency left-hand side variable
   #   X:            matrix of high-frequency indicators
+  #   n.bc, n.fc    integer, number of hf periods to backcast, forecast
   #   conversion:   type of conversion ("sum", "average", "first", "last")
   #   method:       method
   #   truncated.rho:lower bound for rho (AR1-parameter)
@@ -27,11 +28,15 @@ SubRegressionBased <- function(y_l, X, n.bc, n.fc, conversion = "sum",
   #     rho             scalar, autoregressive parameter
   #     truncated       logical, whether rho has been truncated to 0
   
+  stopifnot(inherits(n.bc, "integer"))
+  stopifnot(inherits(n.fc, "integer"))
+
+
   # dimensions of y_l and X
   n_l <- length(y_l)
   n <- dim(X)[1]
   m <- dim(X)[2]
-  
+
   # conversion matrix expanded with zeros
   C <- CalcC(n_l, conversion, fr, n.bc = n.bc, n.fc = n.fc)
   
