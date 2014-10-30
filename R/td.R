@@ -294,7 +294,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       }
 
       # number of high frequency periods for backcast/forecast
-      n.bc <- as.integer(round(start - X.start) * f)       
+      n.bc <- as.integer(round((start - X.start) * f))       
       n.fc <- as.integer(round((X.end - end) * f)) - as.integer(fr) + 1L
 
     } else {  # If no X is specified
@@ -326,7 +326,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     fr <- f/f_l
     n.bc <- 0L
     n.fc <- length(get(X.series.names[1], envir=environment(X.formula))) - 
-      as.integer(fr * length(y_l.series))
+      as.integer(fr) * length(y_l.series)
   }
 
   # --- raw X matrix ----------------------------------------------------------
