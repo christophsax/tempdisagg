@@ -276,7 +276,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       X.end <- time(na.omit(X.series.proto))[length(time(na.omit(X.series.proto)))]
 
       f <- frequency(X.series.proto)
-      fr <- f/f_l
+      fr <- as.integer(round(f/f_l))
 
       
       # determine first and last fully available lf time stamps
@@ -295,24 +295,24 @@ td <- function(formula, conversion = "sum", to = "quarterly",
 
       # number of high frequency periods for backcast/forecast
       n.bc <- as.integer(round((start - X.start) * f))       
-      n.fc <- as.integer(round((X.end - end) * f)) - as.integer(fr) + 1L
+      n.fc <- as.integer(round((X.end - end) * f)) - fr + 1L
 
     } else {  # If no X is specified
       if (is.numeric(to)){  # frequency specified by a number
         f <- to
       } else if (is.character(to)){  # frequency specified by a char string
         if (to == "quarterly"){
-          f <- 4
+          f <- 4L
         } else if (to == "monthly"){
-          f <- 12
+          f <- 12L
         } else {
           stop("'to' argument: unknown character string")
         }
       } else stop ("'to' argument: wrong specification")
-      fr <- f/f_l
+      fr <- as.integer(round(f/f_l))
       X.start <- start
-      n.bc <- 0
-      n.fc <- 0
+      n.bc <- 0L
+      n.fc <- 0L
     }
 
   }  else {
@@ -321,12 +321,12 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     if (!is.numeric(to)){
       stop("In non-ts mode, 'to' must be an integer number.")
     }
-    f_l <- 1
+    f_l <- 1L
     f <- to
-    fr <- f/f_l
+    fr <- as.integer(round(f/f_l))
     n.bc <- 0L
     n.fc <- length(get(X.series.names[1], envir=environment(X.formula))) - 
-      as.integer(fr) * length(y_l.series)
+      fr * length(y_l.series)
   }
 
   # --- raw X matrix ----------------------------------------------------------
