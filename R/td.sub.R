@@ -123,23 +123,23 @@ SubRegressionBased <- function(y_l, X, n.bc, n.fc, conversion = "sum",
   if(qr(X)$rank < min(dim(X))) {warning("\nX is singular!\n")}
 
   # preliminary series
-  p   <- as.numeric(X %*% z$coefficients)
+  p   <- X %*% z$coefficients
   
   # distribution matrix
   D <- Q %*% t(C) %*% z$vcov_inv
   
   # low frequency residuals
-  u_l <- as.numeric(y_l - C %*% p)
+  u_l <- y_l - C %*% p
   
   # final series
-  y <- as.numeric(p + D %*% u_l)
+  y <- p + D %*% u_l
 
   # output
   z$vcov_inv         <- NULL  # no need to keep
-  z$values           <- y
-  z$fitted.values    <- C %*% p
-  z$p                <- p
-  z$residuals        <- u_l
+  z$values           <- as.numeric(y)
+  z$fitted.values    <- as.numeric(C %*% p)
+  z$p                <- as.numeric(p)
+  z$residuals        <- as.numeric(u_l)
   z$rho              <- rho
   z$truncated        <- truncated
   z
@@ -203,7 +203,7 @@ SubDenton <- function(y_l, X, n.bc, n.fc, conversion, method, fr,
   } else stop("wrong specification of h")
   
   # low frequency residuals
-  u_l <- as.numeric(y_l - C %*% X)
+  u_l <- y_l - C %*% X
   
   if (method == "denton-cholette"){
     if (h == 0) {
@@ -232,15 +232,15 @@ SubDenton <- function(y_l, X, n.bc, n.fc, conversion, method, fr,
     D <- Q %*% t(C) %*% solve(C %*% Q %*% t(C))
     
     # final series
-    y <- as.numeric(X + D %*% u_l)
+    y <- X + D %*% u_l
   }
   
   # output
   z <- list()
-  z$values        <- y
+  z$values        <- as.numeric(y)
   z$fitted.values <- as.numeric(C %*% X)
-  z$p             <- X
-  z$residuals     <- u_l
+  z$p             <- as.numeric(X)
+  z$residuals     <- as.numeric(u_l)
   z$criterion     <- criterion
   z$h             <- h
   
