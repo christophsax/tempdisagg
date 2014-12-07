@@ -1,11 +1,11 @@
-0.24  2014-??-??
+0.24  2014-12-07
 
 changes visible to the user:
 - retropolation: 'td' will performs both extra- and retropolation if the high 
   frequency series covers a larger time span than the low frequency series.
 - low frequency values are ignored if series is longer than high frequency 
   series (with a warning). 
-- suggestion to use "denton-cholette" when the original "denton" method is 
+- suggestion to use 'denton-cholette' when the original 'denton' method is 
   chosen.
 
 0.23  2014-01-11

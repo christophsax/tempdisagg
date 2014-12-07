@@ -1,6 +1,6 @@
 Package: tempdisagg
-Version: 0.23.25
-Date: 2014-11-09
+Version: 0.24.0
+Date: 2014-12-07
 Title: Methods for Temporal Disaggregation and Interpolation of Time Series
 Author: Christoph Sax, Peter Steiner
 Maintainer: Christoph Sax <christoph.sax@gmail.com>
@@ -11,7 +11,7 @@ Description: Temporal disaggregation methods are used to disaggregate and
     either the sum, the average, the first or the last value of the resulting
     high frequency series is consistent with the low frequency series. Temporal
     disaggregation can be performed with or without one or more high frequency
-    indicator series. The R package tempdisagg is a collection of several
-    methods for temporal disaggregation.
+    indicator series. Contains the methods of Chow-Lin, Fernandez, Litterman,
+    Denton and Denton-Cholette.
 License: GPL-3
 LazyLoad: yes

@@ -225,7 +225,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   }
 
   if (method == "denton"){
-    message('"denton-cholette" removes the transient movement at the beginning of the series of the original "denton" method and is preferable in most cases.')
+    message("'denton-cholette' removes the transient movement at the beginning of the series and is preferable to the original 'denton' method in most cases.")
   }
   
   
