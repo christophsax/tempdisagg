@@ -242,7 +242,6 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   
   
   # ---- set ts.mode ----------------------------------------------------------
-  
   # 1. is y_l.series a time series? if so, set ts.mode to TRUE
   if (is.ts(y_l.series)){
     ts.mode <- TRUE
@@ -325,8 +324,12 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     f <- to
     fr <- as.integer(round(f/f_l))
     n.bc <- 0L
-    n.fc <- length(get(X.series.names[1], envir=environment(X.formula))) - 
+    if (length(X.series.names) > 0) {
+      n.fc <- length(get(X.series.names[1], envir=environment(X.formula))) - 
       fr * length(y_l.series)
+    } else {
+      n.fc <- 0L
+    }
   }
 
   # --- raw X matrix ----------------------------------------------------------
