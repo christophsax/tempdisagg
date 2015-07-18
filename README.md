@@ -1,7 +1,7 @@
 tempdisagg: Methods for Temporal Disaggregation and Interpolation of Time Series
 --------------------------------------------------------------------------------
 
-[![Build Status](https://travis-ci.org/christophsax/tempdisagg.png?branch=master)](https://travis-ci.org/christophsax/tempdisagg)
+[![Build Status](https://api.travis-ci.org/christophsax/tempdisagg.svg)](https://api.travis-ci.org/christophsax/tempdisagg.svg)
 
 Temporal disaggregation methods are used to disaggregate or interpolate a low frequency time series to a higher frequency series, where either the sum, the average, the first or the last value of the resulting high frequency series is consistent with the low frequency series. Temporal disaggregation can be performed with or without one or more high frequency indicator series. Contains the methods of Chow-Lin, Fernandez, Litterman, Denton and Denton-Cholette. 
 
