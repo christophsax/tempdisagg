@@ -237,4 +237,22 @@ CalcGLS <- function(y, X, vcov, logl=TRUE, stats=TRUE){
 }
 
 
+CalcDynAdj <- function(X, rho){
+  # Adjust data matrix for dynamic Chow-Lin procedure (Santos-Silva-Cardoso)
+  #
+  # Args:
+  #   X:            a matrix containing the rhs data
+  #   rho:          autoregressive parameter
+  # 
+  # Returns:
+  #   An updated data matrix, which an additional column
+  #
+  n <- dim(X)[1]
+  diag_rho <- diag(n)
+  diag_rho[-1,] <- diag_rho[-1,] + (diag(n) * -rho)[-n,]
+
+  # adjusting data
+  solve(diag_rho) %*% cbind(X, c(rho, rep(0, n - 1)))
+}
+
 

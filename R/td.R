@@ -360,7 +360,8 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   if (method %in% c("chow-lin-maxlog", "chow-lin-minrss-ecotrim",
                     "chow-lin-minrss-quilis", "chow-lin-fixed",
                     "litterman-maxlog", "litterman-minrss", "litterman-fixed", 
-                    "fernandez", "ols")){
+                    "fernandez", "dynamic-maxlog", "dynamic-minrss", 
+                    "dynamic-fixed", "ols")){
     z <- SubRegressionBased(y_l = y_l, X = X, n.bc = n.bc, n.fc = n.fc, 
                             conversion = conversion, 
                             method = method, truncated.rho = truncated.rho, 
@@ -378,6 +379,10 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   
   # add coefficent names to output
   if (!is.null(z$coefficients)) {
+    if (method %in% c("dynamic-maxlog", "dynamic-minrss", "dynamic-fixed")){
+      # add name for the autoregressive term
+      X.names <- c(X.names, "AR1")
+    }
     names(z$coefficients) <- names(z$se) <- X.names
   }
   

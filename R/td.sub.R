@@ -77,12 +77,28 @@ SubRegressionBased <- function(y_l, X, n.bc, n.fc, conversion = "sum",
       CalcGLS(y = y_l, X = X_l, vcov = C%*%CalcQ_Lit(X, rho)%*%t(C), 
               logl = FALSE, stats = FALSE)$rss
     }
+  } else if (method == "dynamic-maxlog"){
+    Objective <- function(rho){
+      # data adjustment for dynamic Chow-Lin procedure (Santos-Silva-Cardoso)
+      X_adj <- CalcDynAdj(X, rho = rho)
+      X_l_adj <- C %*% X_adj
+      -CalcGLS(y = y_l, X = X_l_adj, vcov = C %*% CalcQ(rho, pm) %*% t(C), 
+              stats = FALSE)$logl
+    }
+  } else if (method == "dynamic-minrss"){
+    Objective <- function(rho){
+      # data adjustment for dynamic Chow-Lin procedure (Santos-Silva-Cardoso)
+      X_adj <- CalcDynAdj(X, rho = rho)
+      X_l_adj <- C %*% X_adj
+      CalcGLS(y = y_l, X = X_l_adj, vcov = C %*% CalcQ(rho, pm) %*% t(C), 
+              logl = FALSE, stats = FALSE)$rss
+    }
   }
   
   # finding the optimal rho parameter
   if (method %in% c("chow-lin-maxlog", "chow-lin-minrss-ecotrim", 
                     "chow-lin-minrss-quilis", "litterman-maxlog", 
-                    "litterman-minrss")){
+                    "litterman-minrss", "dynamic-maxlog", "dynamic-minrss")){
     optimize.results <- optimize(Objective, lower = lower , upper = upper, tol = tol,
                                  maximum = FALSE)
     rho <- optimize.results$minimum
@@ -98,7 +114,7 @@ SubRegressionBased <- function(y_l, X, n.bc, n.fc, conversion = "sum",
     rho <- 0
   } else if (method == "ols"){
     rho <- 0
-  } else if (method %in% c("chow-lin-fixed", "litterman-fixed")){
+  } else if (method %in% c("chow-lin-fixed", "litterman-fixed", "dynamic-fixed")){
     rho <- fixed.rho
   }
   
@@ -107,11 +123,17 @@ SubRegressionBased <- function(y_l, X, n.bc, n.fc, conversion = "sum",
                     "litterman-fixed")){
     Q       <- CalcQ_Lit(X = X, rho = rho)
   } else if (method %in% c("chow-lin-maxlog", "chow-lin-minrss-ecotrim", 
-                           "chow-lin-minrss-quilis",  "chow-lin-fixed", "ols")){
+                           "chow-lin-minrss-quilis",  "chow-lin-fixed", 
+                           "dynamic-maxlog", "dynamic-minrss", 
+                           "dynamic-fixed", "ols")){
     Q       <- CalcQ(rho = rho, pm = pm)
   }
 
-
+  if (method %in% c("dynamic-maxlog", "dynamic-minrss", "dynamic-fixed")){
+    # data adjustment for dynamic Chow-Lin procedure (Santos-Silva-Cardoso)
+    X <- CalcDynAdj(X, rho = rho)
+    X_l <- C %*% X
+  }
 
   # aggregating Q
   Q_l <- C %*% Q %*% t(C)
