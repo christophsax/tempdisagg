@@ -381,7 +381,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   if (!is.null(z$coefficients)) {
     if (method %in% c("dynamic-maxlog", "dynamic-minrss", "dynamic-fixed")){
       # add name for the autoregressive term
-      X.names <- c(X.names, "AR1")
+      X.names <- c(X.names, "tr. rem.")
     }
     names(z$coefficients) <- names(z$se) <- X.names
   }
