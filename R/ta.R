@@ -98,6 +98,49 @@ SubAggregation <- function(x, conversion = "sum", f_l = 1){
   lf.end <- SubConvertEnd(hf.end = hf.end, f = f, f_l = f_l)
   lf.end.na <- SubConvertEnd(hf.end = hf.end.na, f = f, f_l = f_l)
 
+  # first and last are calculated without using the C matrix
+  # a low frequency value can also be calculated if the high frequency data is
+  # incomplete (#22)
+  if (conversion == "first"){
+    if (f == 12){
+      if (f_l == 4) cc <- c(1, 4, 7, 10)
+      if (f_l == 2) cc <- c(1, 7)
+      if (f_l == 1) cc <- c(1)
+    }
+    if (f == 4){
+      if (f_l == 2) cc <- c(1, 3)
+      if (f_l == 1) cc <- c(1)
+    }
+    if (f == 2){
+      if (f_l == 1) cc <- c(1)
+    }
+    iscc <- cycle(x) %in% cc
+    # lf starting period is calculate correctly with SubConvertStart
+    lf.start <- SubConvertStart(hf.start = time(x)[iscc][1], f = f, f_l = f_l)
+    z <- ts(x[iscc], start = lf.start, frequency = f_l)
+    return(z)
+  }
+  if (conversion == "last"){
+    if (f == 12){
+      if (f_l == 4) cc <- c(3, 6, 9, 12)
+      if (f_l == 2) cc <- c(6, 12)
+      if (f_l == 1) cc <- c(12)
+    }
+    if (f == 4){
+      if (f_l == 2) cc <- c(2, 4)
+      if (f_l == 1) cc <- c(4)
+    }
+    if (f == 2){
+      if (f_l == 1) cc <- c(2)
+    }
+    iscc <- cycle(x) %in% cc
+    # lf starting period is calculated incorrectly by SubConvertStart, since it
+    # assumes hf period is not complete. Shifting by 1 lf period.
+    lf.start <- SubConvertStart(hf.start = time(x)[iscc][1], f = f, f_l = f_l) - 1 / f_l
+    z <- ts(x[iscc], start = lf.start, frequency = f_l)
+    return(z)
+  }
+
   # if all observations are NAs, return NAs
   if (all(is.na(x))){
     z <- window(ts(NA, start = lf.start.na, frequency=f_l), 
