@@ -253,6 +253,9 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       }
     }
   } else{
+    if (!is.numeric(y_l.series)){
+      stop("the left hand side of the formula must be either a time series or numeric.")
+    }
     ts.mode <- FALSE
   }
   
