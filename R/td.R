@@ -41,9 +41,12 @@
 #' multiplies the correlation matrix with \eqn{1/(1-\rho^2)} (implemented in 
 #' \code{"chow-lin-minrss-quilis"}).
 #' 
-#' \code{"dynamic-maxlog"}, \code{"dynamic-minrss"} and \code{"dynamic-fixed"}
-#' are dynamic extensions of the Chow-Lin methods (Santos Silva and Cardoso
-#' 2001) (experimental). 
+#' The methods \code{"dynamic-maxlog"}, \code{"dynamic-minrss"} and
+#' \code{"dynamic-fixed"} are dynamic extensions of Chow-Lin
+#' (Santos Silva and Cardoso). They transform the data, and an additional 
+#' coefficient for a truncation remainder is estimated. If the autoregressive
+#' parameter \eqn{\rho} is equal to 0, no truncation remainder is added, an the
+#' results are identical to chow-lin and OLS.
 #' 
 #' The Denton methods \code{"denton"} and \code{"denton-cholette"} can be 
 #' specified with one or without an indicator. The parameter \code{h} can be set
@@ -186,6 +189,7 @@
 #' mod4 <- td(sales.a ~ 1, to = "quarterly", method = "uniform")
 #' 
 #' # Dynamic Chow-Lin (Santos Silva and Cardoso, 2001)
+#' # (no truncation parameter added, because rho = 0)
 #' mod5 <- td(sales.a ~ exports.q, method = "dynamic-maxlog") 
 #' 
 #' # Example from Denton (1971), see references. 
