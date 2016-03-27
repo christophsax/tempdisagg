@@ -25,7 +25,7 @@ vectors, \code{to} must be a scalar indicating the frequency ratio.}
 \item{method}{method of temporal disaggregation: 
 \code{"chow-lin-maxlog"}, \code{"chow-lin-minrss-ecotrim"}, 
 \code{"chow-lin-minrss-quilis"}, \code{"chow-lin-fixed"}, 
-\code{"dynamic-maxlog"}, \code{"dynamic-minrss"}, \code{"dynamic-fixed"},
+\code{"dynamic-maxlog"} (experimental), \code{"dynamic-minrss"} (experimental), \code{"dynamic-fixed"} (experimental),
 \code{"fernandez"}, \code{"litterman-maxlog"}, \code{"litterman-minrss"}, 
 \code{"litterman-fixed"}, \code{"denton-cholette"}, \code{"denton"}, 
 \code{"uniform"} or \code{"ols"}. See 'Details'.}
@@ -130,11 +130,9 @@ multiplies the correlation matrix with \eqn{1/(1-\rho^2)} (implemented in
 \code{"chow-lin-minrss-quilis"}).
 
 The methods \code{"dynamic-maxlog"}, \code{"dynamic-minrss"} and
-\code{"dynamic-fixed"} are dynamic extensions of Chow-Lin
-(Santos Silva and Cardoso). They transform the data, and an additional 
-coefficient for a truncation remainder is estimated. If the autoregressive
-parameter \eqn{\rho} is equal to 0, no truncation remainder is added, an the
-results are identical to chow-lin and OLS.
+\code{"dynamic-fixed"} are dynamic extensions of Chow-Lin (Santos Silva and 
+Cardoso, 2001). If the autoregressive parameter \eqn{\rho} is equal to 0, no 
+truncation remainder is added.
 
 The Denton methods \code{"denton"} and \code{"denton-cholette"} can be 
 specified with one or without an indicator. The parameter \code{h} can be set
