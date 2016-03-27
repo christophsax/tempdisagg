@@ -131,13 +131,16 @@ SubRegressionBased <- function(y_l, X, n.bc, n.fc, conversion = "sum",
 
   if (method %in% c("dynamic-maxlog", "dynamic-minrss", "dynamic-fixed")){
     # data adjustment for dynamic Chow-Lin procedure (Santos-Silva-Cardoso)
-    X <- CalcDynAdj(X, rho = rho)
-    X_l <- C %*% X
+    # do not add truncation remainder if rho = 0
+    if (rho != 0){
+      # overwrite X and X_l with adjusted data
+      X <- CalcDynAdj(X, rho = rho)
+      X_l <- C %*% X
+    } 
   }
 
   # aggregating Q
   Q_l <- C %*% Q %*% t(C)
-  
   # final GLS estimation (aggregated)
   z <- CalcGLS(y = y_l, X = X_l, vcov = Q_l)
 

@@ -1,3 +1,21 @@
+0.24.2  2016-??-??
+
+changes visible to the user:
+- new methods: dynamic-maxlog, dynamic-minrss, dynamic-fixed, as described in 
+  Santos Silva and Cardoso, 2001. Many thanks to Tommaso Di Fonzo for providing 
+  a blueprint written in GAUSS.
+- updated documentation to include new methods.
+
+minor changes:
+- better checks for non-time-series inputs.
+  (https://github.com/christophsax/tempdisagg/issues/20)
+
+bug fixes:
+- ta() returns correct results if conversion is "last" or "first", and the first
+  or the last period is incomplete.
+  (https://github.com/christophsax/tempdisagg/issues/22)
+
+
 0.24  2014-12-07
 
 changes visible to the user:
@@ -7,6 +25,7 @@ changes visible to the user:
   series (with a warning). 
 - suggestion to use 'denton-cholette' when the original 'denton' method is 
   chosen.
+
 
 0.23  2014-01-11
 

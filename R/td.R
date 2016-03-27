@@ -41,6 +41,11 @@
 #' multiplies the correlation matrix with \eqn{1/(1-\rho^2)} (implemented in 
 #' \code{"chow-lin-minrss-quilis"}).
 #' 
+#' The methods \code{"dynamic-maxlog"}, \code{"dynamic-minrss"} and
+#' \code{"dynamic-fixed"} are dynamic extensions of Chow-Lin (Santos Silva and 
+#' Cardoso, 2001). If the autoregressive parameter \eqn{\rho} is equal to 0, no 
+#' truncation remainder is added.
+#' 
 #' The Denton methods \code{"denton"} and \code{"denton-cholette"} can be 
 #' specified with one or without an indicator. The parameter \code{h} can be set
 #' equal to \code{0}, \code{1}, or \code{2}. Depending on the value, the 
@@ -70,6 +75,7 @@
 #' @param method      method of temporal disaggregation: 
 #'   \code{"chow-lin-maxlog"}, \code{"chow-lin-minrss-ecotrim"}, 
 #'   \code{"chow-lin-minrss-quilis"}, \code{"chow-lin-fixed"}, 
+#'   \code{"dynamic-maxlog"} (experimental), \code{"dynamic-minrss"} (experimental), \code{"dynamic-fixed"} (experimental),
 #'   \code{"fernandez"}, \code{"litterman-maxlog"}, \code{"litterman-minrss"}, 
 #'   \code{"litterman-fixed"}, \code{"denton-cholette"}, \code{"denton"}, 
 #'   \code{"uniform"} or \code{"ols"}. See 'Details'.
@@ -133,6 +139,9 @@
 #'   Denton, F. T. (1971). Adjustment of monthly or quarterly series to annual 
 #'   totals: an approach based on quadratic minimization. \emph{Journal of the 
 #'   American Statistical Association}, 66(333), 99-102.
+#'
+#'   Santos Silva, J. M. C. & Cardoso, F. N. (2001). The Chow-Lin method using
+#'   dynamic models. \emph{Economomic Modelling}, 18, 269-280.
 #'   
 #'   Wei, W. W. S. (1994). Time series analysis. Addison-Wesley publ.
 #'   
@@ -176,7 +185,11 @@
 #'  
 #' # no indicator (uniform) 
 #' mod4 <- td(sales.a ~ 1, to = "quarterly", method = "uniform")
-#'  
+#' 
+#' # Dynamic Chow-Lin (Santos Silva and Cardoso, 2001)
+#' # (no truncation parameter added, because rho = 0)
+#' mod5 <- td(sales.a ~ exports.q, method = "dynamic-maxlog") 
+#' 
 #' # Example from Denton (1971), see references. 
 #' d.q <- ts(rep(c(50, 100, 150, 100), 5), frequency = 4) 
 #' d.a <- ts(c(500, 400, 300, 400, 500))
@@ -383,10 +396,12 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   # add coefficent names to output
   if (!is.null(z$coefficients)) {
     if (method %in% c("dynamic-maxlog", "dynamic-minrss", "dynamic-fixed")){
-      # add name for the autoregressive term
-      X.names <- c(X.names, "tr. rem.")
+      # add name for trunc. remainder if present
+      if (length(z$coefficients) == (length(X.names) + 1)){
+        X.names <- c(X.names, "tr. rem.")
+      }
     }
-    names(z$coefficients) <- names(z$se) <- X.names
+    names(z$coefficients) <- names(z$se) <- X.names[1:length(z$coefficients)]
   }
   
   # additional output
