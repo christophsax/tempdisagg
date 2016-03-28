@@ -1,7 +1,7 @@
 tempdisagg: Methods for Temporal Disaggregation and Interpolation of Time Series
 --------------------------------------------------------------------------------
 
-[![Build Status](https://api.travis-ci.org/christophsax/tempdisagg.svg)](https://api.travis-ci.org/christophsax/tempdisagg.svg)
+[![Build Status](https://api.travis-ci.org/christophsax/tempdisagg.svg)](https://travis-ci.org/christophsax/tempdisagg)
 
 Temporal disaggregation methods are used to disaggregate or interpolate a low
 frequency time series to a higher frequency series, where either the sum, the
