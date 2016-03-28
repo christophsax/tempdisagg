@@ -144,4 +144,71 @@ if (Sys.getenv("TRAVIS") != ""){  # check if we are on travis
   # }
 
 
+
+  # Aggregation Tests (including first, last)
+  # ----------------------------------------------------------------------------
+
+  am_m_sum <- predict(td(airmiles ~ 1, to = "monthly", method = "denton-cholette", conversion = "sum"))
+  stopifnot(all.equal(airmiles, ta(am_m_sum, to = "annual", conversion = "sum")))
+  stopifnot(all.equal(am_m_sum, ta(am_m_sum, to = 12, conversion = "sum")))
+
+  am_q_sum <- ta(am_m_sum, to = "quarterly", conversion = "sum")
+  stopifnot(all.equal(airmiles, ta(am_q_sum, to = "annual", conversion = "sum")))
+  stopifnot(all.equal(am_q_sum, ta(am_q_sum, to = 4, conversion = "sum")))
+
+  am_s_sum <- ta(am_q_sum, to = 2, conversion = "sum")
+  stopifnot(all.equal(airmiles, ta(am_s_sum, to = "annual", conversion = "sum")))
+  stopifnot(all.equal(am_s_sum, ta(am_s_sum, to = 2, conversion = "sum")))
+
+  am_y_sum <- ta(am_s_sum, to = "annual", conversion = "sum")
+  stopifnot(all.equal(airmiles, ta(am_y_sum, to = "annual", conversion = "sum")))
+
+
+  am_m_average <- predict(td(airmiles ~ 1, to = "monthly", method = "denton-cholette", conversion = "average"))
+  stopifnot(all.equal(airmiles, ta(am_m_average, to = "annual", conversion = "average")))
+  stopifnot(all.equal(am_m_average, ta(am_m_average, to = 12, conversion = "average")))
+
+  am_q_average <- ta(am_m_average, to = "quarterly", conversion = "average")
+  stopifnot(all.equal(airmiles, ta(am_q_average, to = "annual", conversion = "average")))
+  stopifnot(all.equal(am_q_average, ta(am_q_average, to = 4, conversion = "average")))
+
+  am_s_average <- ta(am_q_average, to = 2, conversion = "average")
+  stopifnot(all.equal(airmiles, ta(am_s_average, to = "annual", conversion = "average")))
+  stopifnot(all.equal(am_s_average, ta(am_s_average, to = 2, conversion = "average")))
+
+  am_y_average <- ta(am_s_average, to = "annual", conversion = "average")
+  stopifnot(all.equal(airmiles, ta(am_y_average, to = "annual", conversion = "average")))
+
+
+  am_m_first <- predict(td(airmiles ~ 1, to = "monthly", method = "denton-cholette", conversion = "first"))
+  stopifnot(all.equal(airmiles, ta(am_m_first, to = "annual", conversion = "first")))
+  stopifnot(all.equal(am_m_first, ta(am_m_first, to = 12, conversion = "first")))
+
+  am_q_first <- ta(am_m_first, to = "quarterly", conversion = "first")
+  stopifnot(all.equal(airmiles, ta(am_q_first, to = "annual", conversion = "first")))
+  stopifnot(all.equal(am_q_first, ta(am_q_first, to = 4, conversion = "first")))
+
+  am_s_first <- ta(am_q_first, to = 2, conversion = "first")
+  stopifnot(all.equal(airmiles, ta(am_s_first, to = "annual", conversion = "first")))
+  stopifnot(all.equal(am_s_first, ta(am_s_first, to = 2, conversion = "first")))
+
+  am_y_first <- ta(am_s_first, to = "annual", conversion = "first")
+  stopifnot(all.equal(airmiles, ta(am_y_first, to = "annual", conversion = "first")))
+
+
+  am_m_last <- predict(td(airmiles ~ 1, to = "monthly", method = "denton-cholette", conversion = "last"))
+  stopifnot(all.equal(airmiles, ta(am_m_last, to = "annual", conversion = "last")))
+  stopifnot(all.equal(am_m_last, ta(am_m_last, to = 12, conversion = "last")))
+
+  am_q_last <- ta(am_m_last, to = "quarterly", conversion = "last")
+  stopifnot(all.equal(airmiles, ta(am_q_last, to = "annual", conversion = "last")))
+  stopifnot(all.equal(am_q_last, ta(am_q_last, to = 4, conversion = "last")))
+
+  am_s_last <- ta(am_q_last, to = 2, conversion = "last")
+  stopifnot(all.equal(airmiles, ta(am_s_last, to = "annual", conversion = "last")))
+  stopifnot(all.equal(am_s_last, ta(am_s_last, to = 2, conversion = "last")))
+
+  am_y_last <- ta(am_s_last, to = "annual", conversion = "last")
+  stopifnot(all.equal(airmiles, ta(am_y_last, to = "annual", conversion = "last")))
+
 }
