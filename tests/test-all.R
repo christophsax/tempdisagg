@@ -1,7 +1,5 @@
 # These tests are more extensive and only need to run on travis, not on CRAN.
 
-stop("At least we are here")
-
 if (Sys.getenv("TRAVIS") != ""){  # check if we are on travis
 
   # travis folder (on travis)
