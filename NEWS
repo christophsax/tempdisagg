@@ -1,4 +1,4 @@
-0.24.2  2016-??-??
+0.24.3  2016-??-??
 
 changes visible to the user:
 - new methods: dynamic-maxlog, dynamic-minrss, dynamic-fixed, as described in 
@@ -9,6 +9,7 @@ changes visible to the user:
 minor changes:
 - better checks for non-time-series inputs.
   (https://github.com/christophsax/tempdisagg/issues/20)
+- added extensive numerical testing on travis.
 
 bug fixes:
 - ta() returns correct results if conversion is "last" or "first", and the first
