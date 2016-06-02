@@ -1,4 +1,18 @@
-SubRegressionBased <- function(y_l, X, n.bc, n.fc, conversion = "sum", 
+# # inputs, as Date or POSIXct, need to have same length as lf and hf data
+# lf <- seq.Date(as.Date("2014-01-01"), to = as.Date("2016-12-01"),  by = "month")
+# hf <- seq.Date(as.Date("2014-01-01"), to = as.Date("2016-12-31"),  by = "day")
+
+
+# y_l <- as.matrix(rnorm(length(lf)))
+# X <- as.matrix(rep(1, length(hf)))
+
+
+# z0 <- SubRegressionBased(y_l, X, lf, hf)                         
+# z1 <- SubDenton(y_l, X, lf, hf)
+ 
+
+
+SubRegressionBased <- function(y_l, X, lf = NULL, hf = NULL, n.bc = NULL, n.fc = NULL, conversion = "sum", 
                                method = "chow-lin-maxlog", fr = 4, 
                                truncated.rho = 0, 
                                fixed.rho = 0.5, tol = 1e-16, 
@@ -28,8 +42,8 @@ SubRegressionBased <- function(y_l, X, n.bc, n.fc, conversion = "sum",
   #     rho             scalar, autoregressive parameter
   #     truncated       logical, whether rho has been truncated to 0
   
-  stopifnot(inherits(n.bc, "integer"))
-  stopifnot(inherits(n.fc, "integer"))
+  # stopifnot(inherits(n.bc, "integer"))
+  # stopifnot(inherits(n.fc, "integer"))
 
 
   # dimensions of y_l and X
@@ -38,8 +52,9 @@ SubRegressionBased <- function(y_l, X, n.bc, n.fc, conversion = "sum",
   m <- dim(X)[2]
 
   # conversion matrix expanded with zeros
-  C <- CalcC(n_l, conversion, fr, n.bc = n.bc, n.fc = n.fc)
-  
+  # C <- CalcC(n_l, conversion, fr, n.bc = n.bc, n.fc = n.fc)
+  C <- CalcC_lf_hf(lf, hf)   # todo conversion
+
   pm <- CalcPowerMatrix(n)
   
   # sanity test
@@ -171,8 +186,9 @@ SubRegressionBased <- function(y_l, X, n.bc, n.fc, conversion = "sum",
 }
 
 
-SubDenton <- function(y_l, X, n.bc, n.fc, conversion, method, fr, 
-                      criterion = "proportional", h = 1) {
+SubDenton <- function(y_l, X, lf = NULL, hf = NULL, n.bc = NULL, n.fc = NULL, conversion = "sum", 
+                      method = "Denton", fr = NULL, criterion = "proportional", 
+                      h = 1) {
   # performs temporal disaggregation for denton methods
   #
   # Args:
@@ -208,8 +224,9 @@ SubDenton <- function(y_l, X, n.bc, n.fc, conversion, method, fr,
   n <- length(as.numeric(X))
   
   # conversion matrix expanded with zeros
-  C <- CalcC(n_l, conversion, fr, n.bc = n.bc, n.fc = n.fc)
-  
+  # C <- CalcC(n_l, conversion, fr, n.bc = n.bc, n.fc = n.fc)
+  C <- CalcC_lf_hf(lf, hf)   # todo conversion
+
   D <- D_0 <- diag(n)
   diag(D[2:n, 1:(n-1)]) <- -1
   X_inv <- diag(1 / (as.numeric(X)/mean(X)))
