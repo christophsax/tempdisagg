@@ -121,7 +121,7 @@ if (Sys.getenv("TRAVIS") != ""){  # check if we are on travis
   # b) td-Objects match?
   # -------------------------------------------------------------------------------
   if(any(names(R) != names(old$R))) {R <- R[names(old$R)]}
-  stopifnot(all.equal(R, old$R, tol = 1e-6))
+  stopifnot(all.equal(R, old$R, tol = 1e-5))
 
   # c) graphical comparisons if necessary
   # -------------------------------------------------------------------------------
