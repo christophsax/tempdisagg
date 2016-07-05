@@ -164,6 +164,7 @@ print.summary.td <- function (x, digits = max(3, getOption("digits") - 3),
 #' 
 #' @keywords ts, models
 #' @method plot td
+#' @import graphics
 #' @export
 #' 
 plot.td <- function(x, ...){

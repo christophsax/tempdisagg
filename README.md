@@ -27,6 +27,6 @@ the package and the theory of temporal disaggregation in more detail.
 Please report bugs on [Github][github] or send an
 [e-mail](mailto:christoph.sax@gmail.com), thank you!
 
-[package]: http://cran.r-project.org/web/packages/tempdisagg
+[package]: https://cran.r-project.org/package=tempdisagg
 [article]: http://journal.r-project.org/archive/2013-2/sax-steiner.pdf
 [github]: https://github.com/christophsax/tempdisagg
