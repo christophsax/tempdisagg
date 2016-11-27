@@ -275,6 +275,8 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       hf.xts <- get(X.series.names[1], envir=environment(X.formula))
       hf <- index(hf.xts)
     }
+  } else {
+    xts.mode <- FALSE
   }
   
   if (!is.null(hf) || !is.null(lf) || !is.null(lf.end)){
