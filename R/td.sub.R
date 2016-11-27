@@ -11,16 +11,22 @@
 
 
 
+# # back to start of period
+# lf <- seq.Date(as.Date("2014-02-01"), to = as.Date("2016-12-01"),  by = "month")
+# hf <- seq.Date(as.Date("2014-01-01"), to = as.Date("2017-01-31"),  by = "day")
+
+# lf.end <- as.Date("2016-12-31")
+
 # y_l <- as.matrix(rnorm(length(lf)))
 # X <- as.matrix(rep(1, length(hf)))
 
-# z0 <- SubRegressionBased(y_l, X, lf = lf, hf = hf, method = "chow-lin-fixed", fixed.rho = 0.9) 
-# z1 <- SubDenton(y_l, X, lf = lf, hf = hf, method = "denton-cholette")
+# z0 <- SubRegressionBased(y_l, X, lf = lf, hf = hf, lf.end = lf.end, method = "chow-lin-fixed", fixed.rho = 0.9) 
+# z1 <- SubDenton(y_l, X, lf = lf, hf = hf, lf.end = lf.end, method = "denton-cholette")
  
 
 
 SubRegressionBased <- function(y_l, X, 
-                               lf = NULL, hf = NULL, 
+                               lf = NULL, lf.end = NULL, hf = NULL, 
                                n.bc = NULL, n.fc = NULL, conversion = "sum", 
                                method = "chow-lin-maxlog", fr = 4, 
                                truncated.rho = 0, 
@@ -63,7 +69,7 @@ SubRegressionBased <- function(y_l, X,
   # conversion matrix expanded with zeros
   # no real need to keep this separate, but will do so to keep old code save
   if (!is.null(hf)){
-    C <- CalcCLfHf(lf, hf, conversion = conversion)
+    C <- CalcCLfHf(lf, hf, lf.end = lf.end, conversion = conversion)
   } else {
     C <- CalcC(n_l, conversion, fr, n.bc = n.bc, n.fc = n.fc)
   }
@@ -202,7 +208,7 @@ SubRegressionBased <- function(y_l, X,
 
 
 SubDenton <- function(y_l, X, 
-                      lf = NULL, hf = NULL, 
+                      lf = NULL, hf = NULL, lf.end = NULL,
                       n.bc = NULL, n.fc = NULL, conversion = "sum", 
                       method = "Denton", fr = NULL, criterion = "proportional", 
                       h = 1) {
@@ -243,7 +249,7 @@ SubDenton <- function(y_l, X,
   # conversion matrix expanded with zeros
   # no real need to keep this separate, but will do so to keep old code save
   if (!is.null(hf)){
-    C <- CalcCLfHf(lf, hf, conversion = conversion)
+    C <- CalcCLfHf(lf, hf, lf.end = lf.end, conversion = conversion)
   } else {
     C <- CalcC(n_l, conversion, fr, n.bc = n.bc, n.fc = n.fc)
   }

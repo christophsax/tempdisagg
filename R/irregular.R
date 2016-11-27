@@ -1,30 +1,33 @@
 
-CalcCLfHf <- function(lf, hf, conversion){
+CalcCLfHf <- function(lf, hf, conversion, lf.end){
 
   # # old start of period version
-  # HfPerLf <- function(lf, hf){
-  #   z <- integer(length(lf))
-
-  #   for (i in 1:(length(lf) - 1)){
-  #     z[i] <- sum((hf >= lf[i]) & (hf < lf[i + 1]))
-  #   }
-  #   z[length(z)] <- sum(hf >= lf[length(lf)])
-  #   z
-  # }
-
   HfPerLf <- function(lf, hf){
     z <- integer(length(lf))
 
-    z[1] <- sum(hf <= lf[1])
-    for (i in 2:length(lf)){
-      z[i] <- sum((hf > lf[i - 1]) & (hf <= lf[i]))
+    for (i in 1:(length(lf) - 1)){
+      z[i] <- sum((hf >= lf[i]) & (hf < lf[i + 1]))
     }
-    # z[length(z)] <- sum(hf >= lf[length(lf)])
+    z[length(z)] <- sum(hf >= lf[length(lf)])
     z
   }
 
+  # # end of period version
+  # HfPerLf <- function(lf, hf){
+  #   z <- integer(length(lf))
+
+  #   z[1] <- sum(hf <= lf[1])
+  #   for (i in 2:length(lf)){
+  #     z[i] <- sum((hf > lf[i - 1]) & (hf <= lf[i]))
+  #   }
+  #   # z[length(z)] <- sum(hf >= lf[length(lf)])
+  #   z
+  # }
+
   # n.fc infered from the data
-  n.fc <- sum(hf > lf[length(lf)])
+  # n.fc <- sum(hf > lf[length(lf)])
+  n.fc <- sum(hf > lf.end)
+  n.bc <- sum(hf < lf[1])
 
   hf.per.lf <- HfPerLf(lf, hf)
   stopifnot(length(hf.per.lf) == length(lf))
@@ -53,9 +56,9 @@ CalcCLfHf <- function(lf, hf, conversion){
   if (n.fc > 0){
     C <- cbind(C, matrix(0, nrow = nrow(C), ncol = n.fc))
   }
-  # if (n.bc > 0){
-  #   C <- cbind(matrix(0, nrow = nrow(C), ncol = n.bc), C)
-  # }
+  if (n.bc > 0){
+    C <- cbind(matrix(0, nrow = nrow(C), ncol = n.bc), C)
+  }
   stopifnot(nrow(C) == length(lf))
   stopifnot(ncol(C) == length(hf))
 
