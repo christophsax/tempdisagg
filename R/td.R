@@ -221,7 +221,7 @@
 td <- function(formula, conversion = "sum", to = "quarterly", 
                method = "chow-lin-maxlog", truncated.rho = 0, fixed.rho = 0.5, 
                criterion = "proportional", h = 1,
-               start = NULL, end = NULL, ...) {
+               start = NULL, end = NULL, hf = NULL, lf = NULL, ...) {
   
   # td deals with the formula interface, the time-series properties
   # and allows for optional shortening of the series. The estimation itself is
@@ -330,11 +330,11 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       n.fc <- 0L
     }
 
-  }  else {
-    
+  } else if (is.null(hf)) {  # do not test in xts mode
+
     ### non ts.mode
     if (!is.numeric(to)){
-      stop("In non-ts mode, 'to' must be an integer number.")
+      stop("In non-ts/xts mode, 'to' must be an integer number.")
     }
     f_l <- 1L
     f <- to
@@ -346,6 +346,8 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     } else {
       n.fc <- 0L
     }
+  } else {  # xts mode
+    fr <- NULL
   }
 
   # --- raw X matrix ----------------------------------------------------------
@@ -354,11 +356,16 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     X <- model.matrix(X.formula)
     X.names <- dimnames(X)[[2]]
   } else {  
-    # if there is no X Variables, set it to a constant ('Denton' Methods)
-    X <- matrix(rep(1, times = length(y_l.series) * fr))
-    if (!(method %in% c("denton-cholette", "denton", "uniform"))) {
-      warning ("No indicator specified: denton,
-               denton-cholette or uniform are recommended.")
+
+    if (is.null(hf)){
+      # if there is no X Variables, set it to a constant ('Denton' Methods)
+      X <- matrix(rep(1, times = length(y_l.series) * fr))
+      if (!(method %in% c("denton-cholette", "denton", "uniform"))) {
+        warning ("No indicator specified: denton,
+                 denton-cholette or uniform are recommended.")
+      }
+    } else {
+      X <- matrix(rep(1, length(hf)))
     }
     X.names <- "(Intercept)"
   }
@@ -378,12 +385,12 @@ td <- function(formula, conversion = "sum", to = "quarterly",
                     "litterman-maxlog", "litterman-minrss", "litterman-fixed", 
                     "fernandez", "dynamic-maxlog", "dynamic-minrss", 
                     "dynamic-fixed", "ols")){
-    z <- SubRegressionBased(y_l = y_l, X = X, n.bc = n.bc, n.fc = n.fc, 
+    z <- SubRegressionBased(y_l = y_l, X = X, hf = hf, lf = lf, n.bc = n.bc, n.fc = n.fc, 
                             conversion = conversion, 
                             method = method, truncated.rho = truncated.rho, 
                             fixed.rho = fixed.rho, fr = fr, ...)
   } else if (method %in% c("denton-cholette", "denton", "uniform")){
-    z <- SubDenton(y_l = y_l, X = X, n.bc = n.bc, n.fc = n.fc, 
+    z <- SubDenton(y_l = y_l, X = X, hf = hf, lf = lf, n.bc = n.bc, n.fc = n.fc, 
                    conversion = conversion, method = method, 
                    criterion = criterion, h = h, fr = fr, ...)
   } else {
