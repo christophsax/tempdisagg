@@ -36,6 +36,7 @@ ta <- function(x, ...) UseMethod("ta")
 
 #' @rdname ta
 #' @export
+#' @import utils
 #' @method ta ts
 ta.ts <- function(x, conversion = "sum", to = "annual", ...){
   # Calls SubAggregation for computation

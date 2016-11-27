@@ -148,7 +148,7 @@ SubRegressionBased <- function(y_l, X, lf = NULL, hf = NULL, n.bc = NULL, n.fc =
     # data adjustment for dynamic Chow-Lin procedure (Santos-Silva-Cardoso)
     # do not add truncation remainder if rho = 0
     if (rho != 0){
-      # overwrite X and X_l with adjusted data
+      # overwrite X and X_l with adjusted data
       X <- CalcDynAdj(X, rho = rho)
       X_l <- C %*% X
     } 
