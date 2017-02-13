@@ -1,7 +1,7 @@
 
 CalcCLfHf <- function(lf, hf, conversion, lf.end){
 
-  # # old start of period version
+  # # old start of period version
   HfPerLf <- function(lf, hf){
     z <- integer(length(lf))
 

@@ -261,9 +261,12 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   # ---- xts mode --------------------------------------------------------------
   
   if (inherits(y_l.series, "xts")){
+    if (!requireNamespace("xts", quietly = TRUE)){
+      stop("The 'xts' package is not installed, but required to process 'xts' objects.")
+    }
     xts.mode <- TRUE
     lf.xts <- y_l.series
-    lf <- index(lf.xts)
+    lf <- zoo::index(lf.xts)
 
     # should be treated as non-ts from now on (in case an xts is also a ts)
     y_l.series <- as.numeric(y_l.series)
@@ -273,7 +276,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
         stop("Only left hand side is an object of class 'xts'.")
       }
       hf.xts <- get(X.series.names[1], envir=environment(X.formula))
-      hf <- index(hf.xts)
+      hf <- zoo::index(hf.xts)
     }
   } else {
     xts.mode <- FALSE
@@ -291,23 +294,23 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     }
   }
 
-  # ---- xts mode --------------------------------------------------------------
-  if (inherits(y_l.series, "xts")){
-    xts.mode <- TRUE
-    lf.xts <- y_l.series
-    lf <- index(lf.xts)
+  # # ---- xts mode --------------------------------------------------------------
+  # if (inherits(y_l.series, "xts")){
+  #   xts.mode <- TRUE
+  #   lf.xts <- y_l.series
+  #   lf <- index(lf.xts)
 
-    # should be treated as non-ts from now on (in case an xts is also a ts)
-    y_l.series <- as.numeric(y_l.series)
+  #   # should be treated as non-ts from now on (in case an xts is also a ts)
+  #   y_l.series <- as.numeric(y_l.series)
 
-    if (length(X.series.names) > 0) {
-      if (!inherits(get(X.series.names[1], envir=environment(X.formula)), "xts")){
-        stop("Only left hand side is an object of class 'xts'.")
-      }
-      hf.xts <- get(X.series.names[1], envir=environment(X.formula))
-      hf <- index(hf.xts)
-    }
-  }
+  #   if (length(X.series.names) > 0) {
+  #     if (!inherits(get(X.series.names[1], envir=environment(X.formula)), "xts")){
+  #       stop("Only left hand side is an object of class 'xts'.")
+  #     }
+  #     hf.xts <- get(X.series.names[1], envir=environment(X.formula))
+  #     hf <- index(hf.xts)
+  #   }
+  # }
 
 
   # ---- set ts.mode -----------------------------------------------------------

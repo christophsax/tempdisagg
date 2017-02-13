@@ -49,4 +49,3 @@ all.equal(sales.a, sales.q.a)
 }
 \keyword{models}
 \keyword{ts,}
-
