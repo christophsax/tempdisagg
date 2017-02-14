@@ -233,6 +233,11 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   
   cl <- match.call()
   
+
+  if (method == "fast"){
+    method <- "chow-lin-fixed"
+    fixed.rho <- 0.99999
+  }
   
   # --- input consistency ----------------------------------------------------
   
@@ -419,10 +424,15 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     if (is.null(hf)){
       # if there is no X Variables, set it to a constant ('Denton' Methods)
       X <- matrix(rep(1, times = length(y_l.series) * fr))
-      if (!(method %in% c("denton-cholette", "denton", "uniform"))) {
-        warning ("No indicator specified: denton,
-                 denton-cholette or uniform are recommended.")
-      }
+
+      # 2017-02-13 (CS): this is not always a good 'recommendation'. 
+      # chow-lin-fixed with rho = 0.999 is almost like denton-cholette, but much 
+      # faster.
+
+      # if (!(method %in% c("denton-cholette", "denton", "uniform"))) {
+      #   warning ("No indicator specified: denton,
+      #            denton-cholette or uniform are recommended.")
+      # }
     } else {
       X <- matrix(rep(1, length(hf)))
     }
