@@ -291,7 +291,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     if (lf[1] < hf[1]){
       lf.xts <- y_l.series <- y_l.series[lf >= hf[1]]
       lf <- lf[lf >= hf[1]]
-      warning("High frequency series shorter than low frequency. Low frequency values from ", lf[1], " are used.")
+      message("High frequency series shorter than low frequency. Low frequency values from ", lf[1], " are used.")
     }
 
   } else {
@@ -374,12 +374,12 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       X.end_l <- SubConvertEnd(hf.end = X.end, f = f, f_l = f_l)
       if (X.start_l > start + 0.001){
         start <- X.start_l
-        warning("High frequency series shorter than low frequency. Low frequency values from ", start, " are used.")
+        message("High frequency series shorter than low frequency. Low frequency values from ", start, " are used.")
         y_l.series <- window(y_l.series, start = start)
       }
       if (X.end_l < end - 0.001){
         end <- X.end_l
-        warning("High frequency series shorter than low frequency. Low frequency values until ", end, " are used.")
+        message("High frequency series shorter than low frequency. Low frequency values until ", end, " are used.")
         y_l.series <- window(y_l.series, end = end)
       }
 
