@@ -29,7 +29,7 @@ CalcCLfHf <- function(lf, hf, conversion, lf.end){
   n.fc <- sum(hf > lf.end)
   n.bc <- sum(hf < lf[1])
 
-  hf.per.lf <- HfPerLf(lf, hf)
+  hf.per.lf <- HfPerLf(lf, hf[hf <= lf.end & hf >= lf[1]])
   stopifnot(length(hf.per.lf) == length(lf))
 
   # set cfun according to type of conversion

@@ -282,7 +282,18 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       }
       hf.xts <- get(X.series.names[1], envir=environment(X.formula))
       hf <- zoo::index(hf.xts)
+    } else {
+      if (is.null(hf)) stop("If left hand side is an 'xts' argument and no right side variables are given, 'hf' must be specified as a 'Date' series.")
+      hf <- as.Date(hf)
+      hf.xts <- xts(rep(1, length(hf)), order.by = hf)
     }
+
+    if (lf[1] < hf[1]){
+      lf.xts <- y_l.series <- y_l.series[lf >= hf[1]]
+      lf <- lf[lf >= hf[1]]
+      warning("High frequency series shorter than low frequency. Low frequency values from ", lf[1], " are used.")
+    }
+
   } else {
     xts.mode <- FALSE
   }
@@ -291,7 +302,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     if (is.null(hf)) stop("'hf' must be specified when working with irregular frequencies.")
     if (is.null(lf)) stop("'lf' must be specified when working with irregular frequencies.")
     if (is.null(lf.end)) stop("'lf.end' must be specified when working with irregular frequencies.")
-    # TODO test if stuff is POSIXct, Date
+  
     if (inherits(lf, "Date")){
       lf.end <- as.Date(lf.end)
     } else if (inherits(lf, "POSIXct")){
@@ -454,12 +465,14 @@ td <- function(formula, conversion = "sum", to = "quarterly",
                     "litterman-maxlog", "litterman-minrss", "litterman-fixed", 
                     "fernandez", "dynamic-maxlog", "dynamic-minrss", 
                     "dynamic-fixed", "ols")){
-    z <- SubRegressionBased(y_l = y_l, X = X, hf = hf, lf = lf, n.bc = n.bc, n.fc = n.fc, 
+    z <- SubRegressionBased(y_l = y_l, X = X, hf = hf, lf = lf, lf.end = lf.end, 
+                            n.bc = n.bc, n.fc = n.fc, 
                             conversion = conversion, 
                             method = method, truncated.rho = truncated.rho, 
                             fixed.rho = fixed.rho, fr = fr, ...)
   } else if (method %in% c("denton-cholette", "denton", "uniform")){
-    z <- SubDenton(y_l = y_l, X = X, hf = hf, lf = lf, n.bc = n.bc, n.fc = n.fc, 
+    z <- SubDenton(y_l = y_l, X = X, hf = hf, lf = lf, lf.end = lf.end, 
+                   n.bc = n.bc, n.fc = n.fc, 
                    conversion = conversion, method = method, 
                    criterion = criterion, h = h, fr = fr, ...)
   } else {
