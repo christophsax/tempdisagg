@@ -2,8 +2,8 @@
 % Please edit documentation in R/tempdisagg-package.R
 \docType{package}
 \name{tempdisagg-package}
-\alias{tempdisagg}
 \alias{tempdisagg-package}
+\alias{tempdisagg}
 \title{Methods for Temporal Disaggregation and Interpolation of Time Series}
 \description{
 Temporal disaggregation methods are used to disaggregate or 
@@ -21,11 +21,10 @@ Temporal disaggregation methods are used to disaggregate or
   (\url{http://journal.r-project.org/archive/2013-2/sax-steiner.pdf}) describes the package and the theory of temporal disaggregation
   in more detail.
 }
-\author{
-Christoph Sax \email{christoph.sax@gmail.com}, Peter Steiner
-}
 \seealso{
 \code{\link{td}} for more information on usage.
 }
+\author{
+Christoph Sax \email{christoph.sax@gmail.com}, Peter Steiner
+}
 \keyword{package}
-

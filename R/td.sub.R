@@ -1,4 +1,33 @@
-SubRegressionBased <- function(y_l, X, n.bc, n.fc, conversion = "sum", 
+
+
+# # Dates, or POSIXct Time Stamp, specified as end of period
+
+# # The reason why we specify enf of periods is that only that way we can extract
+# # the number of forecasted high frequency period from the data. It is assumed
+# # that hf and lf series start at the same point in time
+
+# lf <- seq.Date(as.Date("2014-02-01"), to = as.Date("2016-12-01"),  by = "month")-1
+# hf <- seq.Date(as.Date("2014-01-01"), to = as.Date("2017-01-31"),  by = "day")
+
+
+
+# # back to start of period
+# lf <- seq.Date(as.Date("2014-02-01"), to = as.Date("2016-12-01"),  by = "month")
+# hf <- seq.Date(as.Date("2014-01-01"), to = as.Date("2017-01-31"),  by = "day")
+
+# lf.end <- as.Date("2016-12-31")
+
+# y_l <- as.matrix(rnorm(length(lf)))
+# X <- as.matrix(rep(1, length(hf)))
+
+# z0 <- SubRegressionBased(y_l, X, lf = lf, hf = hf, lf.end = lf.end, method = "chow-lin-fixed", fixed.rho = 0.9) 
+# z1 <- SubDenton(y_l, X, lf = lf, hf = hf, lf.end = lf.end, method = "denton-cholette")
+ 
+
+
+SubRegressionBased <- function(y_l, X, 
+                               lf = NULL, lf.end = NULL, hf = NULL, 
+                               n.bc = NULL, n.fc = NULL, conversion = "sum", 
                                method = "chow-lin-maxlog", fr = 4, 
                                truncated.rho = 0, 
                                fixed.rho = 0.5, tol = 1e-16, 
@@ -28,8 +57,8 @@ SubRegressionBased <- function(y_l, X, n.bc, n.fc, conversion = "sum",
   #     rho             scalar, autoregressive parameter
   #     truncated       logical, whether rho has been truncated to 0
   
-  stopifnot(inherits(n.bc, "integer"))
-  stopifnot(inherits(n.fc, "integer"))
+  # stopifnot(inherits(n.bc, "integer"))
+  # stopifnot(inherits(n.fc, "integer"))
 
 
   # dimensions of y_l and X
@@ -38,8 +67,13 @@ SubRegressionBased <- function(y_l, X, n.bc, n.fc, conversion = "sum",
   m <- dim(X)[2]
 
   # conversion matrix expanded with zeros
-  C <- CalcC(n_l, conversion, fr, n.bc = n.bc, n.fc = n.fc)
-  
+  # no real need to keep this separate, but will do so to keep old code save
+  if (!is.null(hf)){
+    C <- CalcCLfHf(lf, hf, lf.end = lf.end, conversion = conversion)
+  } else {
+    C <- CalcC(n_l, conversion, fr, n.bc = n.bc, n.fc = n.fc)
+  }
+
   pm <- CalcPowerMatrix(n)
   
   # sanity test
@@ -127,6 +161,8 @@ SubRegressionBased <- function(y_l, X, n.bc, n.fc, conversion = "sum",
                            "dynamic-maxlog", "dynamic-minrss", 
                            "dynamic-fixed", "ols")){
     Q       <- CalcQ(rho = rho, pm = pm)
+  } else {
+    stop("method not supported: ", method)
   }
 
   if (method %in% c("dynamic-maxlog", "dynamic-minrss", "dynamic-fixed")){
@@ -171,8 +207,11 @@ SubRegressionBased <- function(y_l, X, n.bc, n.fc, conversion = "sum",
 }
 
 
-SubDenton <- function(y_l, X, n.bc, n.fc, conversion, method, fr, 
-                      criterion = "proportional", h = 1) {
+SubDenton <- function(y_l, X, 
+                      lf = NULL, hf = NULL, lf.end = NULL,
+                      n.bc = NULL, n.fc = NULL, conversion = "sum", 
+                      method = "Denton", fr = NULL, criterion = "proportional", 
+                      h = 1) {
   # performs temporal disaggregation for denton methods
   #
   # Args:
@@ -206,10 +245,15 @@ SubDenton <- function(y_l, X, n.bc, n.fc, conversion, method, fr,
   # dimensions of y_l and X
   n_l <- length(y_l)
   n <- length(as.numeric(X))
-  
+
   # conversion matrix expanded with zeros
-  C <- CalcC(n_l, conversion, fr, n.bc = n.bc, n.fc = n.fc)
-  
+  # no real need to keep this separate, but will do so to keep old code save
+  if (!is.null(hf)){
+    C <- CalcCLfHf(lf, hf, lf.end = lf.end, conversion = conversion)
+  } else {
+    C <- CalcC(n_l, conversion, fr, n.bc = n.bc, n.fc = n.fc)
+  }
+
   D <- D_0 <- diag(n)
   diag(D[2:n, 1:(n-1)]) <- -1
   X_inv <- diag(1 / (as.numeric(X)/mean(X)))
@@ -223,7 +267,7 @@ SubDenton <- function(y_l, X, n.bc, n.fc, conversion, method, fr,
       D_0 <- D%*%D_0
     }
     if(criterion == "proportional") {
-      D_0 <- D_0 %*% X_inv
+      D_0 <- D_0 %*% X_inv 
     }
   } else stop("wrong specification of h")
   
@@ -258,6 +302,8 @@ SubDenton <- function(y_l, X, n.bc, n.fc, conversion, method, fr,
     
     # final series
     y <- X + D %*% u_l
+  } else {
+    stop("wrong method: ", method)
   }
   
   # output

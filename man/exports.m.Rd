@@ -20,4 +20,3 @@ chemical and pharmaceutical industry in Switzerland (in Mio. Swiss Francs) as
 well as their quarterly and annual sales (Index).
 }
 \keyword{datasets}
-

@@ -32,4 +32,3 @@ plot(mod2)
 }
 \keyword{models}
 \keyword{ts,}
-

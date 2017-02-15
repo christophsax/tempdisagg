@@ -1,3 +1,11 @@
+0.26  2017-02-15
+
+changes visible to the user:
+- disaggregating irregular time series, e.g. monthly to daily, days to hours, etc.
+- support for 'xts' time series objects.
+- new method: fast, a shortcut for chow-lin-fixed with fixed.rho = 0.99999
+
+
 0.25  2016-07-10
 
 changes visible to the user:
