@@ -6,7 +6,8 @@
 \usage{
 td(formula, conversion = "sum", to = "quarterly",
   method = "chow-lin-maxlog", truncated.rho = 0, fixed.rho = 0.5,
-  criterion = "proportional", h = 1, start = NULL, end = NULL, ...)
+  criterion = "proportional", h = 1, start = NULL, end = NULL,
+  lf = NULL, lf.end = NULL, hf = NULL, ...)
 }
 \arguments{
 \item{formula}{an object of class \code{"\link{formula}"}: a symbolic 
@@ -48,6 +49,12 @@ series with \code{\link{window}}.}
 
 \item{end}{(optional) end date. Similar to pre-processing the input 
 series with \code{\link{window}}.}
+
+\item{lf}{(optional) series of class \code{"Date"} or \code{"POSIXct"}.}
+
+\item{lf.end}{(optional) value of class \code{"Date"} or \code{"POSIXct"}.}
+
+\item{hf}{(optional) series of class \code{"Date"} or \code{"POSIXct"}.}
 
 \item{...}{additional arguments to be passed to the low level 
 subfunctions.}
@@ -243,4 +250,3 @@ Chow, G. C., & Lin, A. L. (1971). Best linear unbiased
 }
 \keyword{models}
 \keyword{ts,}
-

@@ -33,4 +33,3 @@ predict(mod1)
 }
 \keyword{models}
 \keyword{ts,}
-
