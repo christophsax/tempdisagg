@@ -265,25 +265,32 @@ td <- function(formula, conversion = "sum", to = "quarterly",
 
   # ---- xts mode --------------------------------------------------------------
   
-  if (inherits(y_l.series, "xts")){
-    if (!requireNamespace("xts", quietly = TRUE)){
-      stop("The 'xts' package is not installed, but required to process 'xts' objects.")
+  if (!inherits(y_l.series, "ts")) {
+browser()
+
+    lf.dt <- ts_wide(ts_dt(y_l.series))
+    if (ncol(lf.dt) > 2) {
+      stop("left hand side must not contain more than one series")
     }
-    xts.mode <- TRUE
-    lf.xts <- y_l.series
-    lf <- zoo::index(lf.xts)
+    names(lf.dt) <- c("time", "value")
+
+    lf <- lf.dt$time
+    tsbox.mode <- TRUE
 
     # should be treated as non-ts from now on (in case an xts is also a ts)
-    y_l.series <- as.numeric(y_l.series)
+    y_l.series <- lf.dt$value
 
     if (length(X.series.names) > 0) {
       if (!inherits(get(X.series.names[1], envir=environment(X.formula)), "xts")){
         stop("Only left hand side is an object of class 'xts'.")
       }
-      hf.xts <- get(X.series.names[1], envir=environment(X.formula))
-      hf <- zoo::index(hf.xts)
+      hf.dt <- ts_wide(ts_dt(get(X.series.names[1], envir=environment(X.formula))))
+      names(hf.dt)[1] <- "time"
+
+      hf <- hf.dt$time
+
     } else {
-      if (is.null(hf)) stop("If left hand side is an 'xts' argument and no right side variables are given, 'hf' must be specified as a 'Date' series.")
+      if (is.null(hf)) stop("If left hand side is a non-'ts' object and no right side variables are given, 'hf' must be specified as a series of class 'Date'")
       hf <- as.Date(hf)
       hf.xts <- xts(rep(1, length(hf)), order.by = hf)
     }
