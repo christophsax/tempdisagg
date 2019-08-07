@@ -1,35 +1,35 @@
 #' Temporal Aggregation of Time Series
-#' 
-#' Performs temporal aggregation of high to low frequency time series. 
-#' Currently, \code{ta} only works with \code{ts} or \code{mts} time series 
+#'
+#' Performs temporal aggregation of high to low frequency time series.
+#' Currently, \code{ta} only works with \code{ts} or \code{mts} time series
 #' objects.
-#' 
+#'
 #' \code{ta} is used to aggregate a high frequency time series into a low
 #' frequency series, while the latter is either the sum, the average, the first
 #' or the last value of the high-frequency series. \code{ta} is the inverse
 #' function of \code{\link{td}}. If applied to an output series of \code{td},
 #' \code{ta} yields the original series.
-#' 
+#'
 #' @param x           a time series object of class \code{"ts"} or \code{"mts"}.
-#' @param conversion  type of conversion: \code{"sum"}, \code{"average"}, 
+#' @param conversion  type of conversion: \code{"sum"}, \code{"average"},
 #'                    \code{"first"} or \code{"last"}.
-#' @param to          (low-frequency) destination frequency as a character 
-#'                    string (\code{"annual"} or \code{"quarterly"}) or as a 
+#' @param to          (low-frequency) destination frequency as a character
+#'                    string (\code{"annual"} or \code{"quarterly"}) or as a
 #'                    scalar (e.g. \code{1}, \code{2}, \code{4}).
 #' @param ...         additional arguments, passed to the methods.
-#'                    
-#' @return \code{ta} returns an object of class \code{"ts"} or \code{"mts"}, 
+#'
+#' @return \code{ta} returns an object of class \code{"ts"} or \code{"mts"},
 #'   depending on the class of the input series.
-#' 
+#'
 #' @seealso \code{\link{td}} for the main function for temporal disaggregation.
 #' @export
-#' 
+#'
 #' @examples
 #' data(swisspharma)
-#'   
+#'
 #' sales.q.a <- ta(sales.q, conversion = "sum", to = "annual")
 #' all.equal(sales.a, sales.q.a)
-#' 
+#'
 #' @keywords ts, models
 ta <- function(x, ...) UseMethod("ta")
 
@@ -77,9 +77,9 @@ SubAggregation <- function(x, conversion = "sum", f_l = 1){
   #
   # Args:
   #   x:            a single time series object of class "ts"
-  #   f_l:          frequency of the (low-frequency) destination series. 
-  #                 Overrides the to argument. 
-  #   to:           destination frequency ("quarterly" or "monthly"), only for 
+  #   f_l:          frequency of the (low-frequency) destination series.
+  #                 Overrides the to argument.
+  #   to:           destination frequency ("quarterly" or "monthly"), only for
   #                 Denton without indicators
   #
   # Returns:
@@ -160,18 +160,18 @@ SubAggregation <- function(x, conversion = "sum", f_l = 1){
 
   # if all observations are NAs, return NAs
   if (all(is.na(x))){
-    z <- window(ts(NA, start = lf.start.na, frequency=f_l), 
+    z <- window(ts(NA, start = lf.start.na, frequency=f_l),
                 end = lf.end.na, extend=TRUE)
   # if series contains insufficient numbers of observations, return NAs
   } else if (lf.start > lf.end){
-    z <- window(ts(NA, start = lf.start.na, frequency=f_l), 
+    z <- window(ts(NA, start = lf.start.na, frequency=f_l),
                 end = lf.end.na, extend=TRUE)
   } else {
     x.used <- window(x, start = lf.start, end = lf.end + 1 / f_l - 1/ f)
     if (any(is.na(x.used))){
       warning("time series contains internal NAs")
     }
-    agg <- as.numeric(CalcC(n_l = length(x.used)/fr, conversion = conversion, 
+    agg <- as.numeric(CalcC(n_l = length(x.used)/fr, conversion = conversion,
                             fr=fr
                             ) %*% x.used)
     agg.ts <- ts(agg, start=lf.start, frequency=f_l)
@@ -185,7 +185,7 @@ SubConvertEnd <- function(hf.end, f, f_l){
   # converts a hf end point to the last fully available lf end point
   #
   # Args:
-  #   hf.end:       a scalar indicating the time stamp of the last available 
+  #   hf.end:       a scalar indicating the time stamp of the last available
   #                   high frequency obs.
   #   f:            frequency of the high-frequency series
   #   f_l:          frequency of the low-frequency series
