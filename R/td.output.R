@@ -168,25 +168,42 @@ print.summary.td <- function (x, digits = max(3, getOption("digits") - 3),
 #' @export
 #'
 plot.td <- function(x, ...){
-  old.par <- par(no.readonly=TRUE)  # backup par settings
 
   if (x$method %in% c("denton", "denton-cholette")){
     ext <- "('fitted.values': low-frequency indicator)"
   } else {
     ext <- "('fitted.values': low-frequency fitted values of the regression)"
   }
-
   subtitle <- paste("method:", x$method, ext)
 
+  if (x$mode == "tsbox") {
+    tsbox::ts_plot(`actual` = x$actual, `fitted values` = x$actual %ts-% x$residuals)
+    grid();
+  }
+  old.par <- par(no.readonly=TRUE)  # backup par settings
+  on.exit(par(old.par))  # restore par settings
   par(mfrow=c(2,1), mar = c(1.5, 4, 4, 2) + 0.1)
-  ts.plot(ts.intersect(x$actual, x$actual - x$residuals),
+  if (x$mode == "tsbox") {
+    tsbox::ts_plot(
+      `actual` = x$actual,
+      `fitted values` = tsbox::`%ts-%`(x$actual, x$residuals)
+    )
+    grid();
+  } else {
+    ts.plot(ts.intersect(x$actual, x$actual - x$residuals),
           main=x$name, lty=c("solid", "dashed"), col=c("black", "red"),
           ylab="actual and fitted.values (red)", ...); grid();
+  }
   mtext(subtitle, 3, line=.4, cex=.9)
   par(mar = c(4, 4, 1.5, 2) + 0.1)
-  ts.plot(ts.intersect(x$residuals, 0), lty=c("solid", "dashed"),
-          col=c("black", "red"), ylab="residuals", ...); grid()
-  on.exit(par(old.par))  # restore par settings
+  if (x$mode == "tsbox") {
+    # tsbox::ts_plot() does not work well with grids
+    return(invisible(NULL))
+  } else {
+    ts.plot(ts.intersect(x$residuals, 0), lty=c("solid", "dashed"),
+            col=c("black", "red"), ylab="residuals", ...); grid()
+  }
+
 }
 
 
