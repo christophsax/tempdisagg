@@ -286,7 +286,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     mode <- "numeric"
   }
 
-  if (mode == "ts" && !(to %in% c("quarterly", "monthly", "quarter", "month"))) {
+  if (mode == "ts" && !(to %in% list("quarterly", "monthly", "quarter", "month", 2, 4, 7, 12))) {
     stop("use a time series class other than 'ts' to deal with '", to, "'")
   }
 
