@@ -2,6 +2,8 @@ tempdisagg: Methods for Temporal Disaggregation and Interpolation of Time Series
 --------------------------------------------------------------------------------
 
 [![Build Status](https://travis-ci.org/christophsax/tempdisagg.svg?branch=master)](https://travis-ci.org/christophsax/tempdisagg)
+[![codecov](https://codecov.io/github/christophsax/tempdisagg/branch/master/graphs/badge.svg)](https://codecov.io/github/christophsax/tempdisagg)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/tempdisagg)](https://cran.r-project.org/package=tempdisagg)
 
 Temporal disaggregation methods are used to disaggregate or interpolate a low
 frequency time series to a higher frequency series, where either the sum, the
