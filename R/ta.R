@@ -39,6 +39,11 @@ ta <- function(x, ...) UseMethod("ta")
 #' @import utils
 #' @method ta ts
 ta.ts <- function(x, conversion = "sum", to = "annual", ...){
+
+  if (ModeOfSeries(x) == "tsbox") {
+    stop("ta() does not support ts-boxable time series. Use tsbox::ts_frequency() instead.")
+  }
+
   # Calls SubAggregation for computation
 
   if (is.numeric(to)){  # frequency specified by a number

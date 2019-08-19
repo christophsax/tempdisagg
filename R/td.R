@@ -265,25 +265,6 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   # --- determine tsmode -------------------------------------------------------
 
   # 3 modes: "tsbox", "ts", "numeric"
-  ModeOfSeries <- function(x) {
-    tsobjs <- c(
-      "zoo", "xts", "tslist", "tbl_ts", "timeSeries", "tbl_time", "tbl_df",
-      "data.table", "data.frame", "dts", "tis", "irts"
-    )
-
-    if (inherits(x, "xts")) {  # xts may be also a ts, treat as xts
-      "tsbox"
-    } else if (inherits(x, "ts")) {
-      "ts"
-    } else if (inherits(x, tsobjs)) {
-      "tsbox"
-    } else if (is.numeric(x)) {
-      "numeric"
-    } else {
-      stop("series must be a time series object or numeric.", call. = FALSE)
-    }
-  }
-
   mode <- ModeOfSeries(y_l.series)
 
   # mixed cases
@@ -304,7 +285,10 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     warning("Only left hand side is a time series. Using numeric mode.")
     mode <- "numeric"
   }
-  if (!(to %in% c("quarterly", "monthly", "quarter", "month"))) mode <- "tsbox"
+
+  if (mode == "ts" && !(to %in% c("quarterly", "monthly", "quarter", "month"))) {
+    stop("use a time series class other than 'ts' to deal with '", to, "'")
+  }
 
   # ---- tsbox mode ------------------------------------------------------------
 
@@ -336,10 +320,10 @@ td <- function(formula, conversion = "sum", to = "quarterly",
 
 
       hf.dts <- tsbox::ts_default(tsbox::ts_dts(X.raw))
-      to <- unique(ts_summary(hf.dts)$diff)
+      to <- unique(tsbox::ts_summary(hf.dts)$diff)
       if (length(to) > 1) stop("non-unique frequencies on RHS: ", paste(to, collapse = ", "))
 
-      hf.dt <- tsbox::ts_wide(ts_dt(hf.dts))
+      hf.dt <- tsbox::ts_wide(tsbox::ts_dt(hf.dts))
 
       if (length(X.series.names) == 1) names(hf.dt)[2] <- X.series.names
       hf <- hf.dt$time
@@ -353,7 +337,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       # last time stamp covered by lf, in hf units. This could be indered from hf
       # and lf only.
       hf.by.string <- paste0("-", if (!grepl("^\\d", to)) "1 ", to)
-      lf.end <- ts_lag(tail(ts_bind(lf.dt, NA), 1), by = hf.by.string)$time
+      lf.end <- tsbox::ts_lag(tail(tsbox::ts_bind(lf.dt, NA), 1), by = hf.by.string)$time
 
       # data matrices
       hf.env <- list2env(as.list(hf.dt))
@@ -366,9 +350,9 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       # if there is no X Variables, set it to a constant ('Denton' Methods)
       to <- gsub("ly$", "", to)
       hf.by.string <- paste0("-", if (!grepl("^\\d", to)) "1 ", to)
-      lf.end <- ts_lag(tail(ts_bind(lf.dt, NA), 1), by = hf.by.string)$time
-      hf.dt <- ts_dts(data.frame(time = seq(lf[1], lf.end, by = to), value = 1))
-      X.raw <- copy_class(hf.dt, y_l.series)
+      lf.end <- tsbox::ts_lag(tail(tsbox::ts_bind(lf.dt, NA), 1), by = hf.by.string)$time
+      hf.dt <- tsbox::ts_dts(data.frame(time = seq(lf[1], lf.end, by = to), value = 1))
+      X.raw <- tsbox::copy_class(hf.dt, y_l.series)
       X <- as.matrix(hf.dt$value)
       X.names <- "(Intercept)"
       hf <- hf.dt$time
