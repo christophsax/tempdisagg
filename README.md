@@ -9,19 +9,19 @@ average, the first or the last value of the resulting high frequency series is
 consistent with the low frequency series. Temporal disaggregation can be
 performed with or without one or more high frequency indicator series. Contains
 the methods of Chow-Lin, Santos-Silva-Cardoso, Fernandez, Litterman, Denton and
-Denton-Cholette.
+Denton-Cholette. Supports most R time series classes.
 
 To install or update from from [CRAN][package], run:
 
     install.packages("tempdisagg")
 
-A good way to start is to run the interactive demo:
+To install the development version:
+```r
+# install.packages("remotes")
+remotes::install_github("christophsax/tempdisagg")
+```
 
-    library(tempdisagg)
-    demo(tempdisagg)
-    
-or read the help page of the main function (`?td`). Our article on 
-[temporal disaggregation of time series][article] in the R-Journal describes
+Our article on [temporal disaggregation of time series][article] in the R-Journal describes
 the package and the theory of temporal disaggregation in more detail.
 
 Please report bugs on [Github][github] or send an

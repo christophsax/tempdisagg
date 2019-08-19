@@ -9,7 +9,7 @@ td(formula, conversion = "sum", to = "quarterly",
   criterion = "proportional", h = 1, start = NULL, end = NULL, ...)
 }
 \arguments{
-\item{formula}{an object of class \code{"[formula]"}: a symbolic
+\item{formula}{an object of class \code{"formula"}: a symbolic
 description of the the temporal disaggregation model. The details of model
 specification are given under 'Details'.}
 
@@ -20,7 +20,7 @@ specification are given under 'Details'.}
 (\code{"quarter"} (or \code{"quarterly"}), \code{"month"} (or \code{"monthly"}), \code{"day"},
 \code{"hour"}, \code{"minute"}, \code{"second"}, or \code{"year"})
 or as a scalar (e.g. \code{2}, \code{4}, \code{7}, \code{12}). Required if no right hand side
-indicator series is provided. The \href{tsbox}{https://www.tsbox.help} package must
+indicator series is provided. The \href{https://www.tsbox.help}{tsbox} package must
 be installed to deal with frequencies other than monthly or quarterly. If
 the input series are numeric, \code{to} is a scalar indicating the
 frequency ratio.}
@@ -92,8 +92,8 @@ of differencing in Denton methods}
 \description{
 Perform temporal disaggregation or interpolation of low frequency to high
 frequency time series. \code{td} can be used with objects of class
-\code{"[ts]"}, with numeric vectors or with any
-\href{ts-boxable}{https://www.tsbox.help} time series class.
+\code{"ts"}, with numeric vectors or with any
+\href{https://www.tsbox.help}{ts-boxable} time series object.
 }
 \details{
 \code{td} is used to disaggregate or interpolate a low frequency to a higher
@@ -101,8 +101,9 @@ frequency time series, while either the sum, the average, the first or the
 last value of the resulting high-frequency series is consistent with the low
 frequency series. Disaggregation can be performed with or without the help of
 one or more right hand side indicator series. It can deal with both with
-a regular disaggregation setting (e.g. quarter to month) but also with
-an irregular disaggregation setting (e.g. month to days), where it respects
+a regular disaggregation setting (e.g. quarters to months) but also with
+an irregular disaggregation setting (e.g. months to days), where it respects
+the the different lengths of the months.
 
 If the high-frequency indicator(s) cover(s) a longer time span than the
 low-frequency series, an extrapolation or retropolation (Wei, 1994, p. 138)
@@ -215,8 +216,9 @@ p4 <- predict(td(d.a ~ 0 + d.q, method = "denton",
 # Table in Denton (1971), page 101:
 round(cbind(d.q, a1, a2, a3, a4, p1, p2, p3, p4))
 
-# Using altvernative time series classes (see www.tsbox.help)
 \dontrun{
+
+# Using altvernative time series classes (see www.tsbox.help)
 library(tsbox)
 sales.a.xts <- ts_xts(window(sales.a, start = 2000))
 exports.q.xts <- ts_xts(window(exports.q, start = 2000))
