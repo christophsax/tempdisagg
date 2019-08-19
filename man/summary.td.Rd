@@ -26,16 +26,16 @@ for each coefficient.}
 }
 \value{
 \code{summary.td} returns a list containing the summary statistics
-  included in \code{object}, and computes the following additional
-  statistics:
+included in \code{object}, and computes the following additional
+statistics:
 
-  \item{n_l}{number of low frequency observations}
-  \item{n}{number of high frequency observations}
-  \item{ar_l}{empirical auto-correlation of the low frequency series}
-  \item{coefficients}{a named matrix containing coefficients, standard
-  deviations, t-values and p-values}
+\item{n_l}{number of low frequency observations}
+\item{n}{number of high frequency observations}
+\item{ar_l}{empirical auto-correlation of the low frequency series}
+\item{coefficients}{a named matrix containing coefficients, standard
+deviations, t-values and p-values}
 
-  The \code{print} method prints the summary output in a similar way as the method for \code{"lm"}.
+The \code{print} method prints the summary output in a similar way as the method for \code{"lm"}.
 }
 \description{
 \code{summary} method for class "td".

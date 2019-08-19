@@ -23,7 +23,7 @@ scalar (e.g. \code{1}, \code{2}, \code{4}).}
 }
 \value{
 \code{ta} returns an object of class \code{"ts"} or \code{"mts"},
-  depending on the class of the input series.
+depending on the class of the input series.
 }
 \description{
 Performs temporal aggregation of high to low frequency time series.

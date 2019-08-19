@@ -14,7 +14,7 @@ call to \code{\link{td}}.}
 }
 \value{
 returns a a two panel plot as its side effect, showing
-  the fitted and actual low frequency series, and the residuals.
+the fitted and actual low frequency series, and the residuals.
 }
 \description{
 \code{plot} method for class \code{"td"}. Plot the fitted and actual low

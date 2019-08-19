@@ -14,8 +14,8 @@ call to \code{\link{td}}.}
 }
 \value{
 \code{summary.td} returns a vector or a \code{"ts"} object,
-  containing the disaggregated or interpolated high frequency series of a
-  temporal disaggregation.
+containing the disaggregated or interpolated high frequency series of a
+temporal disaggregation.
 }
 \description{
 Compute the disaggregated or interpolated (and extrapolated) high frequency

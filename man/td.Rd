@@ -55,36 +55,36 @@ subfunctions.}
 \value{
 \code{td} returns an object of class \code{"td"}.
 
-  The function \code{\link[=predict.td]{predict}} computes the interpolated
-  high frequency series. If the high-frequency indicator series are longer
-  than the low-frequency series, the resulting series will be extrapolated.
-  The function \code{coefficients} extracts the coefficients. The function
-  \code{residuals} extracts the low frequency residuals. The function
-  \code{\link[=summary.td]{summary}} prints a summary of the estimation.
+The function \code{\link[=predict.td]{predict}} computes the interpolated
+high frequency series. If the high-frequency indicator series are longer
+than the low-frequency series, the resulting series will be extrapolated.
+The function \code{coefficients} extracts the coefficients. The function
+\code{residuals} extracts the low frequency residuals. The function
+\code{\link[=summary.td]{summary}} prints a summary of the estimation.
 
-  An object of class \code{"td"} is a list containing the following
-  components: \item{values}{disaggregated or interpolated (and extrapolated)
-  high frequency series} \item{fitted.values}{low frequency fitted values of
-  the regression; low frequency indicator for the Denton methods.}
-  \item{p}{preliminary high frequency series} \item{residuals}{low-frequency
-  residuals} \item{rho}{autoregressive parameter, \eqn{\rho}}
-  \item{truncated}{logical, whether \eqn{\rho} has been truncated}
-  \item{coefficients}{a named vector of coefficients} \item{se}{standard
-  errors of the coefficients} \item{s_2}{ML-estimator of the variance of the
-  high-frequency residuals} \item{s_2_gls}{GLS-estimator of the variance of
-  the high-frequency residuals} \item{tss}{weighted (low frequency) total sum
-  of squares} \item{rss}{weighted (low frequency) residual sum of squares}
-  \item{r.squared}{R squared} \item{adj.r.squared}{adjusted R squared}
-  \item{logl}{log-likelihood} \item{aic}{Akaike information criterion}
-  \item{bic}{Schwarz information criterion} \item{rank}{number of right hand
-  variables (including intercept)} \item{df}{degrees of freedom}
-  \item{method}{method of temporal disaggregation} \item{call}{function call}
-  \item{name}{name of the low frequency variable} \item{fr}{the ratio of high
-  to low-frequency series} \item{conversion}{type of temporal conversion}
-  \item{actual}{actual values of the low frequeny series} \item{model}{a
-  matrix containing the indicators (and a constant if present)}
-  \item{criterion}{minimization criterion in Denton methods} \item{h}{order
-  of differencing in Denton methods}
+An object of class \code{"td"} is a list containing the following
+components: \item{values}{disaggregated or interpolated (and extrapolated)
+high frequency series} \item{fitted.values}{low frequency fitted values of
+the regression; low frequency indicator for the Denton methods.}
+\item{p}{preliminary high frequency series} \item{residuals}{low-frequency
+residuals} \item{rho}{autoregressive parameter, \eqn{\rho}}
+\item{truncated}{logical, whether \eqn{\rho} has been truncated}
+\item{coefficients}{a named vector of coefficients} \item{se}{standard
+errors of the coefficients} \item{s_2}{ML-estimator of the variance of the
+high-frequency residuals} \item{s_2_gls}{GLS-estimator of the variance of
+the high-frequency residuals} \item{tss}{weighted (low frequency) total sum
+of squares} \item{rss}{weighted (low frequency) residual sum of squares}
+\item{r.squared}{R squared} \item{adj.r.squared}{adjusted R squared}
+\item{logl}{log-likelihood} \item{aic}{Akaike information criterion}
+\item{bic}{Schwarz information criterion} \item{rank}{number of right hand
+variables (including intercept)} \item{df}{degrees of freedom}
+\item{method}{method of temporal disaggregation} \item{call}{function call}
+\item{name}{name of the low frequency variable} \item{fr}{the ratio of high
+to low-frequency series} \item{conversion}{type of temporal conversion}
+\item{actual}{actual values of the low frequeny series} \item{model}{a
+matrix containing the indicators (and a constant if present)}
+\item{criterion}{minimization criterion in Denton methods} \item{h}{order
+of differencing in Denton methods}
 }
 \description{
 Perform temporal disaggregation or interpolation of low frequency to high
@@ -212,34 +212,34 @@ round(cbind(d.q, a1, a2, a3, a4, p1, p2, p3, p4))
 }
 \references{
 Chow, G. C., & Lin, A. L. (1971). Best linear unbiased
-  interpolation, distribution, and extrapolation of time series by related
-  series. \emph{The review of Economics and Statistics}, 372-375.
+interpolation, distribution, and extrapolation of time series by related
+series. \emph{The review of Economics and Statistics}, 372-375.
 
-  Denton, F. T. (1971). Adjustment of monthly or quarterly series to annual
-  totals: an approach based on quadratic minimization. \emph{Journal of the
-  American Statistical Association}, 66(333), 99-102.
+Denton, F. T. (1971). Adjustment of monthly or quarterly series to annual
+totals: an approach based on quadratic minimization. \emph{Journal of the
+American Statistical Association}, 66(333), 99-102.
 
-  Santos Silva, J. M. C. & Cardoso, F. N. (2001). The Chow-Lin method using
-  dynamic models. \emph{Economomic Modelling}, 18, 269-280.
+Santos Silva, J. M. C. & Cardoso, F. N. (2001). The Chow-Lin method using
+dynamic models. \emph{Economomic Modelling}, 18, 269-280.
 
-  Wei, W. W. S. (1994). Time series analysis. Addison-Wesley publ.
+Wei, W. W. S. (1994). Time series analysis. Addison-Wesley publ.
 
-  Sax, C. und Steiner, P. (2013). Temporal Disaggregation of Time Series.
-  \emph{The R Journal}, 5(2), 80-88.
-  \url{http://journal.r-project.org/archive/2013-2/sax-steiner.pdf}
+Sax, C. und Steiner, P. (2013). Temporal Disaggregation of Time Series.
+\emph{The R Journal}, 5(2), 80-88.
+\url{http://journal.r-project.org/archive/2013-2/sax-steiner.pdf}
 }
 \seealso{
 \code{\link{ta}} for temporal aggregation, the inverse function of
-  \code{td}.
+\code{td}.
 
-  \code{\link[=summary.td]{summary}} is used to obtain and print a summary of
-  the results.
+\code{\link[=summary.td]{summary}} is used to obtain and print a summary of
+the results.
 
-  \code{\link[=predict.td]{predict}} is used to extract the disaggregated or
-  interpolated high frequency series.
+\code{\link[=predict.td]{predict}} is used to extract the disaggregated or
+interpolated high frequency series.
 
-  \code{\link[=plot.td]{plot}} is used to plot the fitted and actual low
-  frequency series, as well as the residuals.
+\code{\link[=plot.td]{plot}} is used to plot the fitted and actual low
+frequency series, as well as the residuals.
 }
 \keyword{models}
 \keyword{ts,}
