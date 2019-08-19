@@ -1,4 +1,4 @@
-# tempdisagg 1.0 (2019-08-15)
+# tempdisagg 0.99 (2019-08-??)
 
 ## major changes
 
