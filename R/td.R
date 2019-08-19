@@ -455,14 +455,15 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       if (is.numeric(to)){  # frequency specified by a number
         f <- to
       } else if (is.character(to)){  # frequency specified by a char string
-        if (to == "quarterly"){
+        if (to %in% c("quarterly", "quarter")){
           f <- 4L
-        } else if (to == "monthly"){
+        } else if (to %in% c("monthly", "month")){
           f <- 12L
         } else {
           stop("'to' argument: unknown character string")
         }
       } else stop ("'to' argument: wrong specification")
+      stopifnot(f_l <= f)
       fr <- as.integer(round(f/f_l))
       X.start <- start
       n.bc <- 0L
