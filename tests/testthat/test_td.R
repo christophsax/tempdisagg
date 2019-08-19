@@ -27,3 +27,6 @@ test_that("dynamic method", {
   expect_is(td(ts(1:8) ~ 1, to = "quarterly", method = "dynamic-minrss"), "td")
 })
 
+test_that("denton tsbox", {
+  expect_is(td(ts_df(ts(1:8)) ~ 1, to = "quarterly", method = "denton-cholette"), "td")
+})
