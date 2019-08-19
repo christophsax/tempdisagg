@@ -9,7 +9,7 @@ td(formula, conversion = "sum", to = "quarterly",
   criterion = "proportional", h = 1, start = NULL, end = NULL, ...)
 }
 \arguments{
-\item{formula}{an object of class \code{"\link{formula}"}: a symbolic
+\item{formula}{an object of class \code{"[formula]"}: a symbolic
 description of the the temporal disaggregation model. The details of model
 specification are given under 'Details'.}
 
@@ -44,10 +44,10 @@ works with the methods \code{"chow-lin-fixed"} and
 \item{h}{degree of differencing for Denton methods. See 'Details'.}
 
 \item{start}{(optional) start date. Similar to pre-processing the input
-series with \code{\link{window}}.}
+series with \code{\link[=window]{window()}}.}
 
 \item{end}{(optional) end date. Similar to pre-processing the input
-series with \code{\link{window}}.}
+series with \code{\link[=window]{window()}}.}
 
 \item{...}{additional arguments to be passed to the low level
 subfunctions.}
@@ -55,12 +55,12 @@ subfunctions.}
 \value{
 \code{td} returns an object of class \code{"td"}.
 
-The function \code{\link[=predict.td]{predict}} computes the interpolated
+The function \code{\link[=predict.td]{predict()}} computes the interpolated
 high frequency series. If the high-frequency indicator series are longer
 than the low-frequency series, the resulting series will be extrapolated.
 The function \code{coefficients} extracts the coefficients. The function
 \code{residuals} extracts the low frequency residuals. The function
-\code{\link[=summary.td]{summary}} prints a summary of the estimation.
+\code{\link[=summary.td]{summary()}} prints a summary of the estimation.
 
 An object of class \code{"td"} is a list containing the following
 components: \item{values}{disaggregated or interpolated (and extrapolated)
@@ -89,7 +89,7 @@ of differencing in Denton methods}
 \description{
 Perform temporal disaggregation or interpolation of low frequency to high
 frequency time series. \code{td} can be used with objects of class
-\code{"\link{ts}"} as well as with basic vectors.
+\code{"[ts]"} as well as with basic vectors.
 }
 \details{
 \code{td} is used to disaggregate or interpolate a low frequency to a higher
@@ -106,11 +106,11 @@ is performed, using the same model as for interpolation.
 
 The selection of a temporal disaggregation model is similar to the selection
 of a linear regression model. Thus, \code{td} closely mirrors the working of
-the \code{\link{lm}} function. The left hand side of the
-\code{\link{formula}} denotes the low-frequency series, the right hand side
+the \code{\link[=lm]{lm()}} function. The left hand side of the
+\code{\link[=formula]{formula()}} denotes the low-frequency series, the right hand side
 the indicators. If no indicator is specified, the right hand side must be set
 equal to \code{1} (see examples). Unlike \code{lm}, \code{td} handles
-\code{\link{ts}} and \code{mts} time-series objects, as a typical application
+\code{\link[=ts]{ts()}} and \code{mts} time-series objects, as a typical application
 involves the use of these objects. Alternatively, If used with basic vectors,
 the \code{to} argument specifies the ratio between the high and the low
 frequency series.
@@ -229,16 +229,16 @@ Sax, C. und Steiner, P. (2013). Temporal Disaggregation of Time Series.
 \url{http://journal.r-project.org/archive/2013-2/sax-steiner.pdf}
 }
 \seealso{
-\code{\link{ta}} for temporal aggregation, the inverse function of
+\code{\link[=ta]{ta()}} for temporal aggregation, the inverse function of
 \code{td}.
 
-\code{\link[=summary.td]{summary}} is used to obtain and print a summary of
+\code{\link[=summary.td]{summary()}} is used to obtain and print a summary of
 the results.
 
-\code{\link[=predict.td]{predict}} is used to extract the disaggregated or
+\code{\link[=predict.td]{predict()}} is used to extract the disaggregated or
 interpolated high frequency series.
 
-\code{\link[=plot.td]{plot}} is used to plot the fitted and actual low
+\code{\link[=plot.td]{plot()}} is used to plot the fitted and actual low
 frequency series, as well as the residuals.
 }
 \keyword{models}

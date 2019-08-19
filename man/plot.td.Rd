@@ -8,7 +8,7 @@
 }
 \arguments{
 \item{x}{an object of class \code{"td"}, usually, a result of a
-call to \code{\link{td}}.}
+call to \code{\link[=td]{td()}}.}
 
 \item{\dots}{further arguments passed to or from other methods.}
 }
@@ -28,7 +28,7 @@ plot(mod2)
 
 }
 \seealso{
-\code{\link{td}} for the main function for temporal disaggregation.
+\code{\link[=td]{td()}} for the main function for temporal disaggregation.
 }
 \keyword{models}
 \keyword{ts,}

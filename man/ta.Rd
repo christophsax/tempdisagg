@@ -34,7 +34,7 @@ objects.
 \code{ta} is used to aggregate a high frequency time series into a low
 frequency series, while the latter is either the sum, the average, the first
 or the last value of the high-frequency series. \code{ta} is the inverse
-function of \code{\link{td}}. If applied to an output series of \code{td},
+function of \code{\link[=td]{td()}}. If applied to an output series of \code{td},
 \code{ta} yields the original series.
 }
 \examples{
@@ -45,7 +45,7 @@ all.equal(sales.a, sales.q.a)
 
 }
 \seealso{
-\code{\link{td}} for the main function for temporal disaggregation.
+\code{\link[=td]{td()}} for the main function for temporal disaggregation.
 }
 \keyword{models}
 \keyword{ts,}

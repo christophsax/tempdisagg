@@ -9,10 +9,10 @@
 #'
 #'   A good way to start is to run the interactive demo:
 #'
-#'   \code{demo(tempdisagg)}
+#'   `demo(tempdisagg)`
 #'
 #'   Our article on temporal disaggregation of time series
-#'   (\url{http://journal.r-project.org/archive/2013-2/sax-steiner.pdf}) describes the package and the theory of temporal disaggregation
+#'   (<http://journal.r-project.org/archive/2013-2/sax-steiner.pdf>) describes the package and the theory of temporal disaggregation
 #'   in more detail.
 #'
 #' @name tempdisagg-package
@@ -20,7 +20,7 @@
 #' @docType package
 #' @author Christoph Sax \email{christoph.sax@@gmail.com}, Peter Steiner
 #' @keywords package
-#' @seealso \code{\link{td}} for more information on usage.
+#' @seealso [td()] for more information on usage.
 NULL
 
 
@@ -32,7 +32,7 @@ NULL
 #'
 #' @docType data
 #'
-#' @format Each time series is an object of class \code{"ts"}. The number of
+#' @format Each time series is an object of class `"ts"`. The number of
 #' observations depends on the frequency.
 #' @source Import and Export Data are from the Swiss Federal Customs
 #' Administration. Sales Data are from the Swiss Federal Statistical Office.

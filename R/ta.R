@@ -1,27 +1,27 @@
 #' Temporal Aggregation of Time Series
 #'
 #' Performs temporal aggregation of high to low frequency time series.
-#' Currently, \code{ta} only works with \code{ts} or \code{mts} time series
+#' Currently, `ta` only works with `ts` or `mts` time series
 #' objects.
 #'
-#' \code{ta} is used to aggregate a high frequency time series into a low
+#' `ta` is used to aggregate a high frequency time series into a low
 #' frequency series, while the latter is either the sum, the average, the first
-#' or the last value of the high-frequency series. \code{ta} is the inverse
-#' function of \code{\link{td}}. If applied to an output series of \code{td},
-#' \code{ta} yields the original series.
+#' or the last value of the high-frequency series. `ta` is the inverse
+#' function of [td()]. If applied to an output series of `td`,
+#' `ta` yields the original series.
 #'
-#' @param x           a time series object of class \code{"ts"} or \code{"mts"}.
-#' @param conversion  type of conversion: \code{"sum"}, \code{"average"},
-#'                    \code{"first"} or \code{"last"}.
+#' @param x           a time series object of class `"ts"` or `"mts"`.
+#' @param conversion  type of conversion: `"sum"`, `"average"`,
+#'                    `"first"` or `"last"`.
 #' @param to          (low-frequency) destination frequency as a character
-#'                    string (\code{"annual"} or \code{"quarterly"}) or as a
-#'                    scalar (e.g. \code{1}, \code{2}, \code{4}).
+#'                    string (`"annual"` or `"quarterly"`) or as a
+#'                    scalar (e.g. `1`, `2`, `4`).
 #' @param ...         additional arguments, passed to the methods.
 #'
-#' @return \code{ta} returns an object of class \code{"ts"} or \code{"mts"},
+#' @return `ta` returns an object of class `"ts"` or `"mts"`,
 #'   depending on the class of the input series.
 #'
-#' @seealso \code{\link{td}} for the main function for temporal disaggregation.
+#' @seealso [td()] for the main function for temporal disaggregation.
 #' @export
 #'
 #' @examples

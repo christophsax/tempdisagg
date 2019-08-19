@@ -22,7 +22,7 @@ Our article on temporal disaggregation of time series
 in more detail.
 }
 \seealso{
-\code{\link{td}} for more information on usage.
+\code{\link[=td]{td()}} for more information on usage.
 }
 \author{
 Christoph Sax \email{christoph.sax@gmail.com}, Peter Steiner
