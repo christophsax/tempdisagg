@@ -18,7 +18,7 @@ A good way to start is to run the interactive demo:
 \code{demo(tempdisagg)}
 
 Our article on temporal disaggregation of time series
-(\url{http://journal.r-project.org/archive/2013-2/sax-steiner.pdf}) describes the package and the theory of temporal disaggregation
+(\url{https://journal.r-project.org/archive/2013-2/sax-steiner.pdf}) describes the package and the theory of temporal disaggregation
 in more detail.
 }
 \seealso{
