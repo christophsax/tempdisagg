@@ -62,12 +62,20 @@ summary.td <- function(object, ...){
   # build output on top of the input
   z <- object
 
-  # number of observations and number of indicator series
-  z$n_l <- length(object$actual)
-  if (is.null(dim(object$model))){
-    z$n <- length(object$model)
+
+  if (z$mode %in% c("ts", "numeric")) {
+    # number of observations and number of indicator series
+    z$n_l <- length(object$actual)
+    if (is.null(dim(object$model))){
+      z$n <- length(object$model)
+    } else {
+      z$n <- dim(object$model)[1]
+    }
+    z$residuals <- z$residuals
   } else {
-    z$n <- dim(object$model)[1]
+    z$n_l <- tsbox::ts_summary(object$actual)$obs
+    z$n <- tsbox::ts_summary(object$model)$obs[1]
+    z$residuals <- tsbox::ts_default(tsbox::ts_dt(z$residuals))$value
   }
 
   # derivative statististics
@@ -176,10 +184,6 @@ plot.td <- function(x, ...){
   }
   subtitle <- paste("method:", x$method, ext)
 
-  if (x$mode == "tsbox") {
-    tsbox::ts_plot(`actual` = x$actual, `fitted values` = x$actual %ts-% x$residuals)
-    grid();
-  }
   old.par <- par(no.readonly=TRUE)  # backup par settings
   on.exit(par(old.par))  # restore par settings
   par(mfrow=c(2,1), mar = c(1.5, 4, 4, 2) + 0.1)
