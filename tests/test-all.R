@@ -1,6 +1,13 @@
 # These tests are more extensive and only need to run on travis, not on CRAN.
+library(testthat)
+library(tempdisagg)
 
-if (Sys.getenv("TRAVIS") != ""){  # check if we are on travis
+test_check("tempdisagg")
+
+
+# check only if we are on travis, we don't want the data file (300k) to be part
+# of the package
+if (Sys.getenv("TRAVIS") != ""){
 
   # travis folder (on travis)
   path <- file.path(Sys.getenv("TRAVIS_BUILD_DIR"), "travis")
@@ -63,7 +70,7 @@ if (Sys.getenv("TRAVIS") != ""){  # check if we are on travis
 
   # Checks
   # ============================================================================
-  
+
   # aggregation fullfilled?
   # ----------------------------------------------------------------------------
   stopifnot(sapply(R$y2q, function(x){all.equal(window(ta(predict(x)), start=start(sales.a)), sales.a, tolerance=1e-7)}))
@@ -71,7 +78,7 @@ if (Sys.getenv("TRAVIS") != ""){  # check if we are on travis
 
   stopifnot(sapply(old$R$y2q, function(x){all.equal(window(ta(predict(x)), start=start(sales.a)), sales.a, tolerance=1e-7)}))
   stopifnot(sapply(old$R$q2m, function(x){all.equal(window(ta(predict(x), to=4), start=start(sales.q), end=end(sales.q)), sales.q, tolerance=1e-5, check.attributes=FALSE)}))
-  
+
   # all components: TRUE
 
   # # summary statistics of tempdisagg estimations
@@ -120,6 +127,9 @@ if (Sys.getenv("TRAVIS") != ""){  # check if we are on travis
 
   # b) td-Objects match?
   # -------------------------------------------------------------------------------
+
+  R$y2q <- lapply(R$y2q, function(e) {e$mode <- NULL; e})
+  R$q2m <- lapply(R$q2m, function(e) {e$mode <- NULL; e})
   if(any(names(R) != names(old$R))) {R <- R[names(old$R)]}
   stopifnot(all.equal(R, old$R, tol = 1e-5))
 

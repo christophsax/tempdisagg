@@ -8,7 +8,9 @@ Authors@R: c(
     person("Tommaso", "Di Fonzo", role = "ctb"))
 URL: http://journal.r-project.org/archive/2013-2/sax-steiner.pdf
 BugReports: https://github.com/christophsax/tempdisagg
-Suggests: tsbox
+Suggests:
+    tsbox,
+    testthat
 Description: Temporal disaggregation methods are used to disaggregate and
     interpolate a low frequency time series to a higher frequency series, where
     either the sum, the average, the first or the last value of the resulting
@@ -18,4 +20,4 @@ Description: Temporal disaggregation methods are used to disaggregate and
     Fernandez, Litterman, Denton and Denton-Cholette.
 License: GPL-3
 LazyLoad: yes
-RoxygenNote: 6.0.0
+RoxygenNote: 6.1.1
