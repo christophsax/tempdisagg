@@ -318,16 +318,15 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   if (mode == "tsbox") {
 
     fr <- NULL
-    # FIXME, add reguarity check
 
     if (!requireNamespace("tsbox")) {
       stop(
         "'tsbox' is needed to support non-standard time-series class. To ",
-        "install: \n\n  install.packages(\"tsbox\")",
-        call. = FALSE
+        "install: \n\n  install.packages(\"tsbox\")"
       )
     }
-    lf.dt <- tsbox::ts_default(tsbox::ts_dts(y_l.series))
+    lf.dt <- tsbox::ts_regular(tsbox::ts_default(tsbox::ts_dts(y_l.series)))
+    if (any(is.na(lf.dt$value))) stop("time series contains NAs")
     if (ncol(lf.dt) > 2) {
       stop("left hand side must not contain more than one series")
     }
@@ -341,8 +340,9 @@ td <- function(formula, conversion = "sum", to = "quarterly",
 
       X.raw <- get(X.series.names[1], envir=environment(X.formula))
 
+      hf.dts <- tsbox::ts_regular(tsbox::ts_default(tsbox::ts_dts(X.raw)))
+      if (any(is.na(hf.dts$value))) stop("time series contains NAs")
 
-      hf.dts <- tsbox::ts_default(tsbox::ts_dts(X.raw))
       to <- unique(tsbox::ts_summary(hf.dts)$diff)
       if (length(to) > 1) stop("non-unique frequencies on RHS: ", paste(to, collapse = ", "))
 

@@ -30,3 +30,13 @@ test_that("tsbox mode has same results as ts", {
 })
 
 
+test_that("internal NA drops an error", {
+  y <- c(2, 2, NA, 2, 2, 2, 2, 2)
+  y.ts <- ts(y, start = 2000)
+
+  expect_error(td(y.ts ~ 1, to = "monthly"))
+
+  library(tsbox)
+  y.xts <- ts_xts(y.ts)
+  expect_error(td(y.xts ~ 1, to = "monthly"))
+})
