@@ -5,10 +5,10 @@
 - works now with most time series classes, as supported by the tsbox package.
 - disagregation is possible to all frequencies (e.g., monthly to daily).
   Disaggregation takes into account the calendar, e.g., the fact that February
-  is shorter than other months.
+  is shorter than other months. (#30)
 - new method: "fast", a shortcut for chow-lin-fixed with fixed.rho = 0.99999.
   The method returns approximately the same results as "denton-cholette", but is
-  much faster.
+  much faster. (#14)
 
 ## under the hood
 

@@ -37,6 +37,6 @@ test_that("internal NA drops an error", {
   expect_error(td(y.ts ~ 1, to = "monthly"))
 
   library(tsbox)
-  y.xts <- ts_xts(y.ts)
-  expect_error(td(y.xts ~ 1, to = "monthly"))
+  y.df <- ts_df(y.ts)
+  expect_error(td(y.df ~ 1, to = "monthly"))
 })

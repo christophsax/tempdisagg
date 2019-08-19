@@ -12,7 +12,7 @@
 #'   `demo(tempdisagg)`
 #'
 #'   Our article on temporal disaggregation of time series
-#'   (<http://journal.r-project.org/archive/2013-2/sax-steiner.pdf>) describes the package and the theory of temporal disaggregation
+#'   (<https://journal.r-project.org/archive/2013-2/sax-steiner.pdf>) describes the package and the theory of temporal disaggregation
 #'   in more detail.
 #'
 #' @name tempdisagg-package
