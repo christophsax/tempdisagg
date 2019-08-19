@@ -17,17 +17,20 @@ specification are given under 'Details'.}
 \code{"first"} or \code{"last"}.}
 
 \item{to}{high-frequency destination frequency as a character string
-(\code{"quarterly"} or \code{"monthly"}) or as a scalar (e.g. \code{2},
-\code{4}, \code{7}, \code{12}). If the input series are \code{ts} objects,
-the argument is necessary if no indicator is given. If the input series are
-vectors, \code{to} must be a scalar indicating the frequency ratio.}
+(\code{"quarter"} (or \code{"quarterly"}), \code{"month"} (or \code{"monthly"}), \code{"day"},
+\code{"hour"}, \code{"minute"}, \code{"second"}, or \code{"year"})
+or as a scalar (e.g. \code{2}, \code{4}, \code{7}, \code{12}). Required if no right hand side
+indicator series is provided. The \href{tsbox}{https://www.tsbox.help} package must
+be installed to deal with frequencies other than monthly or quarterly. If
+the input series are numeric, \code{to} is a scalar indicating the
+frequency ratio.}
 
 \item{method}{method of temporal disaggregation:
 \code{"chow-lin-maxlog"}, \code{"chow-lin-minrss-ecotrim"},
 \code{"chow-lin-minrss-quilis"}, \code{"chow-lin-fixed"},
 \code{"dynamic-maxlog"} (experimental), \code{"dynamic-minrss"} (experimental), \code{"dynamic-fixed"} (experimental),
 \code{"fernandez"}, \code{"litterman-maxlog"}, \code{"litterman-minrss"},
-\code{"litterman-fixed"}, \code{"denton-cholette"}, \code{"denton"},
+\code{"litterman-fixed"}, \code{"denton-cholette"}, \code{"denton"}, \code{"fast"},
 \code{"uniform"} or \code{"ols"}. See 'Details'.}
 
 \item{truncated.rho}{lower bound for the autoregressive parameter
@@ -89,16 +92,17 @@ of differencing in Denton methods}
 \description{
 Perform temporal disaggregation or interpolation of low frequency to high
 frequency time series. \code{td} can be used with objects of class
-\code{"[ts]"} as well as with basic vectors.
+\code{"[ts]"}, with numeric vectors or with any
+\href{ts-boxable}{https://www.tsbox.help} time series class.
 }
 \details{
 \code{td} is used to disaggregate or interpolate a low frequency to a higher
 frequency time series, while either the sum, the average, the first or the
 last value of the resulting high-frequency series is consistent with the low
 frequency series. Disaggregation can be performed with or without the help of
-one or more indicator series. It can deal with all situations where the high
-frequency is an integer multiple of the low frequency (e.g. weeks to days),
-but not with irregular frequencies (e.g. weeks to months).
+one or more right hand side indicator series. It can deal with both with
+a regular disaggregation setting (e.g. quarter to month) but also with
+an irregular disaggregation setting (e.g. month to days), where it respects
 
 If the high-frequency indicator(s) cover(s) a longer time span than the
 low-frequency series, an extrapolation or retropolation (Wei, 1994, p. 138)
@@ -144,7 +148,9 @@ Additionally, \code{criterion} can be set equal to \code{"proportional"} or
 \code{"additive"}, depending on whether the proportional or the absolute
 deviations should be considered for minimzation. \code{"denton-cholette"}
 removes the transient movement of the original \code{"denton"} method at the
-beginning of the resulting series.
+beginning of the resulting series.  \code{"fast"} is a shortcut for
+\code{"chow-lin-fixed"} with \code{fixed.rho = 0.99999}. It returns approximately the
+same results as "denton-cholette" with \code{h = 1}, but is much faster.
 
 \code{"uniform"} is a special case of the \code{"denton"} approach, with
 \code{h} equals  \code{0} and \code{criterion} equals  \code{"proportional"}.
@@ -209,6 +215,22 @@ p4 <- predict(td(d.a ~ 0 + d.q, method = "denton",
 # Table in Denton (1971), page 101:
 round(cbind(d.q, a1, a2, a3, a4, p1, p2, p3, p4))
 
+# Using altvernative time series classes (see www.tsbox.help)
+\dontrun{
+library(tsbox)
+sales.a.xts <- ts_xts(window(sales.a, start = 2000))
+exports.q.xts <- ts_xts(window(exports.q, start = 2000))
+mod1b <- td(sales.a.xts ~ 0 + exports.q.xts)
+predict(mod1b)  # class 'xts'
+
+# non-standard frequencies: decades to years
+predict(td(ts_xts(uspop) ~ 1, "mean", to = "year", method = "fast"))
+
+# years to days
+m.d <- td(sales.a.xts ~ 1, to = "day", method = "fast")
+sales.d.xts <- predict(m.d)
+all.equal(ts_frequency(sales.d.xts, to = "year", aggregate = "sum"), sales.a.xts)
+}
 }
 \references{
 Chow, G. C., & Lin, A. L. (1971). Best linear unbiased

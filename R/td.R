@@ -2,15 +2,17 @@
 #'
 #' Perform temporal disaggregation or interpolation of low frequency to high
 #' frequency time series. `td` can be used with objects of class
-#' `"[ts]"` as well as with basic vectors.
+#' `"[ts]"`, with numeric vectors or with any
+#' [https://www.tsbox.help](ts-boxable) time series class.
 #'
 #' `td` is used to disaggregate or interpolate a low frequency to a higher
 #' frequency time series, while either the sum, the average, the first or the
 #' last value of the resulting high-frequency series is consistent with the low
 #' frequency series. Disaggregation can be performed with or without the help of
-#' one or more indicator series. It can deal with all situations where the high
-#' frequency is an integer multiple of the low frequency (e.g. weeks to days),
-#' but not with irregular frequencies (e.g. weeks to months).
+#' one or more right hand side indicator series. It can deal with both with
+#' a regular disaggregation setting (e.g. quarter to month) but also with
+#' an irregular disaggregation setting (e.g. month to days), where it respects
+# the irregularities of the calendar.
 #'
 #' If the high-frequency indicator(s) cover(s) a longer time span than the
 #' low-frequency series, an extrapolation or retropolation (Wei, 1994, p. 138)
@@ -56,7 +58,9 @@
 #' `"additive"`, depending on whether the proportional or the absolute
 #' deviations should be considered for minimzation. `"denton-cholette"`
 #' removes the transient movement of the original `"denton"` method at the
-#' beginning of the resulting series.
+#' beginning of the resulting series.  `"fast"` is a shortcut for
+#' `"chow-lin-fixed"` with `fixed.rho = 0.99999`. It returns approximately the
+#' same results as "denton-cholette" with `h = 1`, but is much faster.
 #'
 #' `"uniform"` is a special case of the `"denton"` approach, with
 #' `h` equals  `0` and `criterion` equals  `"proportional"`.
@@ -77,13 +81,16 @@
 #'   `"chow-lin-minrss-quilis"`, `"chow-lin-fixed"`,
 #'   `"dynamic-maxlog"` (experimental), `"dynamic-minrss"` (experimental), `"dynamic-fixed"` (experimental),
 #'   `"fernandez"`, `"litterman-maxlog"`, `"litterman-minrss"`,
-#'   `"litterman-fixed"`, `"denton-cholette"`, `"denton"`,
+#'   `"litterman-fixed"`, `"denton-cholette"`, `"denton"`, `"fast"`,
 #'   `"uniform"` or `"ols"`. See 'Details'.
 #' @param to          high-frequency destination frequency as a character string
-#'   (`"quarterly"` or `"monthly"`) or as a scalar (e.g. `2`,
-#'   `4`, `7`, `12`). If the input series are `ts` objects,
-#'   the argument is necessary if no indicator is given. If the input series are
-#'   vectors, `to` must be a scalar indicating the frequency ratio.
+#'   (`"quarter"` (or `"quarterly"`), `"month"` (or `"monthly"`), `"day"`,
+#'   `"hour"`, `"minute"`, `"second"`, or `"year"`)
+#'   or as a scalar (e.g. `2`, `4`, `7`, `12`). Required if no right hand side
+#'   indicator series is provided. The [https://www.tsbox.help](tsbox) package must
+#'   be installed to deal with frequencies other than monthly or quarterly. If
+#'   the input series are numeric, `to` is a scalar indicating the
+#'   frequency ratio.
 #' @param truncated.rho  lower bound for the autoregressive parameter
 #'   \eqn{\rho}. If set to `0` (default), no negative values are allowed.
 #'   If set to `-1`, truncation is disabled.
@@ -215,6 +222,22 @@
 #' # Table in Denton (1971), page 101:
 #' round(cbind(d.q, a1, a2, a3, a4, p1, p2, p3, p4))
 #'
+#' # Using altvernative time series classes (see www.tsbox.help)
+#' \dontrun{
+#' library(tsbox)
+#' sales.a.xts <- ts_xts(window(sales.a, start = 2000))
+#' exports.q.xts <- ts_xts(window(exports.q, start = 2000))
+#' mod1b <- td(sales.a.xts ~ 0 + exports.q.xts)
+#' predict(mod1b)  # class 'xts'
+#'
+#' # non-standard frequencies: decades to years
+#' predict(td(ts_xts(uspop) ~ 1, "mean", to = "year", method = "fast"))
+#'
+#' # years to days
+#' m.d <- td(sales.a.xts ~ 1, to = "day", method = "fast")
+#' sales.d.xts <- predict(m.d)
+#' all.equal(ts_frequency(sales.d.xts, to = "year", aggregate = "sum"), sales.a.xts)
+#' }
 #' @keywords ts, models
 #' @export
 #'
@@ -348,6 +371,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
 
     } else {
       # if there is no X Variables, set it to a constant ('Denton' Methods)
+      to <- gsub("daily$", "day", to)
       to <- gsub("ly$", "", to)
       hf.by.string <- paste0("-", if (!grepl("^\\d", to)) "1 ", to)
       lf.end <- tsbox::ts_lag(tail(tsbox::ts_bind(lf.dt, NA), 1), by = hf.by.string)$time
