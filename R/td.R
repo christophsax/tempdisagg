@@ -327,7 +327,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       )
     }
     lf.dt <- tsbox::ts_regular(tsbox::ts_default(tsbox::ts_dts(y_l.series)))
-    if (any(is.na(lf.dt$value))) stop("time series contains NAs")
+    if (any(is.na(lf.dt$value))) stop("left hand side contains NAs")
     if (ncol(lf.dt) > 2) {
       stop("left hand side must not contain more than one series")
     }
@@ -336,26 +336,42 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     y_l <- as.matrix(lf.dt$value)
 
     if (length(X.series.names) > 0) {
-      mode.x <- ModeOfSeries(get(X.series.names[1], envir=environment(X.formula)))
-      stopifnot(mode.x %in% c("ts", "tsbox"))
+      X.modes <- vapply(X.series.names, function(e) ModeOfSeries(get(e, envir=environment(X.formula))), "")
+      is.time.series <- X.modes %in% c("ts", "tsbox")
+      if (!all(is.time.series)) {
+        stop("some right hand side variables are not valid time series: ", X.modes[!is.time.series])
+      }
 
-      X.raw <- get(X.series.names[1], envir=environment(X.formula))
+      X.objects <- setNames(
+        lapply(X.series.names, function(e) get(e, envir=environment(X.formula))),
+        X.series.names
+      )
+      X.template <- X.objects[[1]]
+      X.dtss<- lapply(
+        X.objects,
+        function(e) tsbox::ts_regular(tsbox::ts_default(tsbox::ts_dts(e)))
+      )
+      smry <- ts_summary(do.call(ts_c, X.dtss))
+      if (length(unique(smry$start)) > 1) stop("non-unique start on RHS: ", paste(smry$start, collapse = ", "))
+      if (length(unique(smry$end)) > 1) stop("non-unique end on RHS: ", paste(smry$end, collapse = ", "))
+      if (length(unique(smry$diff)) > 1) stop("non-unique frequency on RHS: ", paste(smry$diff, collapse = ", "))
+      to <- unique(smry$diff)
 
-      hf.dts <- tsbox::ts_regular(tsbox::ts_default(tsbox::ts_dts(X.raw)))
-      if (any(is.na(hf.dts$value))) stop("time series contains NAs")
+      X.wide.dfs <- lapply(X.dtss, function(e) tsbox::ts_wide(tsbox::ts_dt(e)))
+      X.matrices <- lapply(X.wide.dfs, function(e) as.matrix(e[, -1]))
+      if (any(is.na(do.call(cbind, X.matrices)))) stop("right hand side contains NAs")
+      X.times <- lapply(X.wide.dfs, function(e) e$time)
 
-      to <- unique(tsbox::ts_summary(hf.dts)$diff)
-      if (length(to) > 1) stop("non-unique frequencies on RHS: ", paste(to, collapse = ", "))
+      hf <- X.times[[1]]
+      stopifnot(all(vapply(X.times, identical, TRUE, hf)))
 
-      hf.dt <- tsbox::ts_wide(tsbox::ts_dt(hf.dts))
-
-      if (length(X.series.names) == 1) names(hf.dt)[2] <- X.series.names
-      hf <- hf.dt$time
+      # FIXME, perhaps
+      # if (ncol(hf.dt) == 2) names(hf.dt)[2] <- X.series.names
 
       if (lf[1] < hf[1]){
         lf.dt <- lf.dt[time >= hf[1]]
         lf <- lf[lf >= hf[1]]
-        message("High frequency series shorter than low frequency. Low frequency values from ", lf[1], " are used.")
+        message("High frequency series shorter than low frequency. Discarding low frequency before ", lf[1], " are used.")
       }
 
       # last time stamp covered by lf, in hf units. This could be indered from hf
@@ -364,8 +380,9 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       lf.end <- tsbox::ts_lag(tail(tsbox::ts_bind(lf.dt, NA), 1), by = hf.by.string)$time
 
       # data matrices
-      hf.env <- list2env(as.list(hf.dt))
+      hf.env <- list2env(as.list(X.matrices))
       hf.dt.formula <- X.formula
+
       attr(hf.dt.formula, ".Environment") <- hf.env
       X <- model.matrix(hf.dt.formula)
       X.names <- dimnames(X)[[2]]
@@ -377,7 +394,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       hf.by.string <- paste0("-", if (!grepl("^\\d", to)) "1 ", to)
       lf.end <- tsbox::ts_lag(tail(tsbox::ts_bind(lf.dt, NA), 1), by = hf.by.string)$time
       hf.dt <- tsbox::ts_dts(data.frame(time = seq(lf[1], lf.end, by = to), value = 1))
-      X.raw <- tsbox::copy_class(hf.dt, y_l.series)
+      X.template <- tsbox::copy_class(hf.dt, y_l.series)
       X <- as.matrix(hf.dt$value)
       X.names <- "(Intercept)"
       hf <- hf.dt$time
@@ -388,6 +405,8 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     y_l <- as.matrix(lf.dt$value)
     X <- matrix(X, nrow = nrow(X), ncol = ncol(X))
     dimnames(X) <- list(NULL, X.names)
+    stopifnot(identical(dim(y_l)[1], length(lf)))
+    stopifnot(identical(dim(X)[1], length(hf)))
 
   }
 
@@ -530,7 +549,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   }
 
   # additional output
-  z$mode             <- mode
+  z$mode               <- mode
   z$method             <- method
   z$call               <- cl
   z$name               <- y_l.name
@@ -546,9 +565,9 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     z$residuals        <- ts(z$residuals, start = start, frequency = f_l)
     z$actual           <- ts(z$actual, start = start, frequency = f_l)
   } else if (mode == "tsbox") {
-    z$model            <- tsbox::copy_class(z$model, X.raw)
-    z$p                <- tsbox::copy_class(z$p, X.raw)
-    z$values           <- tsbox::copy_class(z$values, X.raw)
+    z$model            <- tsbox::copy_class(z$model, X.template)
+    z$p                <- tsbox::copy_class(z$p, X.template)
+    z$values           <- tsbox::copy_class(z$values, X.template)
     z$fitted.values    <- tsbox::copy_class(z$fitted.values, y_l.series)
     z$residuals        <- tsbox::copy_class(z$residuals, y_l.series)
     z$actual           <- tsbox::copy_class(z$actual, y_l.series)
