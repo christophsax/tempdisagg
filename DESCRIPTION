@@ -1,6 +1,6 @@
 Package: tempdisagg
-Version: 0.25.1.9000
-Date: 2018-05-22
+Version: 0.25.1.9001
+Date: 2019-08-??
 Title: Methods for Temporal Disaggregation and Interpolation of Time Series
 Authors@R: c(
     person("Christoph", "Sax", role = c("aut", "cre"), email = "christoph.sax@gmail.com"),
@@ -8,13 +8,13 @@ Authors@R: c(
     person("Tommaso", "Di Fonzo", role = "ctb"))
 URL: http://journal.r-project.org/archive/2013-2/sax-steiner.pdf
 BugReports: https://github.com/christophsax/tempdisagg
-Imports: tsbox
+Suggests: tsbox
 Description: Temporal disaggregation methods are used to disaggregate and
     interpolate a low frequency time series to a higher frequency series, where
     either the sum, the average, the first or the last value of the resulting
     high frequency series is consistent with the low frequency series. Temporal
     disaggregation can be performed with or without one or more high frequency
-    indicator series. Contains the methods of Chow-Lin, Santos-Silva-Cardoso, 
+    indicator series. Contains the methods of Chow-Lin, Santos-Silva-Cardoso,
     Fernandez, Litterman, Denton and Denton-Cholette.
 License: GPL-3
 LazyLoad: yes

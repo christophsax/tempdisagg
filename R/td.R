@@ -70,7 +70,7 @@
 #' @param formula     an object of class \code{"\link{formula}"}: a symbolic
 #'   description of the the temporal disaggregation model. The details of model
 #'   specification are given under 'Details'.
-#' @param conversion  type of conversion: \code{"sum"}, \code{"average"},
+#' @param conversion  type of conversion: \code{"sum"}, \code{"mean"} (or: \code{"average"}),
 #'   \code{"first"} or \code{"last"}.
 #' @param method      method of temporal disaggregation:
 #'   \code{"chow-lin-maxlog"}, \code{"chow-lin-minrss-ecotrim"},
@@ -97,9 +97,6 @@
 #'   series with \code{\link{window}}.
 #' @param end         (optional) end date. Similar to pre-processing the input
 #'   series with \code{\link{window}}.
-#' @param lf          (optional) series of class \code{"Date"} or \code{"POSIXct"}.
-#' @param lf.end      (optional) value of class \code{"Date"} or \code{"POSIXct"}.
-#' @param hf          (optional) series of class \code{"Date"} or \code{"POSIXct"}.
 #' @param ...         additional arguments to be passed to the low level
 #'   subfunctions.
 #' @return \code{td} returns an object of class \code{"td"}.
@@ -224,8 +221,7 @@
 td <- function(formula, conversion = "sum", to = "quarterly",
                method = "chow-lin-maxlog", truncated.rho = 0, fixed.rho = 0.5,
                criterion = "proportional", h = 1,
-               start = NULL, end = NULL,
-               lf = NULL, lf.end = NULL, hf = NULL, ...) {
+               start = NULL, end = NULL, ...) {
 
   # td deals with the formula interface, the time-series properties
   # and allows for optional shortening of the series. The estimation itself is
@@ -233,25 +229,29 @@ td <- function(formula, conversion = "sum", to = "quarterly",
 
   cl <- match.call()
 
+  if (conversion == "mean") conversion <- "average"  # equivalent
 
   if (method == "fast"){
     method <- "chow-lin-fixed"
     fixed.rho <- 0.99999
   }
 
-  # --- input consistency ----------------------------------------------------
+  # --- input consistency ------------------------------------------------------
 
-  # dont allow length=2 vectors as start or end inputs
+  # dont allow length = 2 vectors as start or end inputs
   if (any(c(length(start), length(end)) > 1)){
-    stop("'start' or 'end' must be specified as a decimal fraction")
+    stop("'start' or 'end' must of length 1")
   }
 
   if (method == "denton"){
-    message("'denton-cholette' removes the transient movement at the beginning of the series and is preferable to the original 'denton' method in most cases.")
+    message(
+      "'denton-cholette' removes the transient movement at the beginning of ",
+      "the series and is preferable to the original 'denton' method in most ",
+      " cases."
+    )
   }
 
-
-  # ---- prepare Formula, extract names and data ------------------------------
+  # ---- prepare Formula, extract names and data -------------------------------
 
   # extract X (right hand side, high frequency) formula, names and data
   X.formula <- formula; X.formula[[2]] <- NULL
@@ -259,105 +259,134 @@ td <- function(formula, conversion = "sum", to = "quarterly",
 
   # extract y_l (left hand side, low frequency) formula, values and names
   y_l.formula <- formula[[2]]
-  y_l.series <- na.omit(eval(y_l.formula, envir=environment(formula)))
+  y_l.series <- na.omit(eval(y_l.formula, envir = environment(formula)))
   y_l.name <- deparse(y_l.formula)
 
+  # --- determine tsmode -------------------------------------------------------
 
-  # ---- xts mode --------------------------------------------------------------
+  # 3 modes: "tsbox", "ts", "numeric"
+  ModeOfSeries <- function(x) {
+    tsobjs <- c(
+      "zoo", "xts", "tslist", "tbl_ts", "timeSeries", "tbl_time", "tbl_df",
+      "data.table", "data.frame", "dts", "tis", "irts"
+    )
 
-  if (!inherits(y_l.series, "ts")) {
-browser()
+    if (inherits(x, "xts")) {  # xts may be also a ts, treat as xts
+      "tsbox"
+    } else if (inherits(x, "ts")) {
+      "ts"
+    } else if (inherits(x, tsobjs)) {
+      "tsbox"
+    } else if (is.numeric(x)) {
+      "numeric"
+    } else {
+      stop("series must be a time series object or numeric.", call. = FALSE)
+    }
+  }
 
-    lf.dt <- ts_wide(ts_dt(y_l.series))
+  mode <- ModeOfSeries(y_l.series)
+
+  # mixed cases
+  # LHS ts, RHS tsbox -> tsbox
+  if (
+    mode == "ts" &&
+    length(X.series.names) > 0 &&
+    ModeOfSeries(get(X.series.names[1], envir=environment(X.formula))) == "tsbox"
+  ) {
+    mode <- "tsbox"
+  }
+  # LHS ts, RHS numeric -> numeric
+  if (
+    mode == "ts" &&
+    length(X.series.names) > 0 &&
+    ModeOfSeries(get(X.series.names[1], envir=environment(X.formula))) == "numeric"
+  ) {
+    warning("Only left hand side is a time series. Using numeric mode.")
+    mode <- "numeric"
+  }
+  if (!(to %in% c("quarterly", "monthly", "quarter", "month"))) mode <- "tsbox"
+
+  # ---- tsbox mode ------------------------------------------------------------
+
+  if (mode == "tsbox") {
+
+    fr <- NULL
+    # FIXME, add reguarity check
+
+    if (!requireNamespace("tsbox")) {
+      stop(
+        "'tsbox' is needed to support non-standard time-series class. To ",
+        "install: \n\n  install.packages(\"tsbox\")",
+        call. = FALSE
+      )
+    }
+    lf.dt <- tsbox::ts_default(tsbox::ts_dts(y_l.series))
     if (ncol(lf.dt) > 2) {
       stop("left hand side must not contain more than one series")
     }
-    names(lf.dt) <- c("time", "value")
-
     lf <- lf.dt$time
-    tsbox.mode <- TRUE
 
-    # should be treated as non-ts from now on (in case an xts is also a ts)
-    y_l.series <- lf.dt$value
+    y_l <- as.matrix(lf.dt$value)
 
     if (length(X.series.names) > 0) {
-      if (!inherits(get(X.series.names[1], envir=environment(X.formula)), "xts")){
-        stop("Only left hand side is an object of class 'xts'.")
-      }
-      hf.dt <- ts_wide(ts_dt(get(X.series.names[1], envir=environment(X.formula))))
-      names(hf.dt)[1] <- "time"
+      mode.x <- ModeOfSeries(get(X.series.names[1], envir=environment(X.formula)))
+      stopifnot(mode.x %in% c("ts", "tsbox"))
 
+      X.raw <- get(X.series.names[1], envir=environment(X.formula))
+
+
+      hf.dts <- tsbox::ts_default(tsbox::ts_dts(X.raw))
+      to <- unique(ts_summary(hf.dts)$diff)
+      if (length(to) > 1) stop("non-unique frequencies on RHS: ", paste(to, collapse = ", "))
+
+      hf.dt <- tsbox::ts_wide(ts_dt(hf.dts))
+
+      if (length(X.series.names) == 1) names(hf.dt)[2] <- X.series.names
       hf <- hf.dt$time
 
-    } else {
-      if (is.null(hf)) stop("If left hand side is a non-'ts' object and no right side variables are given, 'hf' must be specified as a series of class 'Date'")
-      hf <- as.Date(hf)
-      hf.dt <- data.table(time = hf, value = 1)
-    }
-
-    if (lf[1] < hf[1]){
-      lf.xts <- y_l.series <- y_l.series[lf >= hf[1]]
-      lf <- lf[lf >= hf[1]]
-      message("High frequency series shorter than low frequency. Low frequency values from ", lf[1], " are used.")
-    }
-
-  } else {
-    xts.mode <- FALSE
-  }
-
-  if (!is.null(hf) || !is.null(lf) || !is.null(lf.end)){
-    if (is.null(hf)) stop("'hf' must be specified when working with irregular frequencies.")
-    if (is.null(lf)) stop("'lf' must be specified when working with irregular frequencies.")
-    if (is.null(lf.end)) stop("'lf.end' must be specified when working with irregular frequencies.")
-
-    if (inherits(lf, "Date")){
-      lf.end <- as.Date(lf.end)
-    } else if (inherits(lf, "POSIXct")){
-      lf.end <- as.POSIXct(lf.end)
-    }
-  }
-
-  # # ---- xts mode --------------------------------------------------------------
-  # if (inherits(y_l.series, "xts")){
-  #   xts.mode <- TRUE
-  #   lf.xts <- y_l.series
-  #   lf <- index(lf.xts)
-
-  #   # should be treated as non-ts from now on (in case an xts is also a ts)
-  #   y_l.series <- as.numeric(y_l.series)
-
-  #   if (length(X.series.names) > 0) {
-  #     if (!inherits(get(X.series.names[1], envir=environment(X.formula)), "xts")){
-  #       stop("Only left hand side is an object of class 'xts'.")
-  #     }
-  #     hf.xts <- get(X.series.names[1], envir=environment(X.formula))
-  #     hf <- index(hf.xts)
-  #   }
-  # }
-
-
-  # ---- set ts.mode -----------------------------------------------------------
-  # 1. is y_l.series a time series? if so, set ts.mode to TRUE
-  if (is.ts(y_l.series)){
-    ts.mode <- TRUE
-    # 2. is there a X? is it a time series? if not, set ts.mode to FALSE
-    if (length(X.series.names) > 0) {
-      if (!is.ts(get(X.series.names[1], envir=environment(X.formula)))){
-        warning("Only left hand side is a time series. Using non-ts mode.")
-        ts.mode <- FALSE
+      if (lf[1] < hf[1]){
+        lf.dt <- lf.dt[time >= hf[1]]
+        lf <- lf[lf >= hf[1]]
+        message("High frequency series shorter than low frequency. Low frequency values from ", lf[1], " are used.")
       }
+
+      # last time stamp covered by lf, in hf units. This could be indered from hf
+      # and lf only.
+      hf.by.string <- paste0("-", if (!grepl("^\\d", to)) "1 ", to)
+      lf.end <- ts_lag(tail(ts_bind(lf.dt, NA), 1), by = hf.by.string)$time
+
+      # data matrices
+      hf.env <- list2env(as.list(hf.dt))
+      hf.dt.formula <- X.formula
+      attr(hf.dt.formula, ".Environment") <- hf.env
+      X <- model.matrix(hf.dt.formula)
+      X.names <- dimnames(X)[[2]]
+
+    } else {
+      # if there is no X Variables, set it to a constant ('Denton' Methods)
+      to <- gsub("ly$", "", to)
+      hf.by.string <- paste0("-", if (!grepl("^\\d", to)) "1 ", to)
+      lf.end <- ts_lag(tail(ts_bind(lf.dt, NA), 1), by = hf.by.string)$time
+      hf.dt <- ts_dts(data.frame(time = seq(lf[1], lf.end, by = to), value = 1))
+      X.raw <- copy_class(hf.dt, y_l.series)
+      X <- as.matrix(hf.dt$value)
+      X.names <- "(Intercept)"
+      hf <- hf.dt$time
     }
-  } else{
-    if (!is.numeric(y_l.series)){
-      stop("the left hand side of the formula must be either a time series or numeric.")
-    }
-    ts.mode <- FALSE
+
+
+    # final data matrices
+    y_l <- as.matrix(lf.dt$value)
+    X <- matrix(X, nrow = nrow(X), ncol = ncol(X))
+    dimnames(X) <- list(NULL, X.names)
+
   }
 
-  # ---- set or modify time series attributes ('fr', 'start', 'end') ----------
-  if (ts.mode) {
+  # ---- ts mode ---------------------------------------------------------------
 
-    ### ts.mode: y_l.series
+  if (mode == "ts") {
+
+    ### y_l.series
     # shorten y_l.series if start or end are specified
     y_l.series <- window(y_l.series, start = start, end = end)
     f_l <- frequency(y_l.series)
@@ -365,7 +394,7 @@ browser()
     start <- y_l.time[1]
     end <- y_l.time[length(y_l.time)]
 
-    ### ts.mode: X.series
+    ### X.series
     if (length(X.series.names) > 0){  # If X is pecified
       # prototype series of X
       X.series.proto <- eval(X.formula[[2]], envir = environment(X.formula))
@@ -411,10 +440,11 @@ browser()
       n.bc <- 0L
       n.fc <- 0L
     }
+  }
 
-  } else if (is.null(hf)) {  # do not test in xts mode
+  # ---- numeric mode ----------------------------------------------------------
 
-    ### non ts.mode
+  if (mode == "numeric") {
     if (!is.numeric(to)){
       stop("In non-ts/xts mode, 'to' must be an integer number.")
     }
@@ -428,43 +458,33 @@ browser()
     } else {
       n.fc <- 0L
     }
-  } else {  # xts mode
-    fr <- NULL
   }
 
-  # --- raw X matrix ----------------------------------------------------------
+  # --- final data matrices (ts, numeric) --------------------------------------
 
-  if (length(X.series.names) > 0){
-    X <- model.matrix(X.formula)
-    X.names <- dimnames(X)[[2]]
-  } else {
+  if (mode %in% c("ts", "numeric")) {
+    hf <- lf <- lf.end <- NULL
 
-    if (is.null(hf)){
-      # if there is no X Variables, set it to a constant ('Denton' Methods)
-      X <- matrix(rep(1, times = length(y_l.series) * fr))
-
-      # 2017-02-13 (CS): this is not always a good 'recommendation'.
-      # chow-lin-fixed with rho = 0.999 is almost like denton-cholette, but much
-      # faster.
-
-      # if (!(method %in% c("denton-cholette", "denton", "uniform"))) {
-      #   warning ("No indicator specified: denton,
-      #            denton-cholette or uniform are recommended.")
-      # }
+    if (length(X.series.names) > 0){
+      X <- model.matrix(X.formula)
+      X.names <- dimnames(X)[[2]]
     } else {
-      X <- matrix(rep(1, length(hf)))
+      # if there is no X Variables, set it to a constant ('Denton' Methods)
+      if (is.null(hf)){
+        X <- matrix(rep(1, times = length(y_l.series) * fr))
+      } else {
+        X <- matrix(rep(1, length(hf)))
+      }
+      X.names <- "(Intercept)"
     }
-    X.names <- "(Intercept)"
+
+    # final data matrices
+    y_l <- as.matrix(y_l.series)
+    X <- matrix(X, nrow=nrow(X), ncol=ncol(X))
+    dimnames(X) <- list(NULL, X.names)
   }
 
-  # --- final data matrices ---------------------------------------------------
-
-  y_l <- as.matrix(y_l.series)
-  X <- matrix(X, nrow=nrow(X), ncol=ncol(X))
-  dimnames(X) <- list(NULL, X.names)
-
-
-  # --- estimation ------------------------------------------------------------
+  # --- estimation -------------------------------------------------------------
 
   # actual estimation
   if (method %in% c("chow-lin-maxlog", "chow-lin-minrss-ecotrim",
@@ -501,6 +521,7 @@ browser()
   }
 
   # additional output
+  z$mode             <- mode
   z$method             <- method
   z$call               <- cl
   z$name               <- y_l.name
@@ -508,20 +529,20 @@ browser()
   z$conversion         <- conversion
   z$actual             <- y_l.series
   z$model              <- X
-  if (ts.mode) {
+  if (mode == "ts") {
     z$model            <- ts(z$model, start = X.start, frequency = f)
     z$p                <- ts(z$p, start = X.start, frequency = f)
     z$values           <- ts(z$values, start = X.start, frequency = f)
     z$fitted.values    <- ts(z$fitted.values, start = start, frequency = f_l)
     z$residuals        <- ts(z$residuals, start = start, frequency = f_l)
     z$actual           <- ts(z$actual, start = start, frequency = f_l)
-  } else if (xts.mode) {
-    z$model            <- xts::reclass(z$model, hf.xts)
-    z$p                <- xts::reclass(z$p, hf.xts)
-    z$values           <- xts::reclass(z$values, hf.xts)
-    z$fitted.values    <- xts::reclass(z$fitted.values, lf.xts)
-    z$residuals        <- xts::reclass(z$residuals, lf.xts)
-    z$actual           <- xts::reclass(z$actual, lf.xts)
+  } else if (mode == "tsbox") {
+    z$model            <- tsbox::copy_class(z$model, X.raw)
+    z$p                <- tsbox::copy_class(z$p, X.raw)
+    z$values           <- tsbox::copy_class(z$values, X.raw)
+    z$fitted.values    <- tsbox::copy_class(z$fitted.values, y_l.series)
+    z$residuals        <- tsbox::copy_class(z$residuals, y_l.series)
+    z$actual           <- tsbox::copy_class(z$actual, y_l.series)
   }
   class(z) <- "td"
   z
