@@ -1,33 +1,47 @@
-0.26  2017-02-15
+# tempdisagg 1.0 (2019-08-15)
 
-changes visible to the user:
-- disaggregating irregular time series, e.g. monthly to daily, days to hours, etc.
-- support for 'xts' time series objects.
-- new method: fast, a shortcut for chow-lin-fixed with fixed.rho = 0.99999
+## major changes
+
+- works now with most time series classes, as supported by the tsbox package.
+- disagregation is possible to all frequencies (e.g., monthly to daily).
+  Disaggregation takes into account the calendar, e.g., the fact that February
+  is shorter than other months.
+- new method: "fast", a shortcut for chow-lin-fixed with fixed.rho = 0.99999.
+  The method returns approximately the same results as "denton-cholette", but is
+  much faster.
+
+## under the hood
+
+- Supports three modes: tsbox, ts, numeric
+- Markdown in roxygen, NEWS.md
+- testthat infrastructure
 
 
-0.25  2016-07-10
+# tempdisagg 0.25 (2016-07-10)
 
-changes visible to the user:
-- new methods: dynamic-maxlog, dynamic-minrss, dynamic-fixed, as described in
+## changes visible to the user
+
+- new methods: "dynamic-maxlog", "dynamic-minrss", "dynamic-fixed", as described in
   Santos Silva and Cardoso, 2001. Many thanks to Tommaso Di Fonzo for providing
   a blueprint written in GAUSS.
 - updated documentation to include new methods.
 
-minor changes:
+## minor changes
+
 - better checks for non-time-series inputs.
   (https://github.com/christophsax/tempdisagg/issues/20)
 - added extensive numerical testing on travis.
 
-bug fixes:
+## bug fixes
+
 - ta() returns correct results if conversion is "last" or "first", and the first
   or the last period is incomplete.
   (https://github.com/christophsax/tempdisagg/issues/22)
 
 
-0.24  2014-12-07
+# tempdisagg 0.24 (2014-12-07)
 
-changes visible to the user:
+## changes visible to the user:
 - retropolation: 'td' will performs both extra- and retropolation if the high
   frequency series covers a larger time span than the low frequency series.
 - low frequency values are ignored if series is longer than high frequency
@@ -36,21 +50,24 @@ changes visible to the user:
   chosen.
 
 
-0.23  2014-01-11
+# tempdisagg 0.23 (2014-01-11)
 
-changes visible to the user:
+## changes visible to the user
+
 - Our R-Journal article on temporal disaggregation explains tempdisagg in more
   detail. Links are included in the package description, the help files and
   the README file.
 
-minor changes:
+## minor changes
+
 - warning in ta() if a time series contains internal NAs.
 - formating tweaks in the help files.
 
 
-0.22  2013-08-07
+# tempdisagg 0.22 (2013-08-07)
 
-changes visible to the user:
+## changes visible to the user
+
 - predict method for 'td' is now different from fitted:
   - $fitted.values of a 'td' object now containts the low-frequency fitted
     values of a  regression or the low-frequency indicator in case of the
@@ -62,15 +79,17 @@ changes visible to the user:
 - argument 'truncated.rho = 0' instead of 'no.neg = TRUE'. This allows for
   truncation values different from 0. Default behavior is the same as in 0.21.
 
-bug fixes
+## bug fixes
+
 - in 0.21, ta() produced an error if less than a low-frequency unit was
   covered by high frequency data. Now it produces series containing only NA.
 - If a singular data matrix is entered, there is a new warning.
 
 
-0.21  2013-01-21
+# tempdisagg 0.21 (2013-01-21)
 
-changes visible to the user:
+## changes visible to the user
+
 - new methods available: "chow-lin-fixed" and "litterman-fixed".
   Using the "fixed.rho" argument, an autoregressive parameter may be specified
   by the user.
@@ -88,7 +107,8 @@ changes visible to the user:
   argument
 - updated help files
 
-invisible changes:
+## under the hood
+
 - td() is rewritten and has a clear structure now.
 - GLS Regressions are performed by the new CalcGLS() function, which uses
   QR-decomposition instead of matrix-inversion. This is faster and
