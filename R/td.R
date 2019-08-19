@@ -351,7 +351,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
         X.objects,
         function(e) tsbox::ts_regular(tsbox::ts_default(tsbox::ts_dts(e)))
       )
-      smry <- ts_summary(do.call(ts_c, X.dtss))
+      smry <- tsbox::ts_summary(do.call(tsbox::ts_c, X.dtss))
       if (length(unique(smry$start)) > 1) stop("non-unique start on RHS: ", paste(smry$start, collapse = ", "))
       if (length(unique(smry$end)) > 1) stop("non-unique end on RHS: ", paste(smry$end, collapse = ", "))
       if (length(unique(smry$diff)) > 1) stop("non-unique frequency on RHS: ", paste(smry$diff, collapse = ", "))
