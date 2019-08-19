@@ -351,7 +351,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
         X.objects,
         function(e) tsbox::ts_regular(tsbox::ts_default(tsbox::ts_dts(e)))
       )
-      smry <- ts_summary(do.call(ts_c, X.dtss))
+      smry <- tsbox::ts_summary(do.call(tsbox::ts_c, X.dtss))
       if (length(unique(smry$start)) > 1) stop("non-unique start on RHS: ", paste(smry$start, collapse = ", "))
       if (length(unique(smry$end)) > 1) stop("non-unique end on RHS: ", paste(smry$end, collapse = ", "))
       if (length(unique(smry$diff)) > 1) stop("non-unique frequency on RHS: ", paste(smry$diff, collapse = ", "))
@@ -371,7 +371,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       if (lf[1] < hf[1]){
         lf.dt <- lf.dt[time >= hf[1]]
         lf <- lf[lf >= hf[1]]
-        message("High frequency series shorter than low frequency. Discarding low frequency before ", lf[1], " are used.")
+        message("High frequency series shorter than low frequency. Discarding low frequency before ", lf[1], ".")
       }
 
       # last time stamp covered by lf, in hf units. This could be indered from hf
@@ -438,12 +438,12 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       X.end_l <- SubConvertEnd(hf.end = X.end, f = f, f_l = f_l)
       if (X.start_l > start + 0.001){
         start <- X.start_l
-        message("High frequency series shorter than low frequency. Low frequency values from ", start, " are used.")
+        message("High frequency series shorter than low frequency. Discarding low frequency before ", start, ".")
         y_l.series <- window(y_l.series, start = start)
       }
       if (X.end_l < end - 0.001){
         end <- X.end_l
-        message("High frequency series shorter than low frequency. Low frequency values until ", end, " are used.")
+        message("High frequency series shorter than low frequency. Discarding low frequency after ", end, ".")
         y_l.series <- window(y_l.series, end = end)
       }
 
@@ -455,14 +455,15 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       if (is.numeric(to)){  # frequency specified by a number
         f <- to
       } else if (is.character(to)){  # frequency specified by a char string
-        if (to == "quarterly"){
+        if (to %in% c("quarterly", "quarter")){
           f <- 4L
-        } else if (to == "monthly"){
+        } else if (to %in% c("monthly", "month")){
           f <- 12L
         } else {
           stop("'to' argument: unknown character string")
         }
       } else stop ("'to' argument: wrong specification")
+      stopifnot(f_l <= f)
       fr <- as.integer(round(f/f_l))
       X.start <- start
       n.bc <- 0L
