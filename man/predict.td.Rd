@@ -7,15 +7,15 @@
 \method{predict}{td}(object, ...)
 }
 \arguments{
-\item{object}{an object of class \code{"td"}, usually, a result of a 
-call to \code{\link{td}}.}
+\item{object}{an object of class \code{"td"}, usually, a result of a
+call to \code{\link[=td]{td()}}.}
 
 \item{\dots}{further arguments passed to or from other methods.}
 }
 \value{
-\code{summary.td} returns a vector or a \code{"ts"} object, 
-  containing the disaggregated or interpolated high frequency series of a
-  temporal disaggregation.
+\code{summary.td} returns a vector or a \code{"ts"} object,
+containing the disaggregated or interpolated high frequency series of a
+temporal disaggregation.
 }
 \description{
 Compute the disaggregated or interpolated (and extrapolated) high frequency
@@ -29,7 +29,7 @@ predict(mod1)
 
 }
 \seealso{
-\code{\link{td}} for the main function for temporal disaggregation.
+\code{\link[=td]{td()}} for the main function for temporal disaggregation.
 }
 \keyword{models}
 \keyword{ts,}

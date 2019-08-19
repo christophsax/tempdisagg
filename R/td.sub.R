@@ -20,17 +20,17 @@
 # y_l <- as.matrix(rnorm(length(lf)))
 # X <- as.matrix(rep(1, length(hf)))
 
-# z0 <- SubRegressionBased(y_l, X, lf = lf, hf = hf, lf.end = lf.end, method = "chow-lin-fixed", fixed.rho = 0.9) 
+# z0 <- SubRegressionBased(y_l, X, lf = lf, hf = hf, lf.end = lf.end, method = "chow-lin-fixed", fixed.rho = 0.9)
 # z1 <- SubDenton(y_l, X, lf = lf, hf = hf, lf.end = lf.end, method = "denton-cholette")
- 
 
 
-SubRegressionBased <- function(y_l, X, 
-                               lf = NULL, lf.end = NULL, hf = NULL, 
-                               n.bc = NULL, n.fc = NULL, conversion = "sum", 
-                               method = "chow-lin-maxlog", fr = 4, 
-                               truncated.rho = 0, 
-                               fixed.rho = 0.5, tol = 1e-16, 
+
+SubRegressionBased <- function(y_l, X,
+                               lf = NULL, lf.end = NULL, hf = NULL,
+                               n.bc = NULL, n.fc = NULL, conversion = "sum",
+                               method = "chow-lin-maxlog", fr = 4,
+                               truncated.rho = 0,
+                               fixed.rho = 0.5, tol = 1e-16,
                                lower = -0.999, upper = 0.999){
   # performs temporal disaggregation for regression based methods
   #
@@ -48,7 +48,7 @@ SubRegressionBased <- function(y_l, X,
   #
   # Returns:
   #   A list, containing the output of CalcGLS() and the following elements:
-  #     values          vector, interpolated (and extrapolated) high frequency 
+  #     values          vector, interpolated (and extrapolated) high frequency
   #                     series
   #     fitted.values   vector, low-frequency residuals fitted values of the
   #                     regression
@@ -56,7 +56,7 @@ SubRegressionBased <- function(y_l, X,
   #     residuals       vector, low-frequency residuals
   #     rho             scalar, autoregressive parameter
   #     truncated       logical, whether rho has been truncated to 0
-  
+
   # stopifnot(inherits(n.bc, "integer"))
   # stopifnot(inherits(n.fc, "integer"))
 
@@ -75,40 +75,40 @@ SubRegressionBased <- function(y_l, X,
   }
 
   pm <- CalcPowerMatrix(n)
-  
+
   # sanity test
   stopifnot(identical(dim(C)[2], dim(X)[1]))
 
   # aggregated values
   X_l <- C %*% X
-  
+
   # default value for the truncated indicator
   truncated <- FALSE
-  
+
   # method specific optimization objective
   if (method == "chow-lin-maxlog"){
     Objective <- function(rho){
-      -CalcGLS(y = y_l, X = X_l, vcov = C%*%CalcQ(rho, pm)%*%t(C), 
+      -CalcGLS(y = y_l, X = X_l, vcov = C%*%CalcQ(rho, pm)%*%t(C),
                stats = FALSE)$logl
     }
   } else if (method == "chow-lin-minrss-ecotrim"){
     Objective <- function(rho){
-      CalcGLS(y = y_l, X = X_l, vcov = C%*%CalcR(rho, pm)%*%t(C), logl = FALSE, 
+      CalcGLS(y = y_l, X = X_l, vcov = C%*%CalcR(rho, pm)%*%t(C), logl = FALSE,
               stats = FALSE)$rss
-    } 
+    }
   } else if  (method == "chow-lin-minrss-quilis"){
     Objective <- function(rho){
-      CalcGLS(y = y_l, X = X_l, vcov = C%*%CalcQ(rho, pm)%*%t(C), logl = FALSE, 
+      CalcGLS(y = y_l, X = X_l, vcov = C%*%CalcQ(rho, pm)%*%t(C), logl = FALSE,
               stats = FALSE)$rss
     }
   } else if (method == "litterman-maxlog"){
     Objective <- function(rho){
-      -CalcGLS(y = y_l, X = X_l, vcov = C%*%CalcQ_Lit(X, rho)%*%t(C), 
+      -CalcGLS(y = y_l, X = X_l, vcov = C%*%CalcQ_Lit(X, rho)%*%t(C),
                stats = FALSE)$logl
     }
   } else if (method == "litterman-minrss"){
     Objective <- function(rho){
-      CalcGLS(y = y_l, X = X_l, vcov = C%*%CalcQ_Lit(X, rho)%*%t(C), 
+      CalcGLS(y = y_l, X = X_l, vcov = C%*%CalcQ_Lit(X, rho)%*%t(C),
               logl = FALSE, stats = FALSE)$rss
     }
   } else if (method == "dynamic-maxlog"){
@@ -116,7 +116,7 @@ SubRegressionBased <- function(y_l, X,
       # data adjustment for dynamic Chow-Lin procedure (Santos-Silva-Cardoso)
       X_adj <- CalcDynAdj(X, rho = rho)
       X_l_adj <- C %*% X_adj
-      -CalcGLS(y = y_l, X = X_l_adj, vcov = C %*% CalcQ(rho, pm) %*% t(C), 
+      -CalcGLS(y = y_l, X = X_l_adj, vcov = C %*% CalcQ(rho, pm) %*% t(C),
               stats = FALSE)$logl
     }
   } else if (method == "dynamic-minrss"){
@@ -124,26 +124,26 @@ SubRegressionBased <- function(y_l, X,
       # data adjustment for dynamic Chow-Lin procedure (Santos-Silva-Cardoso)
       X_adj <- CalcDynAdj(X, rho = rho)
       X_l_adj <- C %*% X_adj
-      CalcGLS(y = y_l, X = X_l_adj, vcov = C %*% CalcQ(rho, pm) %*% t(C), 
+      CalcGLS(y = y_l, X = X_l_adj, vcov = C %*% CalcQ(rho, pm) %*% t(C),
               logl = FALSE, stats = FALSE)$rss
     }
   }
-  
+
   # finding the optimal rho parameter
-  if (method %in% c("chow-lin-maxlog", "chow-lin-minrss-ecotrim", 
-                    "chow-lin-minrss-quilis", "litterman-maxlog", 
+  if (method %in% c("chow-lin-maxlog", "chow-lin-minrss-ecotrim",
+                    "chow-lin-minrss-quilis", "litterman-maxlog",
                     "litterman-minrss", "dynamic-maxlog", "dynamic-minrss")){
     optimize.results <- optimize(Objective, lower = lower , upper = upper, tol = tol,
                                  maximum = FALSE)
     rho <- optimize.results$minimum
-    
-    # set negative rho to truncated.rho if specified 
+
+    # set negative rho to truncated.rho if specified
     # (faster than 'lower' = truncated.rho)
     if (rho < truncated.rho){
       rho <- truncated.rho
       truncated <- TRUE
-    } 
-    
+    }
+
   } else if (method == "fernandez"){
     rho <- 0
   } else if (method == "ols"){
@@ -151,14 +151,14 @@ SubRegressionBased <- function(y_l, X,
   } else if (method %in% c("chow-lin-fixed", "litterman-fixed", "dynamic-fixed")){
     rho <- fixed.rho
   }
-  
+
   # finding Q
-  if (method %in% c("fernandez", "litterman-maxlog", "litterman-minrss", 
+  if (method %in% c("fernandez", "litterman-maxlog", "litterman-minrss",
                     "litterman-fixed")){
     Q       <- CalcQ_Lit(X = X, rho = rho)
-  } else if (method %in% c("chow-lin-maxlog", "chow-lin-minrss-ecotrim", 
-                           "chow-lin-minrss-quilis",  "chow-lin-fixed", 
-                           "dynamic-maxlog", "dynamic-minrss", 
+  } else if (method %in% c("chow-lin-maxlog", "chow-lin-minrss-ecotrim",
+                           "chow-lin-minrss-quilis",  "chow-lin-fixed",
+                           "dynamic-maxlog", "dynamic-minrss",
                            "dynamic-fixed", "ols")){
     Q       <- CalcQ(rho = rho, pm = pm)
   } else {
@@ -172,7 +172,7 @@ SubRegressionBased <- function(y_l, X,
       # overwrite X and X_l with adjusted data
       X <- CalcDynAdj(X, rho = rho)
       X_l <- C %*% X
-    } 
+    }
   }
 
   # aggregating Q
@@ -185,13 +185,13 @@ SubRegressionBased <- function(y_l, X,
 
   # preliminary series
   p   <- X %*% z$coefficients
-  
+
   # distribution matrix
   D <- Q %*% t(C) %*% z$vcov_inv
-  
+
   # low frequency residuals
   u_l <- y_l - C %*% p
-  
+
   # final series
   y <- p + D %*% u_l
 
@@ -207,10 +207,10 @@ SubRegressionBased <- function(y_l, X,
 }
 
 
-SubDenton <- function(y_l, X, 
+SubDenton <- function(y_l, X,
                       lf = NULL, hf = NULL, lf.end = NULL,
-                      n.bc = NULL, n.fc = NULL, conversion = "sum", 
-                      method = "Denton", fr = NULL, criterion = "proportional", 
+                      n.bc = NULL, n.fc = NULL, conversion = "sum",
+                      method = "Denton", fr = NULL, criterion = "proportional",
                       h = 1) {
   # performs temporal disaggregation for denton methods
   #
@@ -226,7 +226,7 @@ SubDenton <- function(y_l, X,
   #     fitted.values   interpolated (and extrapolated) high frequency series
   #     p               preliminary high frequency series
   #     residuals       low-frequency residuals
-  
+
   if (dim(as.matrix(X))[2] > 1){
     stop("Right hand side is not a vector, only one series allowed in
          Denton methods")
@@ -234,14 +234,14 @@ SubDenton <- function(y_l, X,
   if (!(criterion %in% c("additive", "proportional"))) {
     stop("criterion for Denton methods must be additive or proportional")
   }
-  
+
   # uniform is a special case of denton
   if (method == "uniform"){
     h <- 0
     criterion <- "additive"
     method <- "denton"
   }
-  
+
   # dimensions of y_l and X
   n_l <- length(y_l)
   n <- length(as.numeric(X))
@@ -257,7 +257,7 @@ SubDenton <- function(y_l, X,
   D <- D_0 <- diag(n)
   diag(D[2:n, 1:(n-1)]) <- -1
   X_inv <- diag(1 / (as.numeric(X)/mean(X)))
-  
+
   if (h == 0) {
     if(criterion == "proportional") {
       D_0 <- D_0 %*% X_inv
@@ -267,19 +267,19 @@ SubDenton <- function(y_l, X,
       D_0 <- D%*%D_0
     }
     if(criterion == "proportional") {
-      D_0 <- D_0 %*% X_inv 
+      D_0 <- D_0 %*% X_inv
     }
   } else stop("wrong specification of h")
-  
+
   # low frequency residuals
   u_l <- y_l - C %*% X
-  
+
   if (method == "denton-cholette"){
     if (h == 0) {
       D_1 <- D_0
     } else {D_1 <- D_0[-(1:h),]}
     A <- t(D_1)%*% D_1
-    
+
     # Eq. (2.2) from Denton (1971); Eq (6.8) from Cholette and Dagum (2006)
     y <- solve(
       rbind(cbind(A, t(C)), cbind(C, matrix(0, nrow = n_l, ncol = n_l)))
@@ -287,25 +287,25 @@ SubDenton <- function(y_l, X,
       cbind(A, matrix(0, nrow = n, ncol = n_l)),
       cbind(C, diag(1, nrow = n_l, ncol = n_l))
     ) %*% matrix(c(X, u_l))
-    
+
     # final series
     y <- y[1:n]
-    
+
   } else if (method == "denton"){
     D_1 <- D_0
-    
+
     # Denton (1971), in the text below Eq. (2.2)
     Q <- solve(t(D_1) %*% D_1)
-    
+
     # distribution matrix
     D <- Q %*% t(C) %*% solve(C %*% Q %*% t(C))
-    
+
     # final series
     y <- X + D %*% u_l
   } else {
     stop("wrong method: ", method)
   }
-  
+
   # output
   z <- list()
   z$values        <- as.numeric(y)
@@ -314,6 +314,6 @@ SubDenton <- function(y_l, X,
   z$residuals     <- as.numeric(u_l)
   z$criterion     <- criterion
   z$h             <- h
-  
+
   z
   }
