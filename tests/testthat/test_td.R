@@ -21,3 +21,9 @@ test_that("different lenght", {
   expect_message(td(y ~ x1, method = "fast"), "after")
   expect_message(td(y ~ x2, method = "fast"), "before")
 })
+
+test_that("dynamic method", {
+  expect_is(td(ts(1:8) ~ 1, to = "quarterly", method = "dynamic-maxlog"), "td")
+  expect_is(td(ts(1:8) ~ 1, to = "quarterly", method = "dynamic-minrss"), "td")
+})
+
