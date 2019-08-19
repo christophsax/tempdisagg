@@ -371,7 +371,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       if (lf[1] < hf[1]){
         lf.dt <- lf.dt[time >= hf[1]]
         lf <- lf[lf >= hf[1]]
-        message("High frequency series shorter than low frequency. Discarding low frequency before ", lf[1], " are used.")
+        message("High frequency series shorter than low frequency. Discarding low frequency before ", lf[1], ".")
       }
 
       # last time stamp covered by lf, in hf units. This could be indered from hf
@@ -438,12 +438,12 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       X.end_l <- SubConvertEnd(hf.end = X.end, f = f, f_l = f_l)
       if (X.start_l > start + 0.001){
         start <- X.start_l
-        message("High frequency series shorter than low frequency. Low frequency values from ", start, " are used.")
+        message("High frequency series shorter than low frequency. Discarding low frequency before ", start, ".")
         y_l.series <- window(y_l.series, start = start)
       }
       if (X.end_l < end - 0.001){
         end <- X.end_l
-        message("High frequency series shorter than low frequency. Low frequency values until ", end, " are used.")
+        message("High frequency series shorter than low frequency. Discarding low frequency after ", end, ".")
         y_l.series <- window(y_l.series, end = end)
       }
 
