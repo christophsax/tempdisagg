@@ -69,9 +69,9 @@ SubRegressionBased <- function(y_l, X,
   # conversion matrix expanded with zeros
   # no real need to keep this separate, but will do so to keep old code save
   if (!is.null(hf)){
-    C <- CalcCLfHf(lf, hf, lf.end = lf.end, conversion = conversion)
+    C <- CalcCLfHf(lf = lf, hf = hf, lf.end = lf.end, conversion = conversion)
   } else {
-    C <- CalcC(n_l, conversion, fr, n.bc = n.bc, n.fc = n.fc)
+    C <- CalcC(n_l = n_l, conversion = conversion, fr = fr, n.bc = n.bc, n.fc = n.fc)
   }
 
   pm <- CalcPowerMatrix(n)
@@ -249,9 +249,9 @@ SubDenton <- function(y_l, X,
   # conversion matrix expanded with zeros
   # no real need to keep this separate, but will do so to keep old code save
   if (!is.null(hf)){
-    C <- CalcCLfHf(lf, hf, lf.end = lf.end, conversion = conversion)
+    C <- CalcCLfHf(lf = lf, hf = hf, lf.end = lf.end, conversion = conversion)
   } else {
-    C <- CalcC(n_l, conversion, fr, n.bc = n.bc, n.fc = n.fc)
+    C <- CalcC(n_l = n_l, conversion = conversion, fr = fr, n.bc = n.bc, n.fc = n.fc)
   }
 
   D <- D_0 <- diag(n)
