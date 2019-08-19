@@ -430,7 +430,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
 
   if (mode == "numeric") {
     if (!is.numeric(to)){
-      stop("In non-ts/xts mode, 'to' must be an integer number.")
+      stop("In numeric mode, 'to' must be an integer number.")
     }
     f_l <- 1L
     f <- to
