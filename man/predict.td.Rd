@@ -7,13 +7,13 @@
 \method{predict}{td}(object, ...)
 }
 \arguments{
-\item{object}{an object of class \code{"td"}, usually, a result of a 
+\item{object}{an object of class \code{"td"}, usually, a result of a
 call to \code{\link{td}}.}
 
 \item{\dots}{further arguments passed to or from other methods.}
 }
 \value{
-\code{summary.td} returns a vector or a \code{"ts"} object, 
+\code{summary.td} returns a vector or a \code{"ts"} object,
   containing the disaggregated or interpolated high frequency series of a
   temporal disaggregation.
 }

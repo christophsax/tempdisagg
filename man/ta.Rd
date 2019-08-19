@@ -14,20 +14,20 @@ ta(x, ...)
 
 \item{...}{additional arguments, passed to the methods.}
 
-\item{conversion}{type of conversion: \code{"sum"}, \code{"average"}, 
+\item{conversion}{type of conversion: \code{"sum"}, \code{"average"},
 \code{"first"} or \code{"last"}.}
 
-\item{to}{(low-frequency) destination frequency as a character 
-string (\code{"annual"} or \code{"quarterly"}) or as a 
+\item{to}{(low-frequency) destination frequency as a character
+string (\code{"annual"} or \code{"quarterly"}) or as a
 scalar (e.g. \code{1}, \code{2}, \code{4}).}
 }
 \value{
-\code{ta} returns an object of class \code{"ts"} or \code{"mts"}, 
+\code{ta} returns an object of class \code{"ts"} or \code{"mts"},
   depending on the class of the input series.
 }
 \description{
-Performs temporal aggregation of high to low frequency time series. 
-Currently, \code{ta} only works with \code{ts} or \code{mts} time series 
+Performs temporal aggregation of high to low frequency time series.
+Currently, \code{ta} only works with \code{ts} or \code{mts} time series
 objects.
 }
 \details{
@@ -39,7 +39,7 @@ function of \code{\link{td}}. If applied to an output series of \code{td},
 }
 \examples{
 data(swisspharma)
-  
+
 sales.q.a <- ta(sales.q, conversion = "sum", to = "annual")
 all.equal(sales.a, sales.q.a)
 

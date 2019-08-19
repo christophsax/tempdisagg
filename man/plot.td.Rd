@@ -7,7 +7,7 @@
 \method{plot}{td}(x, ...)
 }
 \arguments{
-\item{x}{an object of class \code{"td"}, usually, a result of a 
+\item{x}{an object of class \code{"td"}, usually, a result of a
 call to \code{\link{td}}.}
 
 \item{\dots}{further arguments passed to or from other methods.}
@@ -17,14 +17,14 @@ returns a a two panel plot as its side effect, showing
   the fitted and actual low frequency series, and the residuals.
 }
 \description{
-\code{plot} method for class \code{"td"}. Plot the fitted and actual low 
+\code{plot} method for class \code{"td"}. Plot the fitted and actual low
 frequency series, and residuals.
 }
 \examples{
 data(swisspharma)
 
 mod2 <- td(sales.a ~ imports.q + exports.q)
-plot(mod2)  
+plot(mod2)
 
 }
 \seealso{

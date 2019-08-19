@@ -21,3 +21,4 @@ Description: Temporal disaggregation methods are used to disaggregate and
 License: GPL-3
 LazyLoad: yes
 RoxygenNote: 6.1.1
+Encoding: UTF-8

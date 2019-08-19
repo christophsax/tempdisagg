@@ -6,7 +6,7 @@ library(tsbox)
 
 test_that("to daily works", {
   m <- td(ts_df(mdeaths) ~ 1, to = "day", method = "fast")
-  expect_is(predict(m), "tbl_df")
+  expect_is(predict(m), "data.frame")
 })
 
 
