@@ -25,7 +25,6 @@ data(swisspharma)
 
 mod2 <- td(sales.a ~ imports.q + exports.q)
 plot(mod2)
-
 }
 \seealso{
 \code{\link[=td]{td()}} for the main function for temporal disaggregation.

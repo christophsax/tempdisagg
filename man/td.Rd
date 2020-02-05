@@ -4,9 +4,19 @@
 \alias{td}
 \title{Temporal Disaggregation of Time Series}
 \usage{
-td(formula, conversion = "sum", to = "quarterly",
-  method = "chow-lin-maxlog", truncated.rho = 0, fixed.rho = 0.5,
-  criterion = "proportional", h = 1, start = NULL, end = NULL, ...)
+td(
+  formula,
+  conversion = "sum",
+  to = "quarterly",
+  method = "chow-lin-maxlog",
+  truncated.rho = 0,
+  fixed.rho = 0.5,
+  criterion = "proportional",
+  h = 1,
+  start = NULL,
+  end = NULL,
+  ...
+)
 }
 \arguments{
 \item{formula}{an object of class \code{"formula"}: a symbolic
