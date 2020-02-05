@@ -365,12 +365,9 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       hf <- X.times[[1]]
       stopifnot(all(vapply(X.times, identical, TRUE, hf)))
 
-      # FIXME, perhaps
-      # if (ncol(hf.dt) == 2) names(hf.dt)[2] <- X.series.names
-
       if (lf[1] < hf[1]) {
-        lf.dt <- tsbox:::ts_span(lf.dt, start = hf[1])
-        y_l.series <- tsbox:::ts_span(y_l.series, start = hf[1])
+        lf.dt <- tsbox::ts_span(lf.dt, start = hf[1])
+        y_l.series <- tsbox::ts_span(y_l.series, start = hf[1])
         lf <- lf[lf >= hf[1]]
         message("High frequency series shorter than low frequency. Discarding low frequency before ", lf[1], ".")
       }
