@@ -1,8 +1,6 @@
 ---
 title: "Temporal Disaggregation of Time Series"
 output: rmarkdown::html_vignette
-bibliography:
-- 'biblio.bib'
 vignette: >
   %\VignetteIndexEntry{Introduction}
   %\VignetteEngine{knitr::rmarkdown}
