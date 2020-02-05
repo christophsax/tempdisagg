@@ -7,13 +7,13 @@
 #'   disaggregation can be performed with or without one or more high frequency
 #'   indicator series.
 #'
-#'   A good way to start is to run the interactive demo:
+#'   A good way to start is the introductory vignette:
 #'
-#'   `demo(tempdisagg)`
+#'   `vignette("intro", "tempdisagg")`
 #'
 #'   Our article on temporal disaggregation of time series
-#'   (<https://journal.r-project.org/archive/2013-2/sax-steiner.pdf>) describes the package and the theory of temporal disaggregation
-#'   in more detail.
+#'   (<https://doi.org/10.32614/RJ-2013-028>) in the R-Journal describes the
+#'   package and the theory of temporal disaggregation in more detail.
 #'
 #' @name tempdisagg-package
 #' @aliases tempdisagg
@@ -27,8 +27,8 @@ NULL
 #' Trade and Sales of Chemical and Pharmaceutical Industry
 #'
 #' This data set contains the monthly and quarterly imports and exports of the
-#' chemical and pharmaceutical industry in Switzerland (in Mio. Swiss Francs) as
-#' well as their quarterly and annual sales (Index).
+#' chemical and pharmaceutical industry in Switzerland (in in millions of Swiss
+#' Francs) as well as their quarterly and annual sales (Index).
 #'
 #' @docType data
 #'

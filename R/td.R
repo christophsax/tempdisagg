@@ -154,7 +154,7 @@
 #'
 #'   Sax, C. und Steiner, P. (2013). Temporal Disaggregation of Time Series.
 #'   *The R Journal*, 5(2), 80-88.
-#'   <https://journal.r-project.org/archive/2013-2/sax-steiner.pdf>
+#'   <https://doi.org/10.32614/RJ-2013-028>
 #'
 #' @seealso [ta()] for temporal aggregation, the inverse function of
 #'   `td`.

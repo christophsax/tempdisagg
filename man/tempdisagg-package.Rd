@@ -13,13 +13,13 @@ high frequency series is consistent with the low frequency series. Temporal
 disaggregation can be performed with or without one or more high frequency
 indicator series.
 
-A good way to start is to run the interactive demo:
+A good way to start is the introductory vignette:
 
-\code{demo(tempdisagg)}
+\code{vignette("intro", "tempdisagg")}
 
 Our article on temporal disaggregation of time series
-(\url{https://journal.r-project.org/archive/2013-2/sax-steiner.pdf}) describes the package and the theory of temporal disaggregation
-in more detail.
+(\url{https://doi.org/10.32614/RJ-2013-028}) in the R-Journal describes the
+package and the theory of temporal disaggregation in more detail.
 }
 \seealso{
 \code{\link[=td]{td()}} for more information on usage.

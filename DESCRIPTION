@@ -1,5 +1,5 @@
 Package: tempdisagg
-Version: 0.99.9001
+Version: 0.99.9002
 Date: 2019-08-??
 Title: Methods for Temporal Disaggregation and Interpolation of Time Series
 Authors@R: c(
