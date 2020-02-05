@@ -21,18 +21,18 @@ knitr::opts_chunk$set(
 ## Convert between any frequency
 
 Since version 1.0, tempdisagg can convert between most frequencies, e.g., it can disaggregate a monthly series to daily.
-It is no longer restricted to regular conversions, where each low frequency period has the same number of high frequency periods.
+It is no longer restricted to regular conversions, where each low frequency period had the same number of high frequency periods, as in older versions.
 Instead, a low frequency period (e.g. month) can contain any number of high-frequency periods (e.g. 31, 28 or 29 days).
 Thanks to Roger Kissling and Stella Sim who have suggested this idea.
 
 We can not only convert months to days, but also years to days, weeks to seconds, or academic years to seconds, or lunar years to hours, ...
 The downside is that the computation time depends on the number of observations.
-Thus, for high-frequencies, the computation may take a long time.
+Thus, for longer high-frequency series, the computation may take a while.
 
 ## Quarterly to daily disaggregation
 
 In the following, we try to disaggregate quarterly GDP of Switzerland to a hypothetical daily GDP series.
-The raw series are included as examples in the package.
+The example series are shipped with the package.
 
 ```{r}
 library(tempdisagg)
@@ -40,7 +40,7 @@ data(tempdisagg)
 head(gdp.q)
 ```
 
-Because we are dealing with daily data, we keep the data in `data.frame`, rather than `ts` objects. Other time series objects, such as `xts` and `tsibble`, are possible as well.
+Because we are dealing with daily data, we keep the data in a `data.frame`, rather than in a `ts` object. Other time series objects, such as `xts` and `tsibble`, are possible as well.
 For conversion and visualization, we use the [tsbox](https://www.tsbox.help) package.
 
 ```{r}
@@ -72,7 +72,7 @@ ts_plot(
 )
 ```
 
-Like with all disaggregation methods in tempdisagg, the resulting series fulfills the disaggregation constraint:
+Like with all disaggregation methods in tempdisagg, the resulting series fulfills the aggregation constraint:
 
 ```{r}
 all.equal(ts_frequency(gdp.d.noind, "quarter", aggregate = "sum"), gdp.q)
@@ -110,6 +110,4 @@ ts_plot(
   subtitle = "one indicator"
 )
 ```
-
-
 
