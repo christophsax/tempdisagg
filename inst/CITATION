@@ -10,7 +10,7 @@ bibentry(bibtype = "Article",
   volume       = "5",
   number       = "2",
   pages        = "80--87",
-  doi          = "10.32614/RJ-2013-028"
+  doi          = "10.32614/RJ-2013-028",
 
   header       = "To cite tempdisagg in publications use:"
 )
