@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 ## Convert between any frequency
 
 Since version 1.0, tempdisagg can convert between most frequencies, e.g., it can disaggregate a monthly series to daily.
-It is no longer restricted to regular conversions, where each low frequency period had the same number of high frequency periods, as in older versions.
+It is no longer restricted to regular conversions, where each low frequency period had the same number of high frequency periods.
 Instead, a low frequency period (e.g. month) can contain any number of high-frequency periods (e.g. 31, 28 or 29 days).
 Thanks to Roger Kissling and Stella Sim who have suggested this idea.
 
