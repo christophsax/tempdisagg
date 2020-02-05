@@ -41,3 +41,56 @@ NULL
 #' @aliases exports.q imports.q sales.a sales.q
 #' @keywords datasets
 NULL
+
+
+#' Gross Domestic Product
+#'
+#' Qarterly real GDP, not seasonally adjusted, in millions of Swiss Francs
+#' (2010 prices).
+#'
+#' @docType data
+#'
+#' @format A `data.frame`.
+#' @source  State Secretariat for Economic Affairs (SECO).
+#'
+#' @name gdp.q
+#' @keywords datasets
+#' @examples
+#' \dontrun{
+#' # recreate the series with latest data
+#' library(tsbox)
+#' library(dplyr)
+#' library(dataseries)
+#' library(imputeTS)
+#' dataseries::ds("ch_seco_gdp.nsa.real.gdp") %>%
+#'   ts_default() %>%
+#'   ts_span(start = 2005)
+#' }
+NULL
+
+
+#' SPI Swiss Performance Index
+#'
+#' Daily values of stock market index.
+#'
+#' @docType data
+#'
+#' @format A `data.frame`.
+#' @source Swiss National Bank (SNB)
+#'
+#' @name spi.d
+#' @keywords datasets
+#' @examples
+#' \dontrun{
+#' # recreate the series with latest data
+#' library(tsbox)
+#' library(dplyr)
+#' library(dataseries)
+#' library(imputeTS)
+#' dataseries::ds("ch_snb_capchstocki.gdr") %>%
+#'   ts_default() %>%
+#'   ts_regular() %>%
+#'   imputeTS::na_interpolation(option = "spline") %>%
+#'   ts_span(start = 2005)
+#' }
+NULL
