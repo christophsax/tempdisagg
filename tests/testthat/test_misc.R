@@ -11,7 +11,6 @@ test_that("to daily works", {
 
 
 test_that("tsbox mode has same results as ts", {
-
   data(swisspharma)
   y <- sales.a
   x <- exports.q

@@ -253,9 +253,9 @@ td <- function(formula, conversion = "sum", to = "quarterly",
 
   cl <- match.call()
 
-  if (conversion == "mean") conversion <- "average"  # equivalent
+  if (conversion == "mean") conversion <- "average" # equivalent
 
-  if (method == "fast"){
+  if (method == "fast") {
     method <- "chow-lin-fixed"
     fixed.rho <- 0.99999
   }
@@ -263,11 +263,11 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   # --- input consistency ------------------------------------------------------
 
   # dont allow length = 2 vectors as start or end inputs
-  if (any(c(length(start), length(end)) > 1)){
+  if (any(c(length(start), length(end)) > 1)) {
     stop("'start' or 'end' must of length 1")
   }
 
-  if (method == "denton"){
+  if (method == "denton") {
     message(
       "'denton-cholette' removes the transient movement at the beginning of ",
       "the series and is preferable to the original 'denton' method in most ",
@@ -278,7 +278,8 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   # ---- prepare Formula, extract names and data -------------------------------
 
   # extract X (right hand side, high frequency) formula, names and data
-  X.formula <- formula; X.formula[[2]] <- NULL
+  X.formula <- formula
+  X.formula[[2]] <- NULL
   X.series.names <- all.vars(X.formula)
 
   # extract y_l (left hand side, low frequency) formula, values and names
@@ -295,16 +296,16 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   # LHS ts, RHS tsbox -> tsbox
   if (
     mode == "ts" &&
-    length(X.series.names) > 0 &&
-    ModeOfSeries(get(X.series.names[1], envir=environment(X.formula))) == "tsbox"
+      length(X.series.names) > 0 &&
+      ModeOfSeries(get(X.series.names[1], envir = environment(X.formula))) == "tsbox"
   ) {
     mode <- "tsbox"
   }
   # LHS ts, RHS numeric -> numeric
   if (
     mode == "ts" &&
-    length(X.series.names) > 0 &&
-    ModeOfSeries(get(X.series.names[1], envir=environment(X.formula))) == "numeric"
+      length(X.series.names) > 0 &&
+      ModeOfSeries(get(X.series.names[1], envir = environment(X.formula))) == "numeric"
   ) {
     warning("Only left hand side is a time series. Using numeric mode.")
     mode <- "numeric"
@@ -317,7 +318,6 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   # ---- tsbox mode ------------------------------------------------------------
 
   if (mode == "tsbox") {
-
     fr <- NULL
 
     if (!requireNamespace("tsbox")) {
@@ -336,18 +336,18 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     y_l <- as.matrix(lf.dt$value)
 
     if (length(X.series.names) > 0) {
-      X.modes <- vapply(X.series.names, function(e) ModeOfSeries(get(e, envir=environment(X.formula))), "")
+      X.modes <- vapply(X.series.names, function(e) ModeOfSeries(get(e, envir = environment(X.formula))), "")
       is.time.series <- X.modes %in% c("ts", "tsbox")
       if (!all(is.time.series)) {
         stop("some right hand side variables are not valid time series: ", X.modes[!is.time.series])
       }
 
       X.objects <- setNames(
-        lapply(X.series.names, function(e) get(e, envir=environment(X.formula))),
+        lapply(X.series.names, function(e) get(e, envir = environment(X.formula))),
         X.series.names
       )
       X.template <- X.objects[[1]]
-      X.dtss<- lapply(
+      X.dtss <- lapply(
         X.objects,
         function(e) tsbox::ts_regular(tsbox::ts_default(tsbox::ts_dts(e)))
       )
@@ -368,7 +368,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       # FIXME, perhaps
       # if (ncol(hf.dt) == 2) names(hf.dt)[2] <- X.series.names
 
-      if (lf[1] < hf[1]){
+      if (lf[1] < hf[1]) {
         lf.dt <- tsbox:::ts_span(lf.dt, start = hf[1])
         y_l.series <- tsbox:::ts_span(y_l.series, start = hf[1])
         lf <- lf[lf >= hf[1]]
@@ -387,7 +387,6 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       attr(hf.dt.formula, ".Environment") <- hf.env
       X <- model.matrix(hf.dt.formula)
       X.names <- dimnames(X)[[2]]
-
     } else {
       # if there is no X Variables, set it to a constant ('Denton' Methods)
       to <- gsub("daily$", "day", to)
@@ -408,7 +407,6 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     dimnames(X) <- list(NULL, X.names)
     stopifnot(identical(dim(y_l)[1], length(lf)))
     stopifnot(identical(dim(X)[1], length(hf)))
-
   }
 
   # ---- ts mode ---------------------------------------------------------------
@@ -424,25 +422,25 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     end <- y_l.time[length(y_l.time)]
 
     ### X.series
-    if (length(X.series.names) > 0){  # If X is pecified
+    if (length(X.series.names) > 0) { # If X is pecified
       # prototype series of X
       X.series.proto <- eval(X.formula[[2]], envir = environment(X.formula))
       X.start <- time(na.omit(X.series.proto))[1]
       X.end <- time(na.omit(X.series.proto))[length(time(na.omit(X.series.proto)))]
 
       f <- frequency(X.series.proto)
-      fr <- as.integer(round(f/f_l))
+      fr <- as.integer(round(f / f_l))
 
 
       # determine first and last fully available lf time stamps
       X.start_l <- SubConvertStart(hf.start = X.start, f = f, f_l = f_l)
       X.end_l <- SubConvertEnd(hf.end = X.end, f = f, f_l = f_l)
-      if (X.start_l > start + 0.001){
+      if (X.start_l > start + 0.001) {
         start <- X.start_l
         message("High frequency series shorter than low frequency. Discarding low frequency before ", start, ".")
         y_l.series <- window(y_l.series, start = start)
       }
-      if (X.end_l < end - 0.001){
+      if (X.end_l < end - 0.001) {
         end <- X.end_l
         message("High frequency series shorter than low frequency. Discarding low frequency after ", end, ".")
         y_l.series <- window(y_l.series, end = end)
@@ -451,21 +449,22 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       # number of high frequency periods for backcast/forecast
       n.bc <- as.integer(round((start - X.start) * f))
       n.fc <- as.integer(round((X.end - end) * f)) - fr + 1L
-
-    } else {  # If no X is specified
-      if (is.numeric(to)){  # frequency specified by a number
+    } else { # If no X is specified
+      if (is.numeric(to)) { # frequency specified by a number
         f <- to
-      } else if (is.character(to)){  # frequency specified by a char string
-        if (to %in% c("quarterly", "quarter")){
+      } else if (is.character(to)) { # frequency specified by a char string
+        if (to %in% c("quarterly", "quarter")) {
           f <- 4L
-        } else if (to %in% c("monthly", "month")){
+        } else if (to %in% c("monthly", "month")) {
           f <- 12L
         } else {
           stop("'to' argument: unknown character string")
         }
-      } else stop ("'to' argument: wrong specification")
+      } else {
+        stop("'to' argument: wrong specification")
+      }
       stopifnot(f_l <= f)
-      fr <- as.integer(round(f/f_l))
+      fr <- as.integer(round(f / f_l))
       X.start <- start
       n.bc <- 0L
       n.fc <- 0L
@@ -475,16 +474,16 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   # ---- numeric mode ----------------------------------------------------------
 
   if (mode == "numeric") {
-    if (!is.numeric(to)){
+    if (!is.numeric(to)) {
       stop("In numeric mode, 'to' must be an integer number.")
     }
     f_l <- 1L
     f <- to
-    fr <- as.integer(round(f/f_l))
+    fr <- as.integer(round(f / f_l))
     n.bc <- 0L
     if (length(X.series.names) > 0) {
-      n.fc <- length(get(X.series.names[1], envir=environment(X.formula))) -
-      fr * length(y_l.series)
+      n.fc <- length(get(X.series.names[1], envir = environment(X.formula))) -
+        fr * length(y_l.series)
     } else {
       n.fc <- 0L
     }
@@ -495,12 +494,12 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   if (mode %in% c("ts", "numeric")) {
     hf <- lf <- lf.end <- NULL
 
-    if (length(X.series.names) > 0){
+    if (length(X.series.names) > 0) {
       X <- model.matrix(X.formula)
       X.names <- dimnames(X)[[2]]
     } else {
       # if there is no X Variables, set it to a constant ('Denton' Methods)
-      if (is.null(hf)){
+      if (is.null(hf)) {
         X <- matrix(rep(1, times = length(y_l.series) * fr))
       } else {
         X <- matrix(rep(1, length(hf)))
@@ -510,28 +509,34 @@ td <- function(formula, conversion = "sum", to = "quarterly",
 
     # final data matrices
     y_l <- as.matrix(y_l.series)
-    X <- matrix(X, nrow=nrow(X), ncol=ncol(X))
+    X <- matrix(X, nrow = nrow(X), ncol = ncol(X))
     dimnames(X) <- list(NULL, X.names)
   }
 
   # --- estimation -------------------------------------------------------------
 
   # actual estimation
-  if (method %in% c("chow-lin-maxlog", "chow-lin-minrss-ecotrim",
-                    "chow-lin-minrss-quilis", "chow-lin-fixed",
-                    "litterman-maxlog", "litterman-minrss", "litterman-fixed",
-                    "fernandez", "dynamic-maxlog", "dynamic-minrss",
-                    "dynamic-fixed", "ols")){
-    z <- SubRegressionBased(y_l = y_l, X = X, hf = hf, lf = lf, lf.end = lf.end,
-                            n.bc = n.bc, n.fc = n.fc,
-                            conversion = conversion,
-                            method = method, truncated.rho = truncated.rho,
-                            fixed.rho = fixed.rho, fr = fr, ...)
-  } else if (method %in% c("denton-cholette", "denton", "uniform")){
-    z <- SubDenton(y_l = y_l, X = X, hf = hf, lf = lf, lf.end = lf.end,
-                   n.bc = n.bc, n.fc = n.fc,
-                   conversion = conversion, method = method,
-                   criterion = criterion, h = h, fr = fr, ...)
+  if (method %in% c(
+    "chow-lin-maxlog", "chow-lin-minrss-ecotrim",
+    "chow-lin-minrss-quilis", "chow-lin-fixed",
+    "litterman-maxlog", "litterman-minrss", "litterman-fixed",
+    "fernandez", "dynamic-maxlog", "dynamic-minrss",
+    "dynamic-fixed", "ols"
+  )) {
+    z <- SubRegressionBased(
+      y_l = y_l, X = X, hf = hf, lf = lf, lf.end = lf.end,
+      n.bc = n.bc, n.fc = n.fc,
+      conversion = conversion,
+      method = method, truncated.rho = truncated.rho,
+      fixed.rho = fixed.rho, fr = fr, ...
+    )
+  } else if (method %in% c("denton-cholette", "denton", "uniform")) {
+    z <- SubDenton(
+      y_l = y_l, X = X, hf = hf, lf = lf, lf.end = lf.end,
+      n.bc = n.bc, n.fc = n.fc,
+      conversion = conversion, method = method,
+      criterion = criterion, h = h, fr = fr, ...
+    )
   } else {
     stop("method does not exist")
   }
@@ -541,9 +546,9 @@ td <- function(formula, conversion = "sum", to = "quarterly",
 
   # add coefficent names to output
   if (!is.null(z$coefficients)) {
-    if (method %in% c("dynamic-maxlog", "dynamic-minrss", "dynamic-fixed")){
+    if (method %in% c("dynamic-maxlog", "dynamic-minrss", "dynamic-fixed")) {
       # add name for trunc. remainder if present
-      if (length(z$coefficients) == (length(X.names) + 1)){
+      if (length(z$coefficients) == (length(X.names) + 1)) {
         X.names <- c(X.names, "tr. rem.")
       }
     }
@@ -551,28 +556,28 @@ td <- function(formula, conversion = "sum", to = "quarterly",
   }
 
   # additional output
-  z$mode               <- mode
-  z$method             <- method
-  z$call               <- cl
-  z$name               <- y_l.name
-  z$fr                 <- fr
-  z$conversion         <- conversion
-  z$actual             <- y_l.series
-  z$model              <- X
+  z$mode <- mode
+  z$method <- method
+  z$call <- cl
+  z$name <- y_l.name
+  z$fr <- fr
+  z$conversion <- conversion
+  z$actual <- y_l.series
+  z$model <- X
   if (mode == "ts") {
-    z$model            <- ts(z$model, start = X.start, frequency = f)
-    z$p                <- ts(z$p, start = X.start, frequency = f)
-    z$values           <- ts(z$values, start = X.start, frequency = f)
-    z$fitted.values    <- ts(z$fitted.values, start = start, frequency = f_l)
-    z$residuals        <- ts(z$residuals, start = start, frequency = f_l)
-    z$actual           <- ts(z$actual, start = start, frequency = f_l)
+    z$model <- ts(z$model, start = X.start, frequency = f)
+    z$p <- ts(z$p, start = X.start, frequency = f)
+    z$values <- ts(z$values, start = X.start, frequency = f)
+    z$fitted.values <- ts(z$fitted.values, start = start, frequency = f_l)
+    z$residuals <- ts(z$residuals, start = start, frequency = f_l)
+    z$actual <- ts(z$actual, start = start, frequency = f_l)
   } else if (mode == "tsbox") {
-    z$model            <- tsbox::copy_class(z$model, X.template)
-    z$p                <- tsbox::copy_class(z$p, X.template)
-    z$values           <- tsbox::copy_class(z$values, X.template)
-    z$fitted.values    <- tsbox::copy_class(z$fitted.values, y_l.series)
-    z$residuals        <- tsbox::copy_class(z$residuals, y_l.series)
-    z$actual           <- tsbox::copy_class(z$actual, y_l.series)
+    z$model <- tsbox::copy_class(z$model, X.template)
+    z$p <- tsbox::copy_class(z$p, X.template)
+    z$values <- tsbox::copy_class(z$values, X.template)
+    z$fitted.values <- tsbox::copy_class(z$fitted.values, y_l.series)
+    z$residuals <- tsbox::copy_class(z$residuals, y_l.series)
+    z$actual <- tsbox::copy_class(z$actual, y_l.series)
   }
   class(z) <- "td"
   z
