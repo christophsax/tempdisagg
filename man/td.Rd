@@ -173,7 +173,7 @@ distributes the residuals uniformly. It is especially useful for comparing
 the estimators of GLS and OLS regressions.
 }
 \examples{
-data(swisspharma)
+data(tempdisagg)
 
 # one indicator, no intercept
 mod1 <- td(sales.a ~ 0 + exports.q)
@@ -238,10 +238,13 @@ predict(mod1b)  # class 'xts'
 # non-standard frequencies: decades to years
 predict(td(ts_xts(uspop) ~ 1, "mean", to = "year", method = "fast"))
 
-# years to days
-m.d <- td(sales.a.xts ~ 1, to = "day", method = "fast")
-sales.d.xts <- predict(m.d)
-all.equal(ts_frequency(sales.d.xts, to = "year", aggregate = "sum"), sales.a.xts)
+# quarter to daily (no indicator)
+m.d.noind <- td(gdp.q ~ 1, to = "daily", method = "fast")
+predict(m.d.noind)
+
+# quarter to daily (one indicator)
+m.d.stocks <- td(gdp.q ~ smi.d, method = "chow-lin-fixed", fixed.rho = 0.9)
+predict(m.d.stocks)
 }
 }
 \references{
