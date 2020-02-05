@@ -21,5 +21,5 @@ spi.d <-
 
 obj <- load("data/swisspharma.RData")
 
-save(sales.a, sales.q, exports.q, imports.q, exports.m, gdp.q, spi.d, file = "data/tempdisagg.RData")
+save(sales.a, sales.q, exports.q, imports.q, exports.m, gdp.q, spi.d, file = "data/tempdisagg.RData", version = 2)
 
