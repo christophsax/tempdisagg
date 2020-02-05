@@ -1,8 +1,8 @@
 ---
-title: "High-frequency disaggregation"
+title: "Temporal Disaggregation to High-Frequency"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{High-frequency disaggregation (e.g., to daily)}
+  %\VignetteIndexEntry{Temporal Disaggregation to High-Frequency (e.g., to daily)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

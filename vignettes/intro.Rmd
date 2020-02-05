@@ -4,7 +4,7 @@ output: rmarkdown::html_vignette
 bibliography:
 - 'biblio.bib'
 vignette: >
-  %\VignetteIndexEntry{High-frequency disaggregation (e.g., to daily)}
+  %\VignetteIndexEntry{Introduction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
