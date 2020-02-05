@@ -4,3 +4,4 @@
 .Rapp.history
 .Rbuildignore
 tempdisagg.Rproj
+inst/doc
