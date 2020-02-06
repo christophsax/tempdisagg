@@ -1,7 +1,7 @@
 #' @import stats
 #' @method print td
 #' @export
-print.td <- function(x, ...){
+print.td <- function(x, ...) {
   # calls print.lm
   #
   # Args:
@@ -53,12 +53,11 @@ print.td <- function(x, ...){
 #'
 #' mod2 <- td(sales.a ~ 0, to = "quarterly", method = "uniform")
 #' summary(mod2)
-#'
 #' @keywords ts, models
 #' @method summary td
 #' @export
 #'
-summary.td <- function(object, ...){
+summary.td <- function(object, ...) {
   # build output on top of the input
   z <- object
 
@@ -66,7 +65,7 @@ summary.td <- function(object, ...){
   if (z$mode %in% c("ts", "numeric")) {
     # number of observations and number of indicator series
     z$n_l <- length(object$actual)
-    if (is.null(dim(object$model))){
+    if (is.null(dim(object$model))) {
       z$n <- length(object$model)
     } else {
       z$n <- dim(object$model)[1]
@@ -79,20 +78,26 @@ summary.td <- function(object, ...){
   }
 
   # derivative statististics
-  z$ar_l           <- cor(z$residuals[-1], z$residuals[-length(z$residuals)])
+  z$ar_l <- cor(z$residuals[-1], z$residuals[-length(z$residuals)])
 
   # coefficents matrix
-  if (!is.null(coef(object))){
-    est  <- coef(object)
-    se   <- object$se
-    tval <- est/se
+  if (!is.null(coef(object))) {
+    est <- coef(object)
+    se <- object$se
+    tval <- est / se
     pval <- 2 * pnorm(-abs(tval))
 
-    z$coefficients <- cbind(est, se, tval,
-                          2 * pt(abs(tval), z$df, lower.tail = FALSE))
-    dimnames(z$coefficients) <- list(names(est),
-                                    c("Estimate", "Std. Error", "t value",
-                                    "Pr(>|t|)"))
+    z$coefficients <- cbind(
+      est, se, tval,
+      2 * pt(abs(tval), z$df, lower.tail = FALSE)
+    )
+    dimnames(z$coefficients) <- list(
+      names(est),
+      c(
+        "Estimate", "Std. Error", "t value",
+        "Pr(>|t|)"
+      )
+    )
   }
   class(z) <- "summary.td"
   z
@@ -101,11 +106,11 @@ summary.td <- function(object, ...){
 #' @method print summary.td
 #' @export
 #' @rdname summary.td
-print.summary.td <- function (x, digits = max(3, getOption("digits") - 3),
-    signif.stars = getOption("show.signif.stars"), ...) {
-
+print.summary.td <- function(x, digits = max(3, getOption("digits") - 3),
+                             signif.stars = getOption("show.signif.stars"), ...) {
   cat("\nCall:\n", paste(deparse(x$call), sep = "\n", collapse = "\n"), "\n\n",
-      sep = "")
+    sep = ""
+  )
   resid <- x$residuals
   cat("Residuals:\n")
   if (length(resid) > 5) {
@@ -118,27 +123,32 @@ print.summary.td <- function (x, digits = max(3, getOption("digits") - 3),
   if (is.null(coef(x))) {
     cat("\nNo Coefficients\n")
   } else {
-      cat("\nCoefficients:\n")
-      coefs <- coef(x)
-      if (!is.null(aliased <- x$aliased) && any(aliased)) {
-        cn <- names(aliased)
-        coefs <- matrix(NA, length(aliased), 4,
-                    dimnames = list(cn, colnames(coefs)))
-        coefs[!aliased, ] <- x$coefficients
-      }
-      printCoefmat(coefs, digits = digits, signif.stars = signif.stars,
-        na.print = "NA")
+    cat("\nCoefficients:\n")
+    coefs <- coef(x)
+    if (!is.null(aliased <- x$aliased) && any(aliased)) {
+      cn <- names(aliased)
+      coefs <- matrix(NA, length(aliased), 4,
+        dimnames = list(cn, colnames(coefs))
+      )
+      coefs[!aliased, ] <- x$coefficients
+    }
+    printCoefmat(coefs,
+      digits = digits, signif.stars = signif.stars,
+      na.print = "NA"
+    )
   }
 
   cat("\n'", x$method, "' disaggregation with '", x$conversion,
-      "' conversion", sep = "")
-  cat("\n", x$n_l, " low-freq. obs. converted to ", x$n, " high-freq. obs.", sep="")
+    "' conversion",
+    sep = ""
+  )
+  cat("\n", x$n_l, " low-freq. obs. converted to ", x$n, " high-freq. obs.", sep = "")
   if (!is.null(x$adj.r.squared)) {
     cat("\nAdjusted R-squared:", formatC(x$adj.r.squared, digits = digits))
   }
   if (!is.null(x$rho)) {
     cat("\tAR1-Parameter:", formatC(x$rho, digits = digits))
-    if (x$truncated){
+    if (x$truncated) {
       cat(" (truncated)")
     }
   }
@@ -169,45 +179,47 @@ print.summary.td <- function (x, digits = max(3, getOption("digits") - 3),
 #'
 #' mod2 <- td(sales.a ~ imports.q + exports.q)
 #' plot(mod2)
-#'
 #' @keywords ts, models
 #' @method plot td
 #' @import graphics
 #' @export
 #'
-plot.td <- function(x, ...){
-
-  if (x$method %in% c("denton", "denton-cholette")){
+plot.td <- function(x, ...) {
+  if (x$method %in% c("denton", "denton-cholette")) {
     ext <- "('fitted.values': low-frequency indicator)"
   } else {
     ext <- "('fitted.values': low-frequency fitted values of the regression)"
   }
   subtitle <- paste("method:", x$method, ext)
 
-  old.par <- par(no.readonly=TRUE)  # backup par settings
-  on.exit(par(old.par))  # restore par settings
-  par(mfrow=c(2,1), mar = c(1.5, 4, 4, 2) + 0.1)
+  old.par <- par(no.readonly = TRUE) # backup par settings
+  on.exit(par(old.par)) # restore par settings
+  par(mfrow = c(2, 1), mar = c(1.5, 4, 4, 2) + 0.1)
   if (x$mode == "tsbox") {
     tsbox::ts_plot(
       `actual` = x$actual,
       `fitted values` = tsbox::`%ts-%`(x$actual, x$residuals)
     )
-    grid();
+    grid()
   } else {
     ts.plot(ts.intersect(x$actual, x$actual - x$residuals),
-          main=x$name, lty=c("solid", "dashed"), col=c("black", "red"),
-          ylab="actual and fitted.values (red)", ...); grid();
+      main = x$name, lty = c("solid", "dashed"), col = c("black", "red"),
+      ylab = "actual and fitted.values (red)", ...
+    )
+    grid()
   }
-  mtext(subtitle, 3, line=.4, cex=.9)
+  mtext(subtitle, 3, line = .4, cex = .9)
   par(mar = c(4, 4, 1.5, 2) + 0.1)
   if (x$mode == "tsbox") {
     # tsbox::ts_plot() does not work well with grids
     return(invisible(NULL))
   } else {
-    ts.plot(ts.intersect(x$residuals, 0), lty=c("solid", "dashed"),
-            col=c("black", "red"), ylab="residuals", ...); grid()
+    ts.plot(ts.intersect(x$residuals, 0),
+      lty = c("solid", "dashed"),
+      col = c("black", "red"), ylab = "residuals", ...
+    )
+    grid()
   }
-
 }
 
 
@@ -230,7 +242,6 @@ plot.td <- function(x, ...){
 #'
 #' mod1 <- td(sales.a ~ imports.q + exports.q)
 #' predict(mod1)
-#'
 #' @keywords ts, models
 #' @method predict td
 #' @export

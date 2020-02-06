@@ -14,7 +14,7 @@ plot(sales.a)
 
 m1 <- td(sales.a ~ 1, to = "quarterly", method = "denton-cholette")
 
-# td() produces an object of class "td". The formula, 'sales.a ~ 1', indicates 
+# td() produces an object of class "td". The formula, 'sales.a ~ 1', indicates
 # that our low frequency variable will be disaggregated with a constant. The
 # resulting quarterly values of sales can be extracted with the 'predict'
 # function:
@@ -31,7 +31,7 @@ plot(predict(m1))
 # limited. There might be a related quarterly series that follows a similar
 # movement than sales. For example, we may use quarterly exports of
 # pharmaceutical and chemical products:
-  
+
 plot(exports.q)
 m2 <- td(sales.a ~ 0 + exports.q, method = "denton-cholette")
 
@@ -39,19 +39,19 @@ m2 <- td(sales.a ~ 0 + exports.q, method = "denton-cholette")
 # 'denton' method, the intercept must be specified as missing in the formula
 # (0). Contrary to the first example, the 'to' argument is redundant, because
 # the destination frequency can be interfered from the time series properties of
-# 'exports.q'. 
+# 'exports.q'.
 
 # The resulting model leads to a much more interesting series:
 
 plot(predict(m2))
-  
+
 # As the indicator series is longer than the annual series, there is an
 # extrapolation period, in which the quarterly sales are forecasted.
 
 # With an indicator, the 'denton-cholette' method simply transfers the movement
 # of the indicator to the resulting series. Even if in fact there were no
 # correlation between the two series, there would be a strong similarity between
-# the indicator and the resulting series. 
+# the indicator and the resulting series.
 
 # In contrast, regression based methods transfer the movement only if the
 # indicator series and the resulting series are actually correlated on the
@@ -63,7 +63,7 @@ m3 <- td(sales.a ~ exports.q)
 # As 'chow-lin-maxlog' is the default method, it does not need to be specified.
 # Like with the corresponding 'lm' method, summary() produces an overview of the
 # regression:
-  
+
 summary(m3)
 
 # There is indeed a strong correlation between exports and sales, as it has been
@@ -83,7 +83,7 @@ plot(predict(m3))
 
 # Like all regression based methods, 'chow-lin-maxlog' can also be used with
 # more than one indicator series ('imports.q' is only significant on a 10% level
-# in the following example, it probably will not help to produce a more accurate 
+# in the following example, it probably will not help to produce a more accurate
 # temporal disaggregation):
 
 m4 <- td(formula = sales.a ~ exports.q + imports.q)
@@ -93,15 +93,11 @@ summary(m4)
 # compare the artificial values to the true values:
 
 plot(sales.q)
-lines(predict(m2), col = "blue")  # Denton-Cholette
-lines(predict(m3), col = "red")   # Chow-Lin
+lines(predict(m2), col = "blue") # Denton-Cholette
+lines(predict(m3), col = "red") # Chow-Lin
 
 # With an indicator series, both the Denton method and Chow-Lin produce a series
 # that is close to the true series. This is, of course, due to fact that in this
 # example, exports are a good indicator for sales. If the indicator is less
 # close to the series of interest, the resulting series will be less close to
 # the true series.
-
-
-
-

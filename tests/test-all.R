@@ -7,7 +7,7 @@ test_check("tempdisagg")
 
 # check only if we are on travis, we don't want the data file (300k) to be part
 # of the package
-if (Sys.getenv("TRAVIS") != ""){
+if (Sys.getenv("TRAVIS") != "") {
 
   # travis folder (on travis)
   path <- file.path(Sys.getenv("TRAVIS_BUILD_DIR"), "travis")
@@ -24,12 +24,15 @@ if (Sys.getenv("TRAVIS") != ""){
 
   file_in <- "data_input_swisspharma.RData"
 
-  load(file=input_old)
+  load(file = input_old)
   load(file_in)
   file_function <- "00_functions.R"
 
   old <- list()
-  old$r <- r; old$R <- R; old$td_version <- td_version; old$r_version <- r_version
+  old$r <- r
+  old$R <- R
+  old$td_version <- td_version
+  old$r_version <- r_version
   rm(r, R, td_version, r_version)
 
   source(file_function)
@@ -48,13 +51,14 @@ if (Sys.getenv("TRAVIS") != ""){
 
   # estimation with tempdisagg in R (yearly to quarterly)
   # ----------------------------------------------------------------------------
-  R <- list(); r <- list()
+  R <- list()
+  r <- list()
   formula1 <- sales.a ~ exports.q + imports.q
   formula2 <- sales.a ~ 1
   formula3 <- sales.a ~ 0 + exports.q
   freq <- frequency(exports.q)
 
-  R$y2q <- estimAll(formula1=formula1, formula2=formula2, formula3=formula3, freq=freq, pre=FALSE)
+  R$y2q <- estimAll(formula1 = formula1, formula2 = formula2, formula3 = formula3, freq = freq, pre = FALSE)
   r$y2q <- do.call(cbind, lapply(R$y2q, predict))
 
   # estimation with tempdisagg in R (quarterly to monthly)
@@ -64,7 +68,7 @@ if (Sys.getenv("TRAVIS") != ""){
   formula3 <- sales.q ~ 0 + exports.m
   freq <- frequency(exports.m)
 
-  R$q2m <- estimAll(formula1=formula1, formula2=formula2, formula3=formula3, freq=freq, pre=FALSE)
+  R$q2m <- estimAll(formula1 = formula1, formula2 = formula2, formula3 = formula3, freq = freq, pre = FALSE)
   r$q2m <- do.call(cbind, lapply(R$q2m, predict))
 
 
@@ -73,11 +77,19 @@ if (Sys.getenv("TRAVIS") != ""){
 
   # aggregation fullfilled?
   # ----------------------------------------------------------------------------
-  stopifnot(sapply(R$y2q, function(x){all.equal(window(ta(predict(x)), start=start(sales.a)), sales.a, tolerance=1e-7)}))
-  stopifnot(sapply(R$q2m, function(x){all.equal(window(ta(predict(x), to=4), start=start(sales.q), end=end(sales.q)), sales.q, tolerance=1e-5, check.attributes=FALSE)}))
+  stopifnot(sapply(R$y2q, function(x) {
+    all.equal(window(ta(predict(x)), start = start(sales.a)), sales.a, tolerance = 1e-7)
+  }))
+  stopifnot(sapply(R$q2m, function(x) {
+    all.equal(window(ta(predict(x), to = 4), start = start(sales.q), end = end(sales.q)), sales.q, tolerance = 1e-5, check.attributes = FALSE)
+  }))
 
-  stopifnot(sapply(old$R$y2q, function(x){all.equal(window(ta(predict(x)), start=start(sales.a)), sales.a, tolerance=1e-7)}))
-  stopifnot(sapply(old$R$q2m, function(x){all.equal(window(ta(predict(x), to=4), start=start(sales.q), end=end(sales.q)), sales.q, tolerance=1e-5, check.attributes=FALSE)}))
+  stopifnot(sapply(old$R$y2q, function(x) {
+    all.equal(window(ta(predict(x)), start = start(sales.a)), sales.a, tolerance = 1e-7)
+  }))
+  stopifnot(sapply(old$R$q2m, function(x) {
+    all.equal(window(ta(predict(x), to = 4), start = start(sales.q), end = end(sales.q)), sales.q, tolerance = 1e-5, check.attributes = FALSE)
+  }))
 
   # all components: TRUE
 
@@ -92,7 +104,7 @@ if (Sys.getenv("TRAVIS") != ""){
   # }
 
 
-  stop_and_print <- function(x){
+  stop_and_print <- function(x) {
     oo <- getOption("warning.length")
     on.exit(options(warning.length = oo))
     options(warning.length = 8000)
@@ -104,22 +116,22 @@ if (Sys.getenv("TRAVIS") != ""){
   # a) time series match?
   # -------------------------------------------------------------------------------
   # year to quarter conversion
-  if(any(colnames(r$y2q) != colnames(old$r$y2q))) {
+  if (any(colnames(r$y2q) != colnames(old$r$y2q))) {
     warning("\nThere are less time series in the old set, the new set has been adjusted\n")
     r$y2q <- r$y2q[, colnames(old$r$y2q)]
   }
-  if(!all.equal(r$y2q, old$r$y2q)){
+  if (!all.equal(r$y2q, old$r$y2q)) {
     stop_and_print(diffsNewOld(r$y2q, old$r$y2q))
   }
   # identical(r$y2q, old$r$y2q)
 
 
   # quarter to month conversion
-  if(any(colnames(r$q2m) != colnames(old$r$q2m))) {
+  if (any(colnames(r$q2m) != colnames(old$r$q2m))) {
     warning("\nThere are less time series in the old set, the new set has been adjusted\n")
     r$q2m <- r$q2m[, colnames(old$r$q2m)]
   }
-  if (!all.equal(r$q2m, old$r$q2m)){
+  if (!all.equal(r$q2m, old$r$q2m)) {
     stop_and_print(diffsNewOld(r$q2m, old$r$q2m))
   }
   # identical(r$q2m, old$r$q2m)
@@ -128,9 +140,17 @@ if (Sys.getenv("TRAVIS") != ""){
   # b) td-Objects match?
   # -------------------------------------------------------------------------------
 
-  R$y2q <- lapply(R$y2q, function(e) {e$mode <- NULL; e})
-  R$q2m <- lapply(R$q2m, function(e) {e$mode <- NULL; e})
-  if(any(names(R) != names(old$R))) {R <- R[names(old$R)]}
+  R$y2q <- lapply(R$y2q, function(e) {
+    e$mode <- NULL
+    e
+  })
+  R$q2m <- lapply(R$q2m, function(e) {
+    e$mode <- NULL
+    e
+  })
+  if (any(names(R) != names(old$R))) {
+    R <- R[names(old$R)]
+  }
   stopifnot(all.equal(R, old$R, tol = 1e-5))
 
   # c) graphical comparisons if necessary
@@ -220,5 +240,4 @@ if (Sys.getenv("TRAVIS") != ""){
 
   am_y_last <- ta(am_s_last, to = "annual", conversion = "last")
   stopifnot(all.equal(airmiles, ta(am_y_last, to = "annual", conversion = "last")))
-
 }

@@ -4,7 +4,7 @@ ModeOfSeries <- function(x) {
     "data.table", "data.frame", "dts", "tis", "irts"
   )
 
-  if (inherits(x, "xts")) {  # xts may be also a ts, treat as xts
+  if (inherits(x, "xts")) { # xts may be also a ts, treat as xts
     "tsbox"
   } else if (inherits(x, "ts")) {
     "ts"

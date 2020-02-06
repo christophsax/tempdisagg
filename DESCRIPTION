@@ -1,6 +1,6 @@
 Package: tempdisagg
-Version: 0.99.9001
-Date: 2019-08-??
+Version: 0.99.9003
+Date: 2020-02-06
 Title: Methods for Temporal Disaggregation and Interpolation of Time Series
 Authors@R: c(
     person("Christoph", "Sax", role = c("aut", "cre"), email = "christoph.sax@gmail.com"),
@@ -10,7 +10,9 @@ URL: https://journal.r-project.org/archive/2013-2/sax-steiner.pdf
 BugReports: https://github.com/christophsax/tempdisagg
 Suggests:
     tsbox,
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
 Description: Temporal disaggregation methods are used to disaggregate and
     interpolate a low frequency time series to a higher frequency series, where
     either the sum, the mean, the first or the last value of the resulting
@@ -20,6 +22,7 @@ Description: Temporal disaggregation methods are used to disaggregate and
     Fernandez, Litterman, Denton and Denton-Cholette. Supports most R time series classes.
 License: GPL-3
 LazyLoad: yes
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
+VignetteBuilder: knitr

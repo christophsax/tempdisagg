@@ -7,8 +7,12 @@
 \usage{
 \method{summary}{td}(object, ...)
 
-\method{print}{summary.td}(x, digits = max(3, getOption("digits") - 3),
-  signif.stars = getOption("show.signif.stars"), ...)
+\method{print}{summary.td}(
+  x,
+  digits = max(3, getOption("digits") - 3),
+  signif.stars = getOption("show.signif.stars"),
+  ...
+)
 }
 \arguments{
 \item{object}{an object of class \code{"td"}, usually, a result of a
@@ -48,7 +52,6 @@ summary(mod1)
 
 mod2 <- td(sales.a ~ 0, to = "quarterly", method = "uniform")
 summary(mod2)
-
 }
 \seealso{
 \code{\link[=td]{td()}} for the main function for temporal disaggregation.

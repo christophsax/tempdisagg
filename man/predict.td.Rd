@@ -26,7 +26,6 @@ data(swisspharma)
 
 mod1 <- td(sales.a ~ imports.q + exports.q)
 predict(mod1)
-
 }
 \seealso{
 \code{\link[=td]{td()}} for the main function for temporal disaggregation.

@@ -4,9 +4,19 @@
 \alias{td}
 \title{Temporal Disaggregation of Time Series}
 \usage{
-td(formula, conversion = "sum", to = "quarterly",
-  method = "chow-lin-maxlog", truncated.rho = 0, fixed.rho = 0.5,
-  criterion = "proportional", h = 1, start = NULL, end = NULL, ...)
+td(
+  formula,
+  conversion = "sum",
+  to = "quarterly",
+  method = "chow-lin-maxlog",
+  truncated.rho = 0,
+  fixed.rho = 0.5,
+  criterion = "proportional",
+  h = 1,
+  start = NULL,
+  end = NULL,
+  ...
+)
 }
 \arguments{
 \item{formula}{an object of class \code{"formula"}: a symbolic
@@ -163,7 +173,7 @@ distributes the residuals uniformly. It is especially useful for comparing
 the estimators of GLS and OLS regressions.
 }
 \examples{
-data(swisspharma)
+data(tempdisagg)
 
 # one indicator, no intercept
 mod1 <- td(sales.a ~ 0 + exports.q)
@@ -228,10 +238,13 @@ predict(mod1b)  # class 'xts'
 # non-standard frequencies: decades to years
 predict(td(ts_xts(uspop) ~ 1, "mean", to = "year", method = "fast"))
 
-# years to days
-m.d <- td(sales.a.xts ~ 1, to = "day", method = "fast")
-sales.d.xts <- predict(m.d)
-all.equal(ts_frequency(sales.d.xts, to = "year", aggregate = "sum"), sales.a.xts)
+# quarter to daily (no indicator)
+m.d.noind <- td(gdp.q ~ 1, to = "daily", method = "fast")
+predict(m.d.noind)
+
+# quarter to daily (one indicator)
+m.d.stocks <- td(gdp.q ~ smi.d, method = "chow-lin-fixed", fixed.rho = 0.9)
+predict(m.d.stocks)
 }
 }
 \references{
@@ -250,7 +263,7 @@ Wei, W. W. S. (1994). Time series analysis. Addison-Wesley publ.
 
 Sax, C. und Steiner, P. (2013). Temporal Disaggregation of Time Series.
 \emph{The R Journal}, 5(2), 80-88.
-\url{https://journal.r-project.org/archive/2013-2/sax-steiner.pdf}
+\url{https://doi.org/10.32614/RJ-2013-028}
 }
 \seealso{
 \code{\link[=ta]{ta()}} for temporal aggregation, the inverse function of

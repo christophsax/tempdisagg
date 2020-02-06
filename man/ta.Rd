@@ -42,7 +42,6 @@ data(swisspharma)
 
 sales.q.a <- ta(sales.q, conversion = "sum", to = "annual")
 all.equal(sales.a, sales.q.a)
-
 }
 \seealso{
 \code{\link[=td]{td()}} for the main function for temporal disaggregation.

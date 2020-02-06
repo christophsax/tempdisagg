@@ -29,7 +29,6 @@
 #'
 #' sales.q.a <- ta(sales.q, conversion = "sum", to = "annual")
 #' all.equal(sales.a, sales.q.a)
-#'
 #' @keywords ts, models
 ta <- function(x, ...) UseMethod("ta")
 
@@ -38,37 +37,38 @@ ta <- function(x, ...) UseMethod("ta")
 #' @export
 #' @import utils
 #' @method ta ts
-ta.ts <- function(x, conversion = "sum", to = "annual", ...){
-
+ta.ts <- function(x, conversion = "sum", to = "annual", ...) {
   if (ModeOfSeries(x) == "tsbox") {
     stop("ta() does not support ts-boxable time series. Use tsbox::ts_frequency() instead.")
   }
 
   # Calls SubAggregation for computation
 
-  if (is.numeric(to)){  # frequency specified by a number
+  if (is.numeric(to)) { # frequency specified by a number
     f_l <- to
-  } else if (is.character(to)){  # frequency specified by a char string
-    if (to=="annual"){
+  } else if (is.character(to)) { # frequency specified by a char string
+    if (to == "annual") {
       f_l <- 1
-    } else if (to=="quarterly"){
+    } else if (to == "quarterly") {
       f_l <- 4
     } else {
       stop("unknown character string as the 'to' argument")
     }
-  } else stop ("wrong specification of the 'to' argument")
+  } else {
+    stop("wrong specification of the 'to' argument")
+  }
 
   if (!inherits(x, "ts")) stop("not a time series object.")
 
-  if (inherits(x, "mts")){
-    ncol  <- dim(x)[2]
-    first  <- SubAggregation(x[,1], conversion = conversion, f_l = f_l)
+  if (inherits(x, "mts")) {
+    ncol <- dim(x)[2]
+    first <- SubAggregation(x[, 1], conversion = conversion, f_l = f_l)
     mat <- matrix(NA, nrow = length(first), ncol = ncol)
-    mat[,1] <- first     # first column
-    for (i in 2:ncol) {  # remaining columns
-      mat[,i] <- SubAggregation(x[,i], conversion = conversion, f_l = f_l)
+    mat[, 1] <- first # first column
+    for (i in 2:ncol) { # remaining columns
+      mat[, i] <- SubAggregation(x[, i], conversion = conversion, f_l = f_l)
     }
-    z <- ts(mat, start=start(first), frequency = f_l)
+    z <- ts(mat, start = start(first), frequency = f_l)
     dimnames(z)[2] <- dimnames(x)[2]
   } else {
     z <- SubAggregation(x, conversion = conversion, f_l = f_l)
@@ -77,7 +77,7 @@ ta.ts <- function(x, conversion = "sum", to = "annual", ...){
 }
 
 
-SubAggregation <- function(x, conversion = "sum", f_l = 1){
+SubAggregation <- function(x, conversion = "sum", f_l = 1) {
   # performs a temporal agregation of a single time series
   #
   # Args:
@@ -95,8 +95,8 @@ SubAggregation <- function(x, conversion = "sum", f_l = 1){
 
   hf.start <- time(x)[!is.na(x)][1]
   hf.start.na <- time(x)[1]
-  hf.end <- tail(time(x)[!is.na(x)],1)
-  hf.end.na <- tail(time(x),1)
+  hf.end <- tail(time(x)[!is.na(x)], 1)
+  hf.end.na <- tail(time(x), 1)
 
   lf.start <- SubConvertStart(hf.start = hf.start, f = f, f_l = f_l)
   lf.start.na <- SubConvertStart(hf.start = hf.start.na, f = f, f_l = f_l)
@@ -107,23 +107,23 @@ SubAggregation <- function(x, conversion = "sum", f_l = 1){
   # first and last are calculated without using the C matrix
   # a low frequency value can also be calculated if the high frequency data is
   # incomplete (#22)
-  if (conversion == "first"){
-    if (f == 12){
-      if (f_l == 12) cc <- 1:12  # including trivial f = f_l case
+  if (conversion == "first") {
+    if (f == 12) {
+      if (f_l == 12) cc <- 1:12 # including trivial f = f_l case
       if (f_l == 4) cc <- c(1, 4, 7, 10)
       if (f_l == 2) cc <- c(1, 7)
       if (f_l == 1) cc <- c(1)
     }
-    if (f == 4){
+    if (f == 4) {
       if (f_l == 4) cc <- 1:4
       if (f_l == 2) cc <- c(1, 3)
       if (f_l == 1) cc <- c(1)
     }
-    if (f == 2){
+    if (f == 2) {
       if (f_l == 2) cc <- 1:2
       if (f_l == 1) cc <- c(1)
     }
-    if (f == 1){
+    if (f == 1) {
       if (f_l == 1) cc <- c(1)
     }
     iscc <- cycle(x) %in% cc
@@ -132,23 +132,23 @@ SubAggregation <- function(x, conversion = "sum", f_l = 1){
     z <- ts(x[iscc], start = lf.start, frequency = f_l)
     return(z)
   }
-  if (conversion == "last"){
-    if (f == 12){
+  if (conversion == "last") {
+    if (f == 12) {
       if (f_l == 12) cc <- 1:12
       if (f_l == 4) cc <- c(3, 6, 9, 12)
       if (f_l == 2) cc <- c(6, 12)
       if (f_l == 1) cc <- c(12)
     }
-    if (f == 4){
+    if (f == 4) {
       if (f_l == 4) cc <- 1:4
       if (f_l == 2) cc <- c(2, 4)
       if (f_l == 1) cc <- c(4)
     }
-    if (f == 2){
+    if (f == 2) {
       if (f_l == 2) cc <- 1:2
       if (f_l == 1) cc <- c(2)
     }
-    if (f == 1){
+    if (f == 1) {
       if (f_l == 1) cc <- c(1)
     }
     iscc <- cycle(x) %in% cc
@@ -156,7 +156,7 @@ SubAggregation <- function(x, conversion = "sum", f_l = 1){
     lf.start <- SubConvertStart(hf.start = time(x)[iscc][1], f = f, f_l = f_l)
     # lf starting period is calculated incorrectly by SubConvertStart, since it
     # assumes hf period is not complete. Shifting by 1 lf period.
-    if (f_l != f){
+    if (f_l != f) {
       lf.start <- lf.start - 1 / f_l
     }
     z <- ts(x[iscc], start = lf.start, frequency = f_l)
@@ -164,29 +164,32 @@ SubAggregation <- function(x, conversion = "sum", f_l = 1){
   }
 
   # if all observations are NAs, return NAs
-  if (all(is.na(x))){
-    z <- window(ts(NA, start = lf.start.na, frequency=f_l),
-                end = lf.end.na, extend=TRUE)
-  # if series contains insufficient numbers of observations, return NAs
-  } else if (lf.start > lf.end){
-    z <- window(ts(NA, start = lf.start.na, frequency=f_l),
-                end = lf.end.na, extend=TRUE)
+  if (all(is.na(x))) {
+    z <- window(ts(NA, start = lf.start.na, frequency = f_l),
+      end = lf.end.na, extend = TRUE
+    )
+    # if series contains insufficient numbers of observations, return NAs
+  } else if (lf.start > lf.end) {
+    z <- window(ts(NA, start = lf.start.na, frequency = f_l),
+      end = lf.end.na, extend = TRUE
+    )
   } else {
-    x.used <- window(x, start = lf.start, end = lf.end + 1 / f_l - 1/ f)
-    if (any(is.na(x.used))){
+    x.used <- window(x, start = lf.start, end = lf.end + 1 / f_l - 1 / f)
+    if (any(is.na(x.used))) {
       warning("time series contains internal NAs")
     }
-    agg <- as.numeric(CalcC(n_l = length(x.used)/fr, conversion = conversion,
-                            fr=fr
-                            ) %*% x.used)
-    agg.ts <- ts(agg, start=lf.start, frequency=f_l)
-    z <- window(agg.ts, start=lf.start.na, end=lf.end.na, extend=TRUE)
+    agg <- as.numeric(CalcC(
+      n_l = length(x.used) / fr, conversion = conversion,
+      fr = fr
+    ) %*% x.used)
+    agg.ts <- ts(agg, start = lf.start, frequency = f_l)
+    z <- window(agg.ts, start = lf.start.na, end = lf.end.na, extend = TRUE)
   }
   z
 }
 
 
-SubConvertEnd <- function(hf.end, f, f_l){
+SubConvertEnd <- function(hf.end, f, f_l) {
   # converts a hf end point to the last fully available lf end point
   #
   # Args:
@@ -205,12 +208,12 @@ SubConvertEnd <- function(hf.end, f, f_l){
   fr <- f / f_l
   floor(hf.end) + (floor(
     ((hf.end - floor(hf.end)) * f + 1 + 1e-8) / fr
-    ) - 1) / f_l
+  ) - 1) / f_l
   # +1e-8 avoids rounding problems
 }
 
 
-SubConvertStart <- function(hf.start, f, f_l){
+SubConvertStart <- function(hf.start, f, f_l) {
   # converts a hf end point to the last fully available lf end point
   #
   # Args:
@@ -226,7 +229,6 @@ SubConvertStart <- function(hf.start, f, f_l){
   #   Identical to SubConvertEnd() except that floor() is exchanged by ceiling().
 
   fr <- f / f_l
-  floor(hf.start) + ceiling(((hf.start - floor(hf.start)) * f) /fr - 1e-8) / f_l
+  floor(hf.start) + ceiling(((hf.start - floor(hf.start)) * f) / fr - 1e-8) / f_l
   # -1e-8 avoids rounding problems
 }
-
