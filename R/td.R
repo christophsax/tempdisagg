@@ -239,7 +239,7 @@
 #' predict(m.d.noind)
 #'
 #' # quarter to daily (one indicator)
-#' m.d.stocks <- td(gdp.q ~ smi.d, method = "chow-lin-fixed", fixed.rho = 0.9)
+#' m.d.stocks <- td(gdp.q ~ spi.d, method = "chow-lin-fixed", fixed.rho = 0.9)
 #' predict(m.d.stocks)
 #' }
 #' @keywords ts, models
@@ -274,7 +274,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
     message(
       "'denton-cholette' removes the transient movement at the beginning of ",
       "the series and is preferable to the original 'denton' method in most ",
-      " cases."
+      "cases."
     )
   }
 

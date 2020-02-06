@@ -243,7 +243,7 @@ m.d.noind <- td(gdp.q ~ 1, to = "daily", method = "fast")
 predict(m.d.noind)
 
 # quarter to daily (one indicator)
-m.d.stocks <- td(gdp.q ~ smi.d, method = "chow-lin-fixed", fixed.rho = 0.9)
+m.d.stocks <- td(gdp.q ~ spi.d, method = "chow-lin-fixed", fixed.rho = 0.9)
 predict(m.d.stocks)
 }
 }
