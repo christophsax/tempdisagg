@@ -57,4 +57,4 @@ summary(mod2)
 \code{\link[=td]{td()}} for the main function for temporal disaggregation.
 }
 \keyword{models}
-\keyword{ts,}
+\keyword{ts}

@@ -1,9 +1,9 @@
 Package: tempdisagg
-Version: 0.99.9003
-Date: 2020-02-06
+Version: 1.0
+Date: 2020-02-07
 Title: Methods for Temporal Disaggregation and Interpolation of Time Series
 Authors@R: c(
-    person("Christoph", "Sax", role = c("aut", "cre"), email = "christoph.sax@gmail.com"),
+    person("Christoph", "Sax", email = "christoph.sax@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-7192-7044")),
     person("Peter", "Steiner", role = c("aut")),
     person("Tommaso", "Di Fonzo", role = "ctb"))
 URL: https://journal.r-project.org/archive/2013-2/sax-steiner.pdf
@@ -19,7 +19,9 @@ Description: Temporal disaggregation methods are used to disaggregate and
     high frequency series is consistent with the low frequency series. Temporal
     disaggregation can be performed with or without one or more high frequency
     indicator series. Contains the methods of Chow-Lin, Santos-Silva-Cardoso,
-    Fernandez, Litterman, Denton and Denton-Cholette. Supports most R time series classes.
+    Fernandez, Litterman, Denton and Denton-Cholette, summarized in Sax and
+    Steiner (2013) <doi:10.32614/RJ-2013-028>. Supports most R time series
+    classes.
 License: GPL-3
 LazyLoad: yes
 RoxygenNote: 7.0.2

@@ -242,7 +242,7 @@
 #' m.d.stocks <- td(gdp.q ~ spi.d, method = "chow-lin-fixed", fixed.rho = 0.9)
 #' predict(m.d.stocks)
 #' }
-#' @keywords ts, models
+#' @keywords ts models
 #' @export
 #'
 td <- function(formula, conversion = "sum", to = "quarterly",

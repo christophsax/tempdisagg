@@ -53,7 +53,7 @@ print.td <- function(x, ...) {
 #'
 #' mod2 <- td(sales.a ~ 0, to = "quarterly", method = "uniform")
 #' summary(mod2)
-#' @keywords ts, models
+#' @keywords ts models
 #' @method summary td
 #' @export
 #'
@@ -179,7 +179,7 @@ print.summary.td <- function(x, digits = max(3, getOption("digits") - 3),
 #'
 #' mod2 <- td(sales.a ~ imports.q + exports.q)
 #' plot(mod2)
-#' @keywords ts, models
+#' @keywords ts models
 #' @method plot td
 #' @import graphics
 #' @export
@@ -242,7 +242,7 @@ plot.td <- function(x, ...) {
 #'
 #' mod1 <- td(sales.a ~ imports.q + exports.q)
 #' predict(mod1)
-#' @keywords ts, models
+#' @keywords ts models
 #' @method predict td
 #' @export
 #'

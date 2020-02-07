@@ -279,4 +279,4 @@ interpolated high frequency series.
 frequency series, as well as the residuals.
 }
 \keyword{models}
-\keyword{ts,}
+\keyword{ts}

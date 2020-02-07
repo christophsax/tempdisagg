@@ -1,4 +1,4 @@
-# tempdisagg 0.99 (2019-08-??)
+# tempdisagg 1.0 (2020-02-07)
 
 ## major changes
 
@@ -9,11 +9,12 @@
 - new method: "fast", a shortcut for chow-lin-fixed with fixed.rho = 0.99999.
   The method returns approximately the same results as "denton-cholette", but is
   much faster. (#14)
+- new vignettes: intro to tempdisagg, disaggregation to high frequency
 
 ## under the hood
 
-- Supports three modes: tsbox, ts, numeric
-- Markdown in roxygen, NEWS.md
+- supports three modes: tsbox, ts, numeric
+- markdown in roxygen, NEWS.md
 - testthat infrastructure
 
 

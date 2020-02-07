@@ -29,7 +29,7 @@
 #'
 #' sales.q.a <- ta(sales.q, conversion = "sum", to = "annual")
 #' all.equal(sales.a, sales.q.a)
-#' @keywords ts, models
+#' @keywords ts models
 ta <- function(x, ...) UseMethod("ta")
 
 
