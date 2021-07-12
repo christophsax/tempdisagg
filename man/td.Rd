@@ -164,7 +164,7 @@ beginning of the resulting series.  \code{"fast"} is a shortcut for
 same results as "denton-cholette" with \code{h = 1}, but is much faster.
 
 \code{"uniform"} is a special case of the \code{"denton"} approach, with
-\code{h} equals  \code{0} and \code{criterion} equals  \code{"proportional"}.
+\code{h} equals  \code{0} and \code{criterion} equals  \code{"additive"}.
 It distributes the residuals uniformly. If no indicator is used, this leads
 to a step-shaped series.
 

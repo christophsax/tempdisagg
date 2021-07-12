@@ -1,3 +1,10 @@
+# tempdisagg 1.x
+
+## documentation
+
+- ?td: uniform uses criterion = "additive"
+
+
 # tempdisagg 1.0 (2020-02-07)
 
 ## major changes

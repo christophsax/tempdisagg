@@ -63,7 +63,7 @@
 #' same results as "denton-cholette" with `h = 1`, but is much faster.
 #'
 #' `"uniform"` is a special case of the `"denton"` approach, with
-#' `h` equals  `0` and `criterion` equals  `"proportional"`.
+#' `h` equals  `0` and `criterion` equals  `"additive"`.
 #' It distributes the residuals uniformly. If no indicator is used, this leads
 #' to a step-shaped series.
 #'
