@@ -4,7 +4,9 @@
 \name{spi.d}
 \alias{spi.d}
 \title{SPI Swiss Performance Index}
-\format{A \code{data.frame}.}
+\format{
+A \code{data.frame}.
+}
 \source{
 Swiss National Bank (SNB)
 }

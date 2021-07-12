@@ -4,7 +4,9 @@
 \name{gdp.q}
 \alias{gdp.q}
 \title{Gross Domestic Product}
-\format{A \code{data.frame}.}
+\format{
+A \code{data.frame}.
+}
 \source{
 State Secretariat for Economic Affairs (SECO).
 }
