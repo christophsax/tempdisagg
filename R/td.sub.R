@@ -30,7 +30,8 @@ SubRegressionBased <- function(y_l, X,
                                n.bc = NULL, n.fc = NULL, conversion = "sum",
                                method = "chow-lin-maxlog", fr = 4,
                                truncated.rho = 0,
-                               fixed.rho = 0.5, tol = 1e-16,
+                               fixed.rho = 0.5, fixed.coef = NULL,
+                               tol = 1e-16,
                                lower = -0.999, upper = 0.999) {
   # performs temporal disaggregation for regression based methods
   #
@@ -199,7 +200,17 @@ SubRegressionBased <- function(y_l, X,
   # aggregating Q
   Q_l <- C %*% Q %*% t(C)
   # final GLS estimation (aggregated)
-  z <- CalcGLS(y = y_l, X = X_l, vcov = Q_l)
+
+  if (is.null(fixed.coef)) {
+    z <- CalcGLS(y = y_l, X = X_l, vcov = Q_l)
+  } else {
+    stopifnot(method %in% c("chow-lin-fixed", "litterman-fixed", "dynamic-fixed", "fernandez"))
+    z <- list()
+    z$coefficients <- fixed.coef
+    z$df <- NA_real_
+    z$se <- rep(NA_real_, length(fixed.coef))
+    z$vcov_inv <- solve(Q_l)
+  }
 
   # Check if X is singular
   if (qr(X)$rank < min(dim(X))) {

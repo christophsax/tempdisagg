@@ -246,7 +246,7 @@
 #' @export
 #'
 td <- function(formula, conversion = "sum", to = "quarterly",
-               method = "chow-lin-maxlog", truncated.rho = 0, fixed.rho = 0.5,
+               method = "chow-lin-maxlog", truncated.rho = 0, fixed.rho = 0.5, fixed.coef = NULL,
                criterion = "proportional", h = 1,
                start = NULL, end = NULL, ...) {
 
@@ -528,7 +528,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       n.bc = n.bc, n.fc = n.fc,
       conversion = conversion,
       method = method, truncated.rho = truncated.rho,
-      fixed.rho = fixed.rho, fr = fr, ...
+      fixed.rho = fixed.rho, fixed.coef = fixed.coef, fr = fr, ...
     )
   } else if (method %in% c("denton-cholette", "denton", "uniform")) {
     z <- SubDenton(
