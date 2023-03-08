@@ -7,10 +7,10 @@ test_check("tempdisagg")
 
 # check only if we are on travis, we don't want the data file (300k) to be part
 # of the package
-if (Sys.getenv("TRAVIS") != "") {
+if (Sys.getenv("CI") != "" && Sys.getenv("GITHUB_PATH") != "") {
 
   # travis folder (on travis)
-  path <- file.path(Sys.getenv("TRAVIS_BUILD_DIR"), "travis")
+  path <- file.path(Sys.getenv("GITHUB_PATH"), "noinst")
 
   # path <- "/Users/christoph/git/tempdisagg/travis"
 
