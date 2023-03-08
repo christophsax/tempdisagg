@@ -5,3 +5,4 @@ noinst
 ^\.Rproj\.user$
 ^\.github$
 ^README\.Rmd$
+^codecov\.yml$

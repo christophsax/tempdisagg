@@ -12,7 +12,8 @@ Suggests:
     tsbox,
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    covr
 Description: Temporal disaggregation methods are used to disaggregate and
     interpolate a low frequency time series to a higher frequency series, where
     either the sum, the mean, the first or the last value of the resulting
