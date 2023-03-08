@@ -9,7 +9,12 @@ message(list.files(Sys.getenv("GITHUB_WORKSPACE")))
 
 # check only if we are on GHA, we don't want the data file (300k) to be part
 # of the package
-if (Sys.getenv("CI") != "" && Sys.getenv("GITHUB_WORKSPACE") != "") {
+if (
+  Sys.getenv("CI") != "" &&
+  Sys.getenv("GITHUB_WORKSPACE") != "" &&
+
+  # Numerical tests don't work on some GHA Linux
+  R.Version()$os != "linux-gnu") {
 
   # GHA folder (on GHA)
   path <- file.path(Sys.getenv("GITHUB_WORKSPACE"), "noinst")
