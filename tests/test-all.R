@@ -5,8 +5,6 @@ library(tempdisagg)
 test_check("tempdisagg")
 
 
-message(list.files(Sys.getenv("GITHUB_WORKSPACE")))
-
 # check only if we are on GHA, we don't want the data file (300k) to be part
 # of the package
 if (
