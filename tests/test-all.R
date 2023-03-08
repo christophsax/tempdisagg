@@ -5,6 +5,8 @@ library(tempdisagg)
 test_check("tempdisagg")
 
 
+message(list.files())
+
 # check only if we are on GHA, we don't want the data file (300k) to be part
 # of the package
 if (Sys.getenv("CI") != "" && Sys.getenv("GITHUB_PATH") != "") {
