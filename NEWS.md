@@ -1,4 +1,4 @@
-# tempdisagg 1.x
+# tempdisagg 1.1 (2023-03-08)
 
 ## minor changes
 

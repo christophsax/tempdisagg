@@ -1,6 +1,6 @@
 Package: tempdisagg
-Version: 1.0
-Date: 2020-02-07
+Version: 1.1
+Date: 2023-03-08
 Title: Methods for Temporal Disaggregation and Interpolation of Time Series
 Authors@R: c(
     person("Christoph", "Sax", email = "christoph.sax@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-7192-7044")),
