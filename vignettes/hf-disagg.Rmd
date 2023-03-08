@@ -41,7 +41,7 @@ head(gdp.q)
 ```
 
 Because we are dealing with daily data, we keep the data in a `data.frame`, rather than in a `ts` object. Other time series objects, such as `xts` and `tsibble`, are possible as well.
-For conversion and visualization, we use the [tsbox](https://www.tsbox.help) package.
+For conversion and visualization, we use the [tsbox](https://docs.ropensci.org/tsbox/) package.
 
 ```{r}
 library(tsbox)

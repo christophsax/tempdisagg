@@ -25,7 +25,7 @@ Description: Temporal disaggregation methods are used to disaggregate and
     classes.
 License: GPL-3
 LazyLoad: yes
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr

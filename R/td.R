@@ -3,7 +3,7 @@
 #' Perform temporal disaggregation or interpolation of low frequency to high
 #' frequency time series. `td` can be used with objects of class
 #' `"ts"`, with numeric vectors or with any
-#' [ts-boxable](https://www.tsbox.help) time series object.
+#' [ts-boxable](https://docs.ropensci.org/tsbox/) time series object.
 #'
 #' `td` is used to disaggregate or interpolate a low frequency to a higher
 #' frequency time series, while either the sum, the average, the first or the
@@ -87,7 +87,7 @@
 #'   (`"quarter"` (or `"quarterly"`), `"month"` (or `"monthly"`), `"day"`,
 #'   `"hour"`, `"minute"`, `"second"`, or `"year"`)
 #'   or as a scalar (e.g. `2`, `4`, `7`, `12`). Required if no right hand side
-#'   indicator series is provided. The [tsbox](https://www.tsbox.help) package must
+#'   indicator series is provided. The [tsbox](https://docs.ropensci.org/tsbox/) package must
 #'   be installed to deal with frequencies other than monthly or quarterly. If
 #'   the input series are numeric, `to` is a scalar indicating the
 #'   frequency ratio.
@@ -224,7 +224,7 @@
 #'
 #' \dontrun{
 #'
-#' # Using altvernative time series classes (see www.tsbox.help)
+#' # Using altvernative time series classes (see https://docs.ropensci.org/tsbox/)
 #' library(tsbox)
 #' sales.a.xts <- ts_xts(window(sales.a, start = 2000))
 #' exports.q.xts <- ts_xts(window(exports.q, start = 2000))
