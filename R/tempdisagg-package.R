@@ -12,7 +12,7 @@
 #'   `vignette("intro", "tempdisagg")`
 #'
 #'   Our article on temporal disaggregation of time series
-#'   (<https://doi.org/10.32614/RJ-2013-028>) in the R-Journal describes the
+#'   (\doi{10.32614/RJ-2013-028}) in the R-Journal describes the
 #'   package and the theory of temporal disaggregation in more detail.
 #'
 #' @name tempdisagg-package

@@ -153,8 +153,7 @@
 #'   Wei, W. W. S. (1994). Time series analysis. Addison-Wesley publ.
 #'
 #'   Sax, C. und Steiner, P. (2013). Temporal Disaggregation of Time Series.
-#'   *The R Journal*, 5(2), 80-88.
-#'   <https://doi.org/10.32614/RJ-2013-028>
+#'   *The R Journal*, 5(2), 80-88. \doi{10.32614/RJ-2013-028}
 #'
 #' @seealso [ta()] for temporal aggregation, the inverse function of
 #'   `td`.
