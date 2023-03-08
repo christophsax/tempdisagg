@@ -1,5 +1,9 @@
 # tempdisagg 1.x
 
+## minor changes
+
+- Use GHA instead of Travis
+
 ## bug fixes
 
 - Adjustment to work with latest tsbox
