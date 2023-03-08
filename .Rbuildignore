@@ -3,3 +3,4 @@ noinst
 ^\.travis\.yml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.github$
