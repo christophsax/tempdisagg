@@ -14,7 +14,7 @@ if (
   Sys.getenv("GITHUB_WORKSPACE") != "" &&
 
   # Numerical tests don't work on some GHA Linux
-  R.Version()$os != "linux-gnu") {
+  (Sys.info()["sysname"] == "Darwin" || .Platform$OS.type == "windows")) {
 
   # GHA folder (on GHA)
   path <- file.path(Sys.getenv("GITHUB_WORKSPACE"), "noinst")
