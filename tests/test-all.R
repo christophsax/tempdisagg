@@ -1,18 +1,23 @@
-# These tests are more extensive and only need to run on travis, not on CRAN.
+# These tests are more extensive and only need to run on GHA, not on CRAN.
 library(testthat)
 library(tempdisagg)
 
 test_check("tempdisagg")
 
 
-# check only if we are on travis, we don't want the data file (300k) to be part
+# check only if we are on GHA, we don't want the data file (300k) to be part
 # of the package
-if (Sys.getenv("TRAVIS") != "") {
+if (
+  Sys.getenv("CI") != "" &&
+  Sys.getenv("GITHUB_WORKSPACE") != "" &&
 
-  # travis folder (on travis)
-  path <- file.path(Sys.getenv("TRAVIS_BUILD_DIR"), "travis")
+  # Numerical tests don't work on some GHA Linux
+  R.Version()$os != "linux-gnu") {
 
-  # path <- "/Users/christoph/git/tempdisagg/travis"
+  # GHA folder (on GHA)
+  path <- file.path(Sys.getenv("GITHUB_WORKSPACE"), "noinst")
+
+  message("running extensive tests on CI only")
 
   setwd(path)
 

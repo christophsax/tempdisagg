@@ -1,5 +1,8 @@
-travis
+noinst
 .gitignore
 ^\.travis\.yml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.github$
+^README\.Rmd$
+^codecov\.yml$

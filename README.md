@@ -1,35 +1,45 @@
-tempdisagg: Methods for Temporal Disaggregation and Interpolation of Time Series
---------------------------------------------------------------------------------
 
-[![Build Status](https://travis-ci.org/christophsax/tempdisagg.svg?branch=master)](https://travis-ci.org/christophsax/tempdisagg)
-[![codecov](https://codecov.io/github/christophsax/tempdisagg/branch/master/graphs/badge.svg)](https://codecov.io/github/christophsax/tempdisagg)
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/tempdisagg)](https://cran.r-project.org/package=tempdisagg)
-[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
-Temporal disaggregation methods are used to disaggregate or interpolate a low
-frequency time series to a higher frequency series, where either the sum, the
-average, the first or the last value of the resulting high frequency series is
-consistent with the low frequency series. Temporal disaggregation can be
-performed with or without one or more high frequency indicator series. Contains
-the methods of Chow-Lin, Santos-Silva-Cardoso, Fernandez, Litterman, Denton and
-Denton-Cholette. Supports most R time series classes.
+# tempdisagg: Methods for Temporal Disaggregation and Interpolation of Time Series
 
-To install or update from from [CRAN][package], run:
+<!-- badges: start -->
 
-    install.packages("tempdisagg")
+[![Codecov test
+coverage](https://codecov.io/gh/christophsax/tempdisagg/branch/main/graph/badge.svg)](https://app.codecov.io/gh/christophsax/tempdisagg?branch=main)
+[![R-CMD-check](https://github.com/christophsax/tempdisagg/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/christophsax/tempdisagg/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
+Temporal disaggregation methods are used to disaggregate or interpolate
+a low frequency time series to a higher frequency series, where either
+the sum, the average, the first or the last value of the resulting high
+frequency series is consistent with the low frequency series. Temporal
+disaggregation can be performed with or without one or more high
+frequency indicator series. Contains the methods of Chow-Lin,
+Santos-Silva-Cardoso, Fernandez, Litterman, Denton and Denton-Cholette.
+Supports most R time series classes.
+
+## Installation
+
+To install or update from from
+[CRAN](https://cran.r-project.org/package=tempdisagg), run:
+
+``` r
+install.packages("tempdisagg")
+```
 
 To install the development version:
-```r
+
+``` r
 # install.packages("remotes")
 remotes::install_github("christophsax/tempdisagg")
 ```
 
-Our article on [temporal disaggregation of time series][article] in the R-Journal describes
-the package and the theory of temporal disaggregation in more detail.
+Our article on [temporal disaggregation of time
+series](https://journal.r-project.org/archive/2013-2/sax-steiner.pdf) in
+the R-Journal describes the package and the theory of temporal
+disaggregation in more detail.
 
-Please report bugs on [Github][github] or send an
+Please report bugs on
+[Github](https://github.com/christophsax/tempdisagg) or send an
 [e-mail](mailto:christoph.sax@gmail.com), thank you!
-
-[package]: https://cran.r-project.org/package=tempdisagg
-[article]: https://journal.r-project.org/archive/2013-2/sax-steiner.pdf
-[github]: https://github.com/christophsax/tempdisagg
