@@ -1,5 +1,9 @@
 # tempdisagg 1.x
 
+## bug fixes
+
+- Adjustment to work with latest tsbox
+
 ## documentation
 
 - ?td: uniform uses criterion = "additive"

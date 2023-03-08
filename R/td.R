@@ -375,10 +375,10 @@ td <- function(formula, conversion = "sum", to = "quarterly",
         message("High frequency series shorter than low frequency. Discarding low frequency before ", lf[1], ".")
       }
 
-      # last time stamp covered by lf, in hf units. This could be indered from hf
+      # last time stamp covered by lf, in hf units. This could be infered from hf
       # and lf only.
       hf.by.string <- paste0("-", if (!grepl("^\\d", to)) "1 ", to)
-      lf.end <- tsbox::ts_lag(tail(tsbox::ts_bind(lf.dt, NA), 1), by = hf.by.string)$time
+      lf.end <- tail(tsbox::ts_lag(tsbox::ts_bind(lf.dt, NA), by = hf.by.string)$time, 1)
 
       # data matrices
       hf.env <- list2env(as.list(X.matrices))
@@ -392,7 +392,7 @@ td <- function(formula, conversion = "sum", to = "quarterly",
       to <- gsub("daily$", "day", to)
       to <- gsub("ly$", "", to)
       hf.by.string <- paste0("-", if (!grepl("^\\d", to)) "1 ", to)
-      lf.end <- tsbox::ts_lag(tail(tsbox::ts_bind(lf.dt, NA), 1), by = hf.by.string)$time
+      lf.end <- tail(tsbox::ts_lag(tsbox::ts_bind(lf.dt, NA), by = hf.by.string)$time, 1)
       hf.dt <- tsbox::ts_dts(data.frame(time = seq(lf[1], lf.end, by = to), value = 1))
       X.template <- tsbox::copy_class(hf.dt, y_l.series)
       X <- as.matrix(hf.dt$value)
