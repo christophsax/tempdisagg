@@ -6,7 +6,7 @@
 
 ## bug fixes
 
-- Adjustment to work with latest tsbox
+- Adjustment to work with latest version of tsbox
 
 ## documentation
 
