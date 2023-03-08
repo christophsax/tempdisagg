@@ -5,14 +5,14 @@ library(tempdisagg)
 test_check("tempdisagg")
 
 
-message(list.files(Sys.getenv("GITHUB_PATH")))
+message(list.files(Sys.getenv("GITHUB_WORKSPACE")))
 
 # check only if we are on GHA, we don't want the data file (300k) to be part
 # of the package
-if (Sys.getenv("CI") != "" && Sys.getenv("GITHUB_PATH") != "") {
+if (Sys.getenv("CI") != "" && Sys.getenv("GITHUB_WORKSPACE") != "") {
 
   # GHA folder (on GHA)
-  path <- file.path(Sys.getenv("GITHUB_PATH"), "noinst")
+  path <- file.path(Sys.getenv("GITHUB_WORKSPACE"), "noinst")
 
   message("running extensive tests on CI only")
 
