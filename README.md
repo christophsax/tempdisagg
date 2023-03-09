@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-[![codecov](https://codecov.io/gh/christophsax/tempdisagg/branch/main/graph/badge.svg?token=4KHDQxkCub)](https://codecov.io/gh/christophsax/tempdisagg)
+[![codecov](https://app.codecov.io/gh/christophsax/tempdisagg/)](https://app.codecov.io/gh/christophsax/tempdisagg/)
 [![R-CMD-check](https://github.com/christophsax/tempdisagg/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/christophsax/tempdisagg/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
