@@ -126,6 +126,7 @@ if (
     r$y2q <- r$y2q[, colnames(old$r$y2q)]
   }
   if (!isTRUE(all.equal(r$y2q, old$r$y2q, tol = 1e-3))) {
+    print(all.equal(r$y2q, old$r$y2q, tol = 1e-3)))
     stop_and_print(diffsNewOld(r$y2q, old$r$y2q))
   }
   # identical(r$y2q, old$r$y2q)
@@ -137,6 +138,7 @@ if (
     r$q2m <- r$q2m[, colnames(old$r$q2m)]
   }
   if (!isTRUE(all.equal(r$q2m, old$r$q2m, tol = 1e-3))) {
+    print(all.equal(r$y2q, old$r$y2q, tol = 1e-3)))
     stop_and_print(diffsNewOld(r$q2m, old$r$q2m))
   }
   # identical(r$q2m, old$r$q2m)
