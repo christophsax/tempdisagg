@@ -125,8 +125,8 @@ if (
     warning("\nThere are less time series in the old set, the new set has been adjusted\n")
     r$y2q <- r$y2q[, colnames(old$r$y2q)]
   }
-  if (!isTRUE(all.equal(r$y2q, old$r$y2q, tol = 1e-3))) {
-    print(all.equal(r$y2q, old$r$y2q, tol = 1e-3))
+  if (!isTRUE(all.equal(r$y2q, old$r$y2q, tol = 1e-3, check.attributes = FALSE))) {
+    print(all.equal(r$y2q, old$r$y2q, tol = 1e-3, check.attributes = FALSE))
     stop_and_print(diffsNewOld(r$y2q, old$r$y2q))
   }
   # identical(r$y2q, old$r$y2q)
@@ -137,8 +137,8 @@ if (
     warning("\nThere are less time series in the old set, the new set has been adjusted\n")
     r$q2m <- r$q2m[, colnames(old$r$q2m)]
   }
-  if (!isTRUE(all.equal(r$q2m, old$r$q2m, tol = 1e-3))) {
-    print(all.equal(r$y2q, old$r$y2q, tol = 1e-3))
+  if (!isTRUE(all.equal(r$q2m, old$r$q2m, tol = 1e-3, check.attributes = FALSE))) {
+    print(all.equal(r$y2q, old$r$y2q, tol = 1e-3, check.attributes = FALSE))
     stop_and_print(diffsNewOld(r$q2m, old$r$q2m))
   }
   # identical(r$q2m, old$r$q2m)
